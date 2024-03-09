@@ -1,11 +1,11 @@
-import { OrdersService } from './OrdersService';
-import { ProductService } from './ProductService';
+import { UserService } from './UserService';
+import { ResourceService } from './ResourceService';
 
 export enum ServiceClientsKeys {
-  productServices = 'productServices',
-  ordersServices = 'ordersServices'
+  resourceService = 'resourceService',
+  userService = 'userService'
 }
 
-export type ServiceClientsDef = OrdersService | ProductService;
+export type ServiceClientsDef = ResourceService | UserService;
 
 export type ServiceClients = { [key in ServiceClientsKeys]: ServiceClientsDef };

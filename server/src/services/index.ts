@@ -1,9 +1,9 @@
 import { Database } from '~/models';
-import { ProductService } from './ProductService';
-import { OrdersService } from './OrdersService';
+import { UserService } from './UserService';
+import { ResourceService } from './ResourceService';
 import { ServiceClients } from './types';
 
 export const initServiceClients = (database: Database): ServiceClients => ({
-  productServices: new ProductService(database),
-  ordersServices: new OrdersService(database)
+  userService: new UserService(database),
+  resourceService: new ResourceService(database)
 });

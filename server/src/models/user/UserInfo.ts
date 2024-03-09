@@ -1,31 +1,29 @@
 import { DataTypes, Model } from 'sequelize';
 import { ModelDef } from '../types';
 
-export class Product extends Model {}
+export class UserInfo extends Model {}
 
-export const productDef: ModelDef = {
+export const UserInfoDef: ModelDef = {
   fields: {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true
     },
-    name: {
+    firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
-    slug: {
+    lastName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    summary: {
-      type: DataTypes.TEXT,
+    email: {
+      type: DataTypes.STRING,
       allowNull: true
     },
     enabled: {

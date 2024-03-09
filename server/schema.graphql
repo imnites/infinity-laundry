@@ -1,11 +1,9 @@
 type Query {
   _: String
-  products: [ProductReference!]!
 }
 
 type Mutation {
   _: String
-  putProduct(id: String, product: ProductInput): ProductReference!
   createUser(input: UserInput!): UserReference!
   authenticate(credential: Credential!): AuthResult!
   refreshToken(refreshToken: RefreshTokenInput!): AuthResult!
@@ -13,15 +11,6 @@ type Mutation {
 
 type Subscription {
   _: String
-}
-
-input ProductInput {
-  name: String
-}
-
-type ProductReference {
-  id: String!
-  name: String!
 }
 
 input RefreshTokenInput {

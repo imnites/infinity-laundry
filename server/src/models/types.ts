@@ -1,14 +1,6 @@
 import { ModelAttributeColumnOptions, ModelOptions } from 'sequelize';
-import {
-  Feature,
-  FeatureCategory,
-  FeatureLabel,
-  Product,
-  ProductFeature,
-  ProductSKU,
-  ProductSKUDetails
-} from './product';
-import { Orders } from './orders';
+import { UserInfo } from './user';
+import { Resource } from './resource';
 import { Sequelize } from 'sequelize';
 
 export type ModelDef = {
@@ -19,25 +11,11 @@ export type ModelDef = {
 };
 
 export enum ModelKeys {
-  feature = 'feature',
-  featureCategory = 'featureCategory',
-  featureLabel = 'featureLabel',
-  orders = 'orders',
-  product = 'product',
-  productFeature = 'productFeature',
-  productSKU = 'productSKU',
-  productSKUDetails = 'productSKUDetails'
+  userInfo = 'userInfo',
+  resource = 'resource'
 }
 
-export type ModelRef =
-  | typeof Feature
-  | typeof FeatureCategory
-  | typeof FeatureLabel
-  | typeof Orders
-  | typeof Product
-  | typeof ProductFeature
-  | typeof ProductSKU
-  | typeof ProductSKUDetails;
+export type ModelRef = typeof Resource | typeof UserInfo;
 
 export type Models = {
   [key in ModelKeys]: ModelRef;
