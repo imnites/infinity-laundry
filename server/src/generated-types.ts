@@ -19,8 +19,8 @@ export type Scalars = {
 export type AuthResult = {
   __typename?: 'AuthResult';
   accessToken: Scalars['String']['output'];
-  expiresInMS: Scalars['Int']['output'];
-  refreshExpiresInMS: Scalars['Int']['output'];
+  expiresInSec: Scalars['Int']['output'];
+  refreshExpiresInSec: Scalars['Int']['output'];
   refreshToken: Scalars['String']['output'];
   tokenType: Scalars['String']['output'];
 };
@@ -35,7 +35,6 @@ export type Mutation = {
   _?: Maybe<Scalars['String']['output']>;
   authenticate: AuthResult;
   createUser: UserReference;
-  putProduct: ProductReference;
   refreshToken: AuthResult;
 };
 
@@ -50,30 +49,13 @@ export type MutationCreateUserArgs = {
 };
 
 
-export type MutationPutProductArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  product?: InputMaybe<ProductInput>;
-};
-
-
 export type MutationRefreshTokenArgs = {
   refreshToken: RefreshTokenInput;
-};
-
-export type ProductInput = {
-  name?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type ProductReference = {
-  __typename?: 'ProductReference';
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
   _?: Maybe<Scalars['String']['output']>;
-  products: Array<ProductReference>;
 };
 
 export type RefreshTokenInput = {
@@ -176,8 +158,6 @@ export type ResolversTypes = ResolversObject<{
   Credential: Credential;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
-  ProductInput: ProductInput;
-  ProductReference: ResolverTypeWrapper<ProductReference>;
   Query: ResolverTypeWrapper<{}>;
   RefreshTokenInput: RefreshTokenInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -193,8 +173,6 @@ export type ResolversParentTypes = ResolversObject<{
   Credential: Credential;
   Int: Scalars['Int']['output'];
   Mutation: {};
-  ProductInput: ProductInput;
-  ProductReference: ProductReference;
   Query: {};
   RefreshTokenInput: RefreshTokenInput;
   String: Scalars['String']['output'];
@@ -205,8 +183,8 @@ export type ResolversParentTypes = ResolversObject<{
 
 export type AuthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']> = ResolversObject<{
   accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  expiresInMS?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  refreshExpiresInMS?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  expiresInSec?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  refreshExpiresInSec?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tokenType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -216,19 +194,11 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   authenticate?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'credential'>>;
   createUser?: Resolver<ResolversTypes['UserReference'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
-  putProduct?: Resolver<ResolversTypes['ProductReference'], ParentType, ContextType, Partial<MutationPutProductArgs>>;
   refreshToken?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationRefreshTokenArgs, 'refreshToken'>>;
-}>;
-
-export type ProductReferenceResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductReference'] = ResolversParentTypes['ProductReference']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  products?: Resolver<Array<ResolversTypes['ProductReference']>, ParentType, ContextType>;
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
@@ -244,7 +214,6 @@ export type UserReferenceResolvers<ContextType = any, ParentType extends Resolve
 export type Resolvers<ContextType = any> = ResolversObject<{
   AuthResult?: AuthResultResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
-  ProductReference?: ProductReferenceResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   UserReference?: UserReferenceResolvers<ContextType>;

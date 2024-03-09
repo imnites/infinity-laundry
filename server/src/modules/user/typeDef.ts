@@ -24,9 +24,9 @@ const typeDefs = `
 
   type AuthResult {
     accessToken: String!
-    expiresInMS: Int!
+    expiresInSec: Int!
     refreshToken: String!
-    refreshExpiresInMS: Int!
+    refreshExpiresInSec: Int!
     tokenType: String!
   }
 

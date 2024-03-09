@@ -13,8 +13,8 @@ export const authenticate = async (
 
   return {
     accessToken: response.accessToken,
-    expiresInMS: response.expiresInMS,
-    refreshExpiresInMS: response.refreshTokenExpiresInMS,
+    expiresInSec: response.expiresInSec,
+    refreshExpiresInSec: response.refreshTokenExpiresInSec,
     refreshToken: response.accessToken,
     tokenType: response.tokenType
   };

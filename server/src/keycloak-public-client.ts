@@ -11,17 +11,17 @@ const mapToTokenDetails = (data: {
   [key: string]: unknown;
 }): {
   accessToken: string;
-  expiresInMS: number;
+  expiresInSec: number;
   refreshToken: string;
-  refreshTokenExpiresInMS: number;
+  refreshTokenExpiresInSec: number;
   tokenType: string;
   sessionState: string;
   scope: string;
 } => ({
   accessToken: data.access_token as string,
-  expiresInMS: data.expires_in as number,
+  expiresInSec: data.expires_in as number,
   refreshToken: data.refresh_token as string,
-  refreshTokenExpiresInMS: data.refresh_expires_in as number,
+  refreshTokenExpiresInSec: data.refresh_expires_in as number,
   tokenType: data.token_type as string,
   sessionState: data.session_state as string,
   scope: data.scope as string
@@ -48,9 +48,9 @@ export class KeycloakPublicClient {
     password: string;
   }): Promise<{
     accessToken: string;
-    expiresInMS: number;
+    expiresInSec: number;
     refreshToken: string;
-    refreshTokenExpiresInMS: number;
+    refreshTokenExpiresInSec: number;
     tokenType: string;
     sessionState: string;
     scope: string;
@@ -93,9 +93,9 @@ export class KeycloakPublicClient {
     refreshToken: string;
   }): Promise<{
     accessToken: string;
-    expiresInMS: number;
+    expiresInSec: number;
     refreshToken: string;
-    refreshTokenExpiresInMS: number;
+    refreshTokenExpiresInSec: number;
     tokenType: string;
     sessionState: string;
     scope: string;
