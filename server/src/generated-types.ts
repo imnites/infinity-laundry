@@ -30,11 +30,23 @@ export type Credential = {
   userName: Scalars['String']['input'];
 };
 
+export type Me = {
+  __typename?: 'Me';
+  email: Scalars['String']['output'];
+  enabled: Scalars['Boolean']['output'];
+  firstName: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  lastName: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  phoneNumber?: Maybe<PhoneNumber>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['String']['output']>;
   authenticate: AuthResult;
-  createUser: UserReference;
+  createUser: Scalars['Boolean']['output'];
+  logout: Scalars['Boolean']['output'];
   refreshToken: AuthResult;
 };
 
@@ -49,17 +61,30 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationLogoutArgs = {
+  refreshToken?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type MutationRefreshTokenArgs = {
-  refreshToken: RefreshTokenInput;
+  refreshToken: Scalars['String']['input'];
+};
+
+export type PhoneNumber = {
+  __typename?: 'PhoneNumber';
+  countryCode: Scalars['String']['output'];
+  phoneNumber: Scalars['String']['output'];
+};
+
+export type PhoneNumberInput = {
+  countryCode: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
 };
 
 export type Query = {
   __typename?: 'Query';
   _?: Maybe<Scalars['String']['output']>;
-};
-
-export type RefreshTokenInput = {
-  token: Scalars['String']['input'];
+  me: Me;
 };
 
 export type Subscription = {
@@ -68,17 +93,12 @@ export type Subscription = {
 };
 
 export type UserInput = {
-  email?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
   enabled: Scalars['Boolean']['input'];
   firstName: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
-  userName: Scalars['String']['input'];
-};
-
-export type UserReference = {
-  __typename?: 'UserReference';
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
+  password: Scalars['String']['input'];
+  phoneNumber: PhoneNumberInput;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -157,13 +177,14 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Credential: Credential;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Me: ResolverTypeWrapper<Me>;
   Mutation: ResolverTypeWrapper<{}>;
+  PhoneNumber: ResolverTypeWrapper<PhoneNumber>;
+  PhoneNumberInput: PhoneNumberInput;
   Query: ResolverTypeWrapper<{}>;
-  RefreshTokenInput: RefreshTokenInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
   UserInput: UserInput;
-  UserReference: ResolverTypeWrapper<UserReference>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -172,13 +193,14 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean']['output'];
   Credential: Credential;
   Int: Scalars['Int']['output'];
+  Me: Me;
   Mutation: {};
+  PhoneNumber: PhoneNumber;
+  PhoneNumberInput: PhoneNumberInput;
   Query: {};
-  RefreshTokenInput: RefreshTokenInput;
   String: Scalars['String']['output'];
   Subscription: {};
   UserInput: UserInput;
-  UserReference: UserReference;
 }>;
 
 export type AuthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']> = ResolversObject<{
@@ -190,32 +212,46 @@ export type AuthResultResolvers<ContextType = any, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Me'] = ResolversParentTypes['Me']> = ResolversObject<{
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   authenticate?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'credential'>>;
-  createUser?: Resolver<ResolversTypes['UserReference'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
+  createUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
+  logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationLogoutArgs>>;
   refreshToken?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationRefreshTokenArgs, 'refreshToken'>>;
+}>;
+
+export type PhoneNumberResolvers<ContextType = any, ParentType extends ResolversParentTypes['PhoneNumber'] = ResolversParentTypes['PhoneNumber']> = ResolversObject<{
+  countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['String']>, "_", ParentType, ContextType>;
 }>;
 
-export type UserReferenceResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserReference'] = ResolversParentTypes['UserReference']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type Resolvers<ContextType = any> = ResolversObject<{
   AuthResult?: AuthResultResolvers<ContextType>;
+  Me?: MeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PhoneNumber?: PhoneNumberResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
-  UserReference?: UserReferenceResolvers<ContextType>;
 }>;
 

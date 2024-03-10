@@ -6,14 +6,14 @@ export const refreshToken = async (
   args: MutationRefreshTokenArgs,
   context: Context
 ): Promise<AuthResult> => {
-  const response = await context.keyCloakPublicClient.refreshToken({
-    refreshToken: args.refreshToken.token
-  });
+  const response = await context.keyCloakPublicClient.refreshToken(
+    args.refreshToken
+  );
 
   return {
     accessToken: response.accessToken,
-    expiresInMS: response.expiresInMS,
-    refreshExpiresInMS: response.refreshTokenExpiresInMS,
+    expiresInSec: response.expiresInSec,
+    refreshExpiresInSec: response.refreshTokenExpiresInSec,
     refreshToken: response.accessToken,
     tokenType: response.accessToken
   };

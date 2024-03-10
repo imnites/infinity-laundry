@@ -1,12 +1,13 @@
 const typeDefs = `
   extend type Mutation {
-    createUser(input: UserInput!): UserReference!
+    createUser(input: UserInput!): Boolean!
     authenticate(credential: Credential!): AuthResult!
-    refreshToken(refreshToken: RefreshTokenInput!): AuthResult!
+    refreshToken(refreshToken: String!): AuthResult!
+    logout(refreshToken: String): Boolean!
   }
 
-  input RefreshTokenInput {
-    token: String!
+  extend type Query {
+    me: Me!
   }
 
   input Credential {
@@ -17,9 +18,20 @@ const typeDefs = `
   input UserInput {
     firstName: String!
     lastName: String!
-    email: String
-    userName: String!
+    email: String!
+    password: String!
     enabled: Boolean!
+    phoneNumber: PhoneNumberInput!
+  }
+
+  input PhoneNumberInput {
+    countryCode: String!
+    phoneNumber: String!
+  }
+
+  type PhoneNumber {
+    countryCode: String!
+    phoneNumber: String!
   }
 
   type AuthResult {
@@ -30,9 +42,14 @@ const typeDefs = `
     tokenType: String!
   }
 
-  type UserReference {
+  type Me {
     id: String!
     name: String!
+    firstName: String!
+    lastName: String!
+    email: String!
+    enabled: Boolean!
+    phoneNumber: PhoneNumber
   }
 `;
 

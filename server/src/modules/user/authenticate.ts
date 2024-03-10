@@ -15,7 +15,7 @@ export const authenticate = async (
     accessToken: response.accessToken,
     expiresInSec: response.expiresInSec,
     refreshExpiresInSec: response.refreshTokenExpiresInSec,
-    refreshToken: response.accessToken,
+    refreshToken: response.refreshToken,
     tokenType: response.tokenType
   };
 };

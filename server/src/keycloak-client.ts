@@ -12,10 +12,10 @@ const mapToTokenDetails = (data: {
   [key: string]: unknown;
 }): {
   accessToken: string;
-  expiresInMS: number;
+  expiresInSec: number;
 } => ({
   accessToken: data.access_token as string,
-  expiresInMS: data.expires_in as number
+  expiresInSec: data.expires_in as number
 });
 
 export class KeycloakClient {
@@ -36,7 +36,7 @@ export class KeycloakClient {
 
   public async requestToken(): Promise<{
     accessToken: string;
-    expiresInMS: number;
+    expiresInSec: number;
   }> {
     const url = `${this._rootUrl}/realms/${this._realm}/protocol/openid-connect/token`;
     return axios
@@ -69,13 +69,81 @@ export class KeycloakClient {
       );
   }
 
-  public async post(
-    methodName: string,
-    input: { [key: string]: unknown }
-  ): Promise<{
+  public async introspectToken(
+    token: string
+  ): Promise<{ [key: string]: unknown }> {
+    const url = `${this._rootUrl}/realms/${this._realm}/protocol/openid-connect/token/introspect`;
+
+    return axios
+      .post(
+        url,
+        querystring.stringify({
+          token: token,
+          client_id: this._clientId,
+          client_secret: this._clientSecret
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      )
+      .then(({ data }: { data: { [key: string]: unknown } }) => data)
+      .catch(
+        ({
+          response
+        }: {
+          response: { data: { error: string; error_description: string } };
+        }) => {
+          throw new GraphQLError(response.data.error, {
+            extensions: { description: response.data.error_description }
+          });
+        }
+      );
+  }
+
+  public async revoke(token: string): Promise<{ [key: string]: unknown }> {
+    const url = `${this._rootUrl}/realms/${this._realm}/protocol/openid-connect/revoke`;
+
+    return axios
+      .post(
+        url,
+        querystring.stringify({
+          client_id: this._clientId,
+          client_secret: this._clientSecret,
+          token: token,
+          token_type_hint: 'access_token'
+        })
+      )
+      .then(({ data }: { data: { [key: string]: unknown } }) => data)
+      .catch(
+        ({
+          response
+        }: {
+          response: { data: { error: string; error_description: string } };
+        }) => {
+          throw new GraphQLError(response.data.error, {
+            extensions: { description: response.data.error_description }
+          });
+        }
+      );
+  }
+
+  public async post({
+    methodName,
+    queryParam,
+    input
+  }: {
+    methodName: string;
+    queryParam?: string;
+    input: { [key: string]: unknown };
+  }): Promise<{
     [key: string]: unknown;
   }> {
-    const url = `${this._rootUrl}/admin/realms/${this._realm}/${methodName}`;
+    const url =
+      queryParam !== undefined
+        ? `${this._rootUrl}/admin/realms/${this._realm}/${methodName}/${queryParam}`
+        : `${this._rootUrl}/admin/realms/${this._realm}/${methodName}`;
     const { accessToken } = await this.requestToken();
 
     return axios

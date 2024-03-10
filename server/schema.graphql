@@ -1,20 +1,18 @@
 type Query {
   _: String
+  me: Me!
 }
 
 type Mutation {
   _: String
-  createUser(input: UserInput!): UserReference!
+  createUser(input: UserInput!): Boolean!
   authenticate(credential: Credential!): AuthResult!
-  refreshToken(refreshToken: RefreshTokenInput!): AuthResult!
+  refreshToken(refreshToken: String!): AuthResult!
+  logout(refreshToken: String): Boolean!
 }
 
 type Subscription {
   _: String
-}
-
-input RefreshTokenInput {
-  token: String!
 }
 
 input Credential {
@@ -25,9 +23,20 @@ input Credential {
 input UserInput {
   firstName: String!
   lastName: String!
-  email: String
-  userName: String!
+  email: String!
+  password: String!
   enabled: Boolean!
+  phoneNumber: PhoneNumberInput!
+}
+
+input PhoneNumberInput {
+  countryCode: String!
+  phoneNumber: String!
+}
+
+type PhoneNumber {
+  countryCode: String!
+  phoneNumber: String!
 }
 
 type AuthResult {
@@ -38,7 +47,12 @@ type AuthResult {
   tokenType: String!
 }
 
-type UserReference {
+type Me {
   id: String!
   name: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  enabled: Boolean!
+  phoneNumber: PhoneNumber
 }

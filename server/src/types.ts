@@ -7,5 +7,5 @@ export type Context = {
   database: Database;
   serviceClients: ServiceClients;
   keyCloakPublicClient: KeycloakPublicClient;
-  keyCloakClient: KeycloakClient;
+  keycloakClient: KeycloakClient;
 };

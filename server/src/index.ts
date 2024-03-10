@@ -36,14 +36,16 @@ startStandaloneServer(server, {
     const models = await initModels(sequelize);
     const serviceClients = initServiceClients({ sequelize, models });
 
-    const keyCloakPublicClient = new KeycloakPublicClient();
+    const { authorization } = req.headers;
+
+    const keyCloakPublicClient = new KeycloakPublicClient(authorization);
     const keyCloakClient = new KeycloakClient();
 
     return {
       database: { sequelize, models },
       serviceClients,
       keyCloakPublicClient,
-      keyCloakClient
+      keycloakClient: keyCloakClient
     };
   }
 })
