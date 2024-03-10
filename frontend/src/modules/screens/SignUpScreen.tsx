@@ -86,7 +86,7 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({navigation}) => {
         onChangeText={handleConfirmPasswordChange}
       />
       {passwordError ? (
-        <Text style={{color: 'red'}}>{passwordError}</Text>
+        <Text style={styles.passwordError}>{passwordError}</Text>
       ) : null}
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text style={styles.buttonText}>Save</Text>
@@ -129,6 +129,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  passwordError: {
+    color: 'red',
   },
 });
 

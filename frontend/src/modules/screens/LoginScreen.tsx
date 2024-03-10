@@ -1,16 +1,35 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 import Button from '../components/common/Button';
+import ModalPopUp from '../components/common/ModalPopUp';
 import TextWithLine from '../components/common/TextWithLine';
 import ClickableTextButton from '../components/common/ClickableTextButton';
+import useAuthenticateUser from './hooks/useAuthenticateUser';
+import useLoginHandlers from './hooks/useLoginHandlers';
 
 interface LoginScreenProps {
   navigation: any;
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const {authenticateUser, loading} = useAuthenticateUser();
+  const [credential, setCredential] = useState<{
+    userName: string;
+    password: string;
+  }>({
+    userName: '',
+    password: '',
+  });
+  const [isInvalidCredentials, setInvalidCredentials] = useState(false);
+
+  const {onUserNameChange, onPasswordChange, onSubmit, onSignUp} =
+    useLoginHandlers({
+      authenticateUser,
+      credential,
+      setInvalidCredentials,
+      setCredential,
+      navigation,
+    });
 
   return (
     <View style={styles.container}>
@@ -18,25 +37,27 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        value={username}
-        onChangeText={text => setUsername(text)}
+        value={credential.userName}
+        onChangeText={onUserNameChange}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         secureTextEntry={true}
-        value={password}
-        onChangeText={text => setPassword(text)}
+        value={credential.password}
+        onChangeText={onPasswordChange}
       />
-      <Button name="Login" onPress={() => navigation.navigate('Home Page')} />
+      <Button name="Login" onPress={onSubmit} loading={loading} />
       <TextWithLine text="or" />
       <Text>
         <Text style={styles.noAccount}>Don't have an account? </Text>
-        <ClickableTextButton
-          text="Sign up."
-          onPress={() => navigation.navigate('Sign Up')}
-        />
+        <ClickableTextButton text="Sign up." onPress={onSignUp} />
       </Text>
+      <ModalPopUp
+        message="Invalid Credentials."
+        isInvalidCredentials={isInvalidCredentials}
+        setInvalidCredentials={setInvalidCredentials}
+      />
     </View>
   );
 };
