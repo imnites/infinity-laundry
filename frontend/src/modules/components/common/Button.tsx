@@ -19,7 +19,7 @@ const Button = ({name, onPress, loading}: ButtonPropsType) => {
       onPress={onPress}
       disabled={loading}>
       {loading ? (
-        <ActivityIndicator color="white" /> // Show loading indicator while loading is true
+        <ActivityIndicator color="white" />
       ) : (
         <Text style={styles.buttonText}>{name}</Text>
       )}

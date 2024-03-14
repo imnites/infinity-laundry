@@ -1,8 +1,8 @@
 import {gql, useMutation} from '@apollo/client';
 
 const PUT_USER = gql`
-  mutation putUser($credential: UserInput!) {
-    createUser(userInput: $userInput)
+  mutation putUser($input: UserInput!) {
+    createUser(input: $input)
   }
 `;
 
@@ -21,7 +21,7 @@ interface PhoneNumberType {
 }
 
 const usePutUser = () => {
-  const [putUser, {loading, error}] = useMutation(PUT_USER);
+  const [putUser, {loading}] = useMutation(PUT_USER);
 
   return {
     putUser: async (user: UserType) => {
@@ -36,7 +36,6 @@ const usePutUser = () => {
       }
     },
     loading,
-    error,
   };
 };
 
