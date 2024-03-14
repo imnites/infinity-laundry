@@ -2,9 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 const PersonalDetails: React.FC = () => {
-  const handleEdit = () => {
-    console.log('Use Machine button pressed');
-  };
+  const handleEdit = () => {};
 
   return (
     <>

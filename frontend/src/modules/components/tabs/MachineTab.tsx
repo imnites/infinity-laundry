@@ -10,15 +10,9 @@ import {
 const MachineTab: React.FC = () => {
   const [machineCode, setMachineCode] = useState<string>('');
 
-  const handleQRScan = () => {
-    // Handle QR scan action here
-    console.log('QR code scanned');
-  };
+  const handleQRScan = () => {};
 
-  const handleSubmitMachineCode = () => {
-    // Handle submission of machine code here
-    console.log('Machine code submitted:', machineCode);
-  };
+  const handleSubmitMachineCode = () => {};
 
   return (
     <View style={styles.container}>

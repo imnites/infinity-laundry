@@ -28,7 +28,7 @@ const useLoginHandlers = ({
     (text: string) =>
       setCredential({
         ...credential,
-        userName: text,
+        password: text,
       }),
     [credential, setCredential],
   );
