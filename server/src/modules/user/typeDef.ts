@@ -1,9 +1,12 @@
 const typeDefs = `
   extend type Mutation {
-    createUser(input: UserInput!): Boolean!
+    createUserDraft(input: UserInput!): String!
+    saveUserDraft(draftId: String!): Boolean!
     authenticate(credential: Credential!): AuthResult!
     refreshToken(refreshToken: String!): AuthResult!
     logout(refreshToken: String): Boolean!
+    generatePhoneOTP(phoneNumber: PhoneNumberInput!): OTPResult!
+    validatePhoneOTP(phoneNumber: PhoneNumberInput!, apiId: String!, otp: String!): Boolean!
   }
 
   extend type Query {
@@ -19,14 +22,18 @@ const typeDefs = `
     firstName: String!
     lastName: String!
     email: String!
-    password: String!
-    enabled: Boolean!
     phoneNumber: PhoneNumberInput!
+    enabled: Boolean!
   }
 
   input PhoneNumberInput {
     countryCode: String!
     phoneNumber: String!
+  }
+
+  type OTPResult {
+    apiId: String!
+    success: Boolean!
   }
 
   type PhoneNumber {

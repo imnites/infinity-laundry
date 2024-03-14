@@ -45,9 +45,12 @@ export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['String']['output']>;
   authenticate: AuthResult;
-  createUser: Scalars['Boolean']['output'];
+  createUserDraft: Scalars['String']['output'];
+  generatePhoneOTP: OtpResult;
   logout: Scalars['Boolean']['output'];
   refreshToken: AuthResult;
+  saveUserDraft: Scalars['Boolean']['output'];
+  validatePhoneOTP: Scalars['Boolean']['output'];
 };
 
 
@@ -56,8 +59,13 @@ export type MutationAuthenticateArgs = {
 };
 
 
-export type MutationCreateUserArgs = {
+export type MutationCreateUserDraftArgs = {
   input: UserInput;
+};
+
+
+export type MutationGeneratePhoneOtpArgs = {
+  phoneNumber: PhoneNumberInput;
 };
 
 
@@ -68,6 +76,24 @@ export type MutationLogoutArgs = {
 
 export type MutationRefreshTokenArgs = {
   refreshToken: Scalars['String']['input'];
+};
+
+
+export type MutationSaveUserDraftArgs = {
+  draftId: Scalars['String']['input'];
+};
+
+
+export type MutationValidatePhoneOtpArgs = {
+  apiId: Scalars['String']['input'];
+  otp: Scalars['String']['input'];
+  phoneNumber: PhoneNumberInput;
+};
+
+export type OtpResult = {
+  __typename?: 'OTPResult';
+  apiId: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
 };
 
 export type PhoneNumber = {
@@ -97,7 +123,6 @@ export type UserInput = {
   enabled: Scalars['Boolean']['input'];
   firstName: Scalars['String']['input'];
   lastName: Scalars['String']['input'];
-  password: Scalars['String']['input'];
   phoneNumber: PhoneNumberInput;
 };
 
@@ -179,6 +204,7 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Me: ResolverTypeWrapper<Me>;
   Mutation: ResolverTypeWrapper<{}>;
+  OTPResult: ResolverTypeWrapper<OtpResult>;
   PhoneNumber: ResolverTypeWrapper<PhoneNumber>;
   PhoneNumberInput: PhoneNumberInput;
   Query: ResolverTypeWrapper<{}>;
@@ -195,6 +221,7 @@ export type ResolversParentTypes = ResolversObject<{
   Int: Scalars['Int']['output'];
   Me: Me;
   Mutation: {};
+  OTPResult: OtpResult;
   PhoneNumber: PhoneNumber;
   PhoneNumberInput: PhoneNumberInput;
   Query: {};
@@ -226,9 +253,18 @@ export type MeResolvers<ContextType = any, ParentType extends ResolversParentTyp
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   authenticate?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'credential'>>;
-  createUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
+  createUserDraft?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateUserDraftArgs, 'input'>>;
+  generatePhoneOTP?: Resolver<ResolversTypes['OTPResult'], ParentType, ContextType, RequireFields<MutationGeneratePhoneOtpArgs, 'phoneNumber'>>;
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationLogoutArgs>>;
   refreshToken?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationRefreshTokenArgs, 'refreshToken'>>;
+  saveUserDraft?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSaveUserDraftArgs, 'draftId'>>;
+  validatePhoneOTP?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationValidatePhoneOtpArgs, 'apiId' | 'otp' | 'phoneNumber'>>;
+}>;
+
+export type OtpResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['OTPResult'] = ResolversParentTypes['OTPResult']> = ResolversObject<{
+  apiId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type PhoneNumberResolvers<ContextType = any, ParentType extends ResolversParentTypes['PhoneNumber'] = ResolversParentTypes['PhoneNumber']> = ResolversObject<{
@@ -250,6 +286,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   AuthResult?: AuthResultResolvers<ContextType>;
   Me?: MeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  OTPResult?: OtpResultResolvers<ContextType>;
   PhoneNumber?: PhoneNumberResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;

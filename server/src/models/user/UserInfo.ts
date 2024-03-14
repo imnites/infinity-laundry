@@ -18,13 +18,15 @@ export const UserInfoDef: ModelDef = {
       type: DataTypes.STRING,
       allowNull: false
     },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     email: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      unique: true
+    },
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true
     },
     enabled: {
       type: DataTypes.BOOLEAN,

@@ -10,6 +10,8 @@ import fs from 'fs';
 import { initConnection } from './init-connection';
 import { KeycloakPublicClient } from './keycloak-public-client';
 import { KeycloakClient } from './keycloak-client';
+import { SMSCountryClient } from './sms-country-client';
+import { RedisClient } from './redis-client';
 
 const connectDatabase = async (): Promise<Sequelize> => {
   const sequelize = initConnection();
@@ -34,10 +36,12 @@ startStandaloneServer(server, {
   context: async ({ req, res }): Promise<Context> => {
     const sequelize = await connectDatabase();
     const models = await initModels(sequelize);
-    const serviceClients = initServiceClients({ sequelize, models });
 
     const { authorization } = req.headers;
 
+    const serviceClients = initServiceClients({ sequelize, models });
+    const redisClient = new RedisClient();
+    const sMSCountryClient = new SMSCountryClient(redisClient);
     const keyCloakPublicClient = new KeycloakPublicClient(authorization);
     const keyCloakClient = new KeycloakClient();
 
@@ -45,7 +49,9 @@ startStandaloneServer(server, {
       database: { sequelize, models },
       serviceClients,
       keyCloakPublicClient,
-      keycloakClient: keyCloakClient
+      keycloakClient: keyCloakClient,
+      sMSCountryClient,
+      redisClient
     };
   }
 })
