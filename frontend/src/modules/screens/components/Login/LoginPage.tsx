@@ -5,7 +5,7 @@ import {
   ModalPopUp,
   TextWithLine,
   ClickableTextButton,
-} from '../components/common/components';
+} from '../../../components/common/components';
 import {useAuthenticateUser, useLoginHandlers} from './hooks';
 
 interface LoginPageProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginPage from './modules/screens/LoginPage';
+import LoginPage from './modules/screens/components/Login/LoginPage';
 import HomeScreen from '../src/modules/screens/HomeScreen';
 import {
   SignUpPage1,
