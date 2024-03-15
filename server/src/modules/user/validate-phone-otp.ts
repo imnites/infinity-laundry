@@ -22,7 +22,7 @@ export const validatePhoneOTP = async (
       otp: args.otp
     });
 
-  const response = {
+  const response: OtpValidationResult = {
     phoneNumber,
     verified,
     userId,
@@ -31,8 +31,9 @@ export const validatePhoneOTP = async (
   };
 
   if (verified && userId !== null) {
+    const token = crypto.randomUUID();
     await context.redisClient.saveData(
-      userId,
+      token,
       {
         userId,
         allowedAction: [
@@ -42,6 +43,9 @@ export const validatePhoneOTP = async (
       },
       DEFAULT_ACCESS_EXPIRED_IN_SEC
     );
+
+    response.accessToken = token;
+    response.expiresInSec = DEFAULT_ACCESS_EXPIRED_IN_SEC;
   }
 
   return response;

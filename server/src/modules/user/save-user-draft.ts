@@ -22,7 +22,6 @@ export const saveUserDraft = async (
     await context.keycloakClient.post({
       methodName: 'users',
       input: {
-        id: user.id,
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
@@ -33,8 +32,15 @@ export const saveUserDraft = async (
       }
     });
 
+    const users = (await context.keycloakClient.getRequest(
+      `users?email=${data.email}`
+    )) as { id: string }[];
+
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    const id = users[0].id as unknown as AbstractDataType;
+
     await context.serviceClients.userService.createNewUser({
-      id: user.id as AbstractDataType,
+      id: id,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,

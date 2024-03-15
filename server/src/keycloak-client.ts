@@ -194,4 +194,29 @@ export class KeycloakClient {
         }
       );
   }
+
+  public async getRequest(methodName: string): Promise<unknown> {
+    const url = `${this._rootUrl}/admin/realms/${this._realm}/${methodName}`;
+    const { accessToken } = await this.requestToken();
+
+    return axios
+      .get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+      .then(({ data }: { data: { [key: string]: unknown } }) => data)
+      .catch(
+        ({
+          response
+        }: {
+          response: { data: { error: string; error_description: string } };
+        }) => {
+          throw new GraphQLError(response.data.error, {
+            extensions: { description: response.data.error_description }
+          });
+        }
+      );
+  }
 }

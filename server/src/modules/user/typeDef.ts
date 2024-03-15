@@ -40,7 +40,6 @@ const typeDefs = `
   }
 
   type OTPResult {
-    id: String!
     success: Boolean!
     verificationToken: String
     phoneNumber: PhoneNumber!

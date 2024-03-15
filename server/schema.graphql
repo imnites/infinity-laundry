@@ -45,7 +45,6 @@ input OTPInput {
 }
 
 type OTPResult {
-  id: String!
   success: Boolean!
   verificationToken: String
   phoneNumber: PhoneNumber!

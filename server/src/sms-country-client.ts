@@ -65,11 +65,11 @@ export class SMSCountryClient {
     } = { phoneNumber: null, userId: null, verified: false };
 
     if (data.otp === otp) {
-      await this._redisClient.deleteKey(key);
-
       response.verified = true;
       response.phoneNumber = data.phoneNumber;
       response.userId = data.userId;
+
+      await this._redisClient.deleteKey(key);
     }
 
     return response;
@@ -90,6 +90,8 @@ export class SMSCountryClient {
   }> {
     const otp = SMSCountryClient._generateOTP();
     const text = `User Admin login OTP is ${otp} - SMSCOU`;
+
+    console.log(otp);
 
     const { apiId, success } = await this.sendSMS({
       phoneNumber,
@@ -127,6 +129,7 @@ export class SMSCountryClient {
     return response;
   }
 
+  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   public async sendSMS({
     phoneNumber,
     text,
@@ -141,49 +144,56 @@ export class SMSCountryClient {
     message: string;
     messageUUID: string;
   }> {
-    const url = `${this._smsCountryRootUrl}/Accounts/${this._smsCountryAuthKey}/SMSes/`;
+    // const url = `${this._smsCountryRootUrl}/Accounts/${this._smsCountryAuthKey}/SMSes/`;
 
-    return axios
-      .post(
-        url,
-        {
-          Number: `${phoneNumber.countryCode}${phoneNumber.phoneNumber}`,
-          Text: 'User Admin login OTP is ** - SMSCOU',
-          SenderId,
-          Tool: 'API'
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${this._encodedAuthKey}`
-          }
-        }
-      )
-      .then(
-        ({
-          data
-        }: {
-          data: {
-            [key: string]: unknown;
-          };
-        }) => ({
-          apiId: data.ApiId as string,
-          success: data.Success === 'True',
-          message: data.Message as string,
-          messageUUID: data.MessageUUID as string
-        })
-      )
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          console.log(response);
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+    return Promise.resolve({
+      apiId: crypto.randomUUID(),
+      success: true,
+      message: text,
+      messageUUID: crypto.randomUUID()
+    });
+
+    // return axios
+    //   .post(
+    //     url,
+    //     {
+    //       Number: `${phoneNumber.countryCode}${phoneNumber.phoneNumber}`,
+    //       Text: 'User Admin login OTP is ** - SMSCOU',
+    //       SenderId,
+    //       Tool: 'API'
+    //     },
+    //     {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //         Authorization: `Basic ${this._encodedAuthKey}`
+    //       }
+    //     }
+    //   )
+    //   .then(
+    //     ({
+    //       data
+    //     }: {
+    //       data: {
+    //         [key: string]: unknown;
+    //       };
+    //     }) => ({
+    //       apiId: data.ApiId as string,
+    //       success: data.Success === 'True',
+    //       message: data.Message as string,
+    //       messageUUID: data.MessageUUID as string
+    //     })
+    //   )
+    //   .catch(
+    //     ({
+    //       response
+    //     }: {
+    //       response: { data: { error: string; error_description: string } };
+    //     }) => {
+    //       console.log(response);
+    //       throw new GraphQLError(response.data.error, {
+    //         extensions: { description: response.data.error_description }
+    //       });
+    //     }
+    //   );
   }
 }

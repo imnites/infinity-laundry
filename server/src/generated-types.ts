@@ -104,7 +104,6 @@ export type OtpInput = {
 
 export type OtpResult = {
   __typename?: 'OTPResult';
-  id: Scalars['String']['output'];
   phoneNumber: PhoneNumber;
   success: Scalars['Boolean']['output'];
   verificationToken?: Maybe<Scalars['String']['output']>;
@@ -290,7 +289,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type OtpResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['OTPResult'] = ResolversParentTypes['OTPResult']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['PhoneNumber'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   verificationToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

@@ -1,14 +1,13 @@
 import { Context } from '~/types';
 import { MutationCreateUserDraftArgs } from '~/generated-types';
-import { UUIDV4 } from 'sequelize';
 
 export const createUserDraft = async (
   parent: { [key: string]: unknown } | null,
   args: MutationCreateUserDraftArgs,
   context: Context
 ): Promise<string> => {
-  const { key: id } = UUIDV4();
-  await context.redisClient.saveData(id, args.input);
+  const id = crypto.randomUUID();
+  await context.redisClient.saveData(id, { ...args.input, id });
 
   return id;
 };

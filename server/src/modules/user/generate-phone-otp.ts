@@ -35,6 +35,8 @@ const getUser = async (
   if (!isNullOrUndefined(id)) {
     const user = await context.redisClient.retrieveData<UserRef>(id ?? '');
 
+    console.log(user);
+
     if (user !== null) {
       return user;
     }
@@ -83,13 +85,12 @@ export const generatePhoneOTP = async (
   });
 
   return {
-    id: response.id,
     success: response.success,
     verificationToken: response.verificatonToken,
     phoneNumber: {
       countryCode: user.phoneNumber.countryCode,
       // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      phoneNumber: `*******${user.phoneNumber.phoneNumber.substring(7)}`
+      phoneNumber: `********${user.phoneNumber.phoneNumber.substring(8)}`
     }
   };
 };
