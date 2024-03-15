@@ -1,4 +1,4 @@
-import { Database } from '~/models';
+import { Database, UserInfo } from '~/models';
 import { PhoneNumber } from '~/types';
 import { AbstractDataType } from 'sequelize';
 
@@ -7,6 +7,30 @@ export class UserService {
 
   public constructor(database: Database) {
     this._database = database;
+  }
+
+  public async getUserDetailsByPhoneNumber(
+    phoneNumber: PhoneNumber
+  ): Promise<UserInfo | null> {
+    return this._database.models.userInfo.findOne({
+      where: {
+        phoneNumber: `${phoneNumber.countryCode} ${phoneNumber.phoneNumber}`
+      },
+      order: [['createdAt', 'DESC']]
+    });
+  }
+
+  public async getUserDetailsByEmail(email: string): Promise<UserInfo | null> {
+    return this._database.models.userInfo.findOne({
+      where: {
+        email
+      },
+      order: [['createdAt', 'DESC']]
+    });
+  }
+
+  public async getUserDetailsById(id: string): Promise<UserInfo | null> {
+    return this._database.models.userInfo.findByPk(id);
   }
 
   public async createNewUser({

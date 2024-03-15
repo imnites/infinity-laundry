@@ -27,7 +27,8 @@ export type AuthResult = {
 
 export type Credential = {
   password: Scalars['String']['input'];
-  userName: Scalars['String']['input'];
+  phoneNumber?: InputMaybe<PhoneNumberInput>;
+  userName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Me = {
@@ -50,7 +51,8 @@ export type Mutation = {
   logout: Scalars['Boolean']['output'];
   refreshToken: AuthResult;
   saveUserDraft: Scalars['Boolean']['output'];
-  validatePhoneOTP: Scalars['Boolean']['output'];
+  updatePassword: Scalars['Boolean']['output'];
+  validatePhoneOTP: OtpValidationResult;
 };
 
 
@@ -65,7 +67,7 @@ export type MutationCreateUserDraftArgs = {
 
 
 export type MutationGeneratePhoneOtpArgs = {
-  phoneNumber: PhoneNumberInput;
+  otpInput: OtpInput;
 };
 
 
@@ -84,16 +86,37 @@ export type MutationSaveUserDraftArgs = {
 };
 
 
+export type MutationUpdatePasswordArgs = {
+  password: Scalars['String']['input'];
+};
+
+
 export type MutationValidatePhoneOtpArgs = {
-  apiId: Scalars['String']['input'];
   otp: Scalars['String']['input'];
-  phoneNumber: PhoneNumberInput;
+  verificationToken: Scalars['String']['input'];
+};
+
+export type OtpInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
+  phoneNumber?: InputMaybe<PhoneNumberInput>;
 };
 
 export type OtpResult = {
   __typename?: 'OTPResult';
-  apiId: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  phoneNumber: PhoneNumber;
   success: Scalars['Boolean']['output'];
+  verificationToken?: Maybe<Scalars['String']['output']>;
+};
+
+export type OtpValidationResult = {
+  __typename?: 'OTPValidationResult';
+  accessToken?: Maybe<Scalars['String']['output']>;
+  expiresInSec: Scalars['Int']['output'];
+  phoneNumber?: Maybe<PhoneNumber>;
+  userId?: Maybe<Scalars['String']['output']>;
+  verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type PhoneNumber = {
@@ -204,7 +227,9 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Me: ResolverTypeWrapper<Me>;
   Mutation: ResolverTypeWrapper<{}>;
+  OTPInput: OtpInput;
   OTPResult: ResolverTypeWrapper<OtpResult>;
+  OTPValidationResult: ResolverTypeWrapper<OtpValidationResult>;
   PhoneNumber: ResolverTypeWrapper<PhoneNumber>;
   PhoneNumberInput: PhoneNumberInput;
   Query: ResolverTypeWrapper<{}>;
@@ -221,7 +246,9 @@ export type ResolversParentTypes = ResolversObject<{
   Int: Scalars['Int']['output'];
   Me: Me;
   Mutation: {};
+  OTPInput: OtpInput;
   OTPResult: OtpResult;
+  OTPValidationResult: OtpValidationResult;
   PhoneNumber: PhoneNumber;
   PhoneNumberInput: PhoneNumberInput;
   Query: {};
@@ -254,16 +281,28 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   authenticate?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'credential'>>;
   createUserDraft?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateUserDraftArgs, 'input'>>;
-  generatePhoneOTP?: Resolver<ResolversTypes['OTPResult'], ParentType, ContextType, RequireFields<MutationGeneratePhoneOtpArgs, 'phoneNumber'>>;
+  generatePhoneOTP?: Resolver<ResolversTypes['OTPResult'], ParentType, ContextType, RequireFields<MutationGeneratePhoneOtpArgs, 'otpInput'>>;
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationLogoutArgs>>;
   refreshToken?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationRefreshTokenArgs, 'refreshToken'>>;
   saveUserDraft?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSaveUserDraftArgs, 'draftId'>>;
-  validatePhoneOTP?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationValidatePhoneOtpArgs, 'apiId' | 'otp' | 'phoneNumber'>>;
+  updatePassword?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'password'>>;
+  validatePhoneOTP?: Resolver<ResolversTypes['OTPValidationResult'], ParentType, ContextType, RequireFields<MutationValidatePhoneOtpArgs, 'otp' | 'verificationToken'>>;
 }>;
 
 export type OtpResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['OTPResult'] = ResolversParentTypes['OTPResult']> = ResolversObject<{
-  apiId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<ResolversTypes['PhoneNumber'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  verificationToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type OtpValidationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['OTPValidationResult'] = ResolversParentTypes['OTPValidationResult']> = ResolversObject<{
+  accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  expiresInSec?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
+  userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  verified?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -287,6 +326,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Me?: MeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   OTPResult?: OtpResultResolvers<ContextType>;
+  OTPValidationResult?: OtpValidationResultResolvers<ContextType>;
   PhoneNumber?: PhoneNumberResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;

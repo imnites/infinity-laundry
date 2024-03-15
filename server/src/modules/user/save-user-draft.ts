@@ -1,29 +1,28 @@
 import { Context } from '~/types';
 import { MutationSaveUserDraftArgs, UserInput } from '~/generated-types';
 import { GraphQLError } from 'graphql';
-import { UUIDV4 } from 'sequelize';
+import { AbstractDataType } from 'sequelize';
 
 export const saveUserDraft = async (
   parent: { [key: string]: unknown } | null,
   args: MutationSaveUserDraftArgs,
   context: Context
 ): Promise<boolean> => {
-  const data = await context.redisClient.retrieveData<UserInput>(args.draftId);
+  const user = await context.keyCloakPublicClient.getMe();
 
-  if (data !== null) {
-    const isPhoneNumberVerified =
-      await context.sMSCountryClient.isPhoneNumberVerified(data.phoneNumber);
+  if ((user.allowedAction as string[]).includes('SAVE_DRAFT')) {
+    const data = await context.redisClient.retrieveData<UserInput>(
+      user.id as string
+    );
 
-    if (!isPhoneNumberVerified) {
-      throw new GraphQLError('Phone number not verified');
+    if (data === null) {
+      throw new GraphQLError('data expired, please try again');
     }
-
-    const uuid = UUIDV4();
 
     await context.keycloakClient.post({
       methodName: 'users',
       input: {
-        id: uuid.key,
+        id: user.id,
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
@@ -35,7 +34,7 @@ export const saveUserDraft = async (
     });
 
     await context.serviceClients.userService.createNewUser({
-      id: uuid,
+      id: user.id as AbstractDataType,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -46,5 +45,5 @@ export const saveUserDraft = async (
     return true;
   }
 
-  throw new GraphQLError('Data is expired, please try again');
+  throw new GraphQLError('unauthorized');
 };

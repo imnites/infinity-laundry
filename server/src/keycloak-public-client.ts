@@ -6,6 +6,7 @@ import {
   keycloakRootUrl
 } from './config';
 import { GraphQLError } from 'graphql';
+import { RedisClient } from './redis-client';
 
 const mapToTokenDetails = (data: {
   [key: string]: unknown;
@@ -36,16 +37,43 @@ export class KeycloakPublicClient {
 
   private readonly _authorization: string;
 
-  public constructor(authorization: string | undefined) {
+  private readonly _redisClient: RedisClient;
+
+  public constructor(
+    authorization: string | undefined,
+    redisClient: RedisClient
+  ) {
     this._rootUrl = keycloakRootUrl;
     this._realm = keycloakREALM;
     this._clientId = keycloakPublicClientId;
     this._authorization = authorization ?? '';
+    this._redisClient = redisClient;
+  }
+
+  public get tokenType(): string {
+    if (this._authorization.startsWith('Bearer ')) {
+      return 'Bearer';
+    }
+
+    if (this._authorization.startsWith('Basic ')) {
+      return 'Basic';
+    }
+
+    return '';
   }
 
   public get accessToken(): string {
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    return this._authorization.substring(7);
+    if (this._authorization.startsWith('Bearer ')) {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      return this._authorization.substring(7);
+    }
+
+    if (this._authorization.startsWith('Basic ')) {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      return this._authorization.substring(6);
+    }
+
+    return this._authorization;
   }
 
   public async requestToken({
@@ -97,7 +125,7 @@ export class KeycloakPublicClient {
   }
 
   public async getMe(): Promise<{ [key: string]: unknown }> {
-    if (this._authorization.startsWith('Bearer ')) {
+    if (this.tokenType === 'Bearer') {
       const url = `${this._rootUrl}/realms/${this._realm}/protocol/openid-connect/userinfo`;
 
       return axios
@@ -119,6 +147,20 @@ export class KeycloakPublicClient {
             });
           }
         );
+    }
+
+    if (this.tokenType === 'Basic') {
+      const user = await this._redisClient.retrieveData<{
+        userId: string;
+        allowedAction: string[];
+      }>(this.accessToken);
+
+      if (user !== null) {
+        return {
+          id: user.userId,
+          allowedAction: user.allowedAction
+        };
+      }
     }
 
     throw new GraphQLError('unauthorized');

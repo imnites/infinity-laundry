@@ -10,15 +10,16 @@ export type ModelDef = {
   options: ModelOptions;
 };
 
-export enum ModelKeys {
-  userInfo = 'userInfo',
-  resource = 'resource'
-}
+// export enum ModelKeys {
+//   userInfo = 'userInfo',
+//   resource = 'resource'
+// }
 
-export type ModelRef = typeof Resource | typeof UserInfo;
+// export type ModelRef = typeof Resource | typeof UserInfo;
 
 export type Models = {
-  [key in ModelKeys]: ModelRef;
+  userInfo: typeof UserInfo;
+  resource: typeof Resource;
 };
 
 export type Database = {

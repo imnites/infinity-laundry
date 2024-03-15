@@ -5,8 +5,9 @@ const typeDefs = `
     authenticate(credential: Credential!): AuthResult!
     refreshToken(refreshToken: String!): AuthResult!
     logout(refreshToken: String): Boolean!
-    generatePhoneOTP(phoneNumber: PhoneNumberInput!): OTPResult!
-    validatePhoneOTP(phoneNumber: PhoneNumberInput!, apiId: String!, otp: String!): Boolean!
+    generatePhoneOTP(otpInput: OTPInput!): OTPResult!
+    validatePhoneOTP(verificationToken: String!, otp: String!): OTPValidationResult!
+    updatePassword(password: String!): Boolean!
   }
 
   extend type Query {
@@ -14,7 +15,8 @@ const typeDefs = `
   }
 
   input Credential {
-    userName: String!
+    userName: String
+    phoneNumber: PhoneNumberInput
     password: String!
   }
 
@@ -31,9 +33,25 @@ const typeDefs = `
     phoneNumber: String!
   }
 
+  input OTPInput {
+    id: String
+    email: String
+    phoneNumber: PhoneNumberInput
+  }
+
   type OTPResult {
-    apiId: String!
+    id: String!
     success: Boolean!
+    verificationToken: String
+    phoneNumber: PhoneNumber!
+  }
+
+  type OTPValidationResult {
+    userId: String
+    phoneNumber: PhoneNumber
+    verified: Boolean
+    accessToken: String
+    expiresInSec: Int!
   }
 
   type PhoneNumber {

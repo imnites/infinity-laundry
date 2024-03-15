@@ -7,8 +7,8 @@ export const createUserDraft = async (
   args: MutationCreateUserDraftArgs,
   context: Context
 ): Promise<string> => {
-  const { key } = UUIDV4();
-  await context.redisClient.saveData(key, args.input);
+  const { key: id } = UUIDV4();
+  await context.redisClient.saveData(id, args.input);
 
-  return key;
+  return id;
 };

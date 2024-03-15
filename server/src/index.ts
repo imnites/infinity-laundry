@@ -42,7 +42,10 @@ startStandaloneServer(server, {
     const serviceClients = initServiceClients({ sequelize, models });
     const redisClient = new RedisClient();
     const sMSCountryClient = new SMSCountryClient(redisClient);
-    const keyCloakPublicClient = new KeycloakPublicClient(authorization);
+    const keyCloakPublicClient = new KeycloakPublicClient(
+      authorization,
+      redisClient
+    );
     const keyCloakClient = new KeycloakClient();
 
     return {

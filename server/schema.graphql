@@ -10,8 +10,9 @@ type Mutation {
   authenticate(credential: Credential!): AuthResult!
   refreshToken(refreshToken: String!): AuthResult!
   logout(refreshToken: String): Boolean!
-  generatePhoneOTP(phoneNumber: PhoneNumberInput!): OTPResult!
-  validatePhoneOTP(phoneNumber: PhoneNumberInput!, apiId: String!, otp: String!): Boolean!
+  generatePhoneOTP(otpInput: OTPInput!): OTPResult!
+  validatePhoneOTP(verificationToken: String!, otp: String!): OTPValidationResult!
+  updatePassword(password: String!): Boolean!
 }
 
 type Subscription {
@@ -19,7 +20,8 @@ type Subscription {
 }
 
 input Credential {
-  userName: String!
+  userName: String
+  phoneNumber: PhoneNumberInput
   password: String!
 }
 
@@ -36,9 +38,25 @@ input PhoneNumberInput {
   phoneNumber: String!
 }
 
+input OTPInput {
+  id: String
+  email: String
+  phoneNumber: PhoneNumberInput
+}
+
 type OTPResult {
-  apiId: String!
+  id: String!
   success: Boolean!
+  verificationToken: String
+  phoneNumber: PhoneNumber!
+}
+
+type OTPValidationResult {
+  userId: String
+  phoneNumber: PhoneNumber
+  verified: Boolean
+  accessToken: String
+  expiresInSec: Int!
 }
 
 type PhoneNumber {

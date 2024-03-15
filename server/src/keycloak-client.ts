@@ -131,23 +131,51 @@ export class KeycloakClient {
 
   public async post({
     methodName,
-    queryParam,
     input
   }: {
     methodName: string;
-    queryParam?: string;
     input: { [key: string]: unknown };
   }): Promise<{
     [key: string]: unknown;
   }> {
-    const url =
-      queryParam !== undefined
-        ? `${this._rootUrl}/admin/realms/${this._realm}/${methodName}/${queryParam}`
-        : `${this._rootUrl}/admin/realms/${this._realm}/${methodName}`;
+    const url = `${this._rootUrl}/admin/realms/${this._realm}/${methodName}`;
     const { accessToken } = await this.requestToken();
 
     return axios
       .post(url, input, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+      .then(({ data }: { data: { [key: string]: unknown } }) => data)
+      .catch(
+        ({
+          response
+        }: {
+          response: { data: { error: string; error_description: string } };
+        }) => {
+          throw new GraphQLError(response.data.error, {
+            extensions: { description: response.data.error_description }
+          });
+        }
+      );
+  }
+
+  public async put({
+    methodName,
+    input
+  }: {
+    methodName: string;
+    input: { [key: string]: unknown };
+  }): Promise<{
+    [key: string]: unknown;
+  }> {
+    const url = `${this._rootUrl}/admin/realms/${this._realm}/${methodName}`;
+    const { accessToken } = await this.requestToken();
+
+    return axios
+      .put(url, input, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`

@@ -10,9 +10,6 @@ import { RedisClient } from './redis-client';
 
 const OTP_EXPIRED_IN_SEC = 300;
 
-const getKey = (phoneNumber: PhoneNumber): string =>
-  `${phoneNumber.countryCode} ${phoneNumber.phoneNumber}`;
-
 export class SMSCountryClient {
   private readonly _smsCountryAuthKey: string;
 
@@ -40,46 +37,39 @@ export class SMSCountryClient {
     return `${otp}`;
   }
 
-  public async isPhoneNumberVerified(
-    phoneNumber: PhoneNumber
-  ): Promise<boolean> {
-    const key = getKey(phoneNumber);
-    const data = await this._redisClient.retrieveData<{ verified: boolean }>(
-      key
-    );
-
-    return data !== null && data.verified;
-  }
-
   public async validateOTP({
-    phoneNumber,
-    apiId: key,
+    verificationToken: key,
     otp
   }: {
-    phoneNumber: PhoneNumber;
-    apiId: string;
+    verificationToken: string;
     otp: string;
-  }): Promise<{ phoneNumber: PhoneNumber; verified: boolean }> {
+  }): Promise<{
+    phoneNumber: PhoneNumber | null;
+    userId: string | null;
+    verified: boolean;
+  }> {
     const data = await this._redisClient.retrieveData<{
       phoneNumber: PhoneNumber;
       otp: string;
+      userId: string;
     }>(key);
 
     if (data === null) {
       throw new GraphQLError('OTP Expired');
     }
 
-    const response = { phoneNumber, verified: false };
+    const response: {
+      phoneNumber: PhoneNumber | null;
+      userId: string | null;
+      verified: boolean;
+    } = { phoneNumber: null, userId: null, verified: false };
 
-    if (
-      data.otp === otp &&
-      data.phoneNumber.countryCode === phoneNumber.countryCode &&
-      data.phoneNumber.phoneNumber === phoneNumber.phoneNumber
-    ) {
+    if (data.otp === otp) {
       await this._redisClient.deleteKey(key);
-      await this._redisClient.saveData(getKey(phoneNumber), { verified: true });
 
       response.verified = true;
+      response.phoneNumber = data.phoneNumber;
+      response.userId = data.userId;
     }
 
     return response;
@@ -87,13 +77,16 @@ export class SMSCountryClient {
 
   public async sendOTP({
     phoneNumber,
-    SenderId
+    SenderId,
+    userId
   }: {
     phoneNumber: PhoneNumber;
+    userId: string;
     SenderId?: string;
   }): Promise<{
-    apiId: string;
+    id: string;
     success: boolean;
+    verificatonToken: string | null;
   }> {
     const otp = SMSCountryClient._generateOTP();
     const text = `User Admin login OTP is ${otp} - SMSCOU`;
@@ -104,19 +97,34 @@ export class SMSCountryClient {
       SenderId
     });
 
-    await this._redisClient.saveData(
-      apiId,
-      {
-        phoneNumber,
-        otp
-      },
-      OTP_EXPIRED_IN_SEC
-    );
-
-    return {
-      apiId,
-      success
+    const response: {
+      id: string;
+      success: boolean;
+      verificatonToken: string | null;
+    } = {
+      id: apiId,
+      success: success,
+      verificatonToken: null
     };
+
+    if (success) {
+      const verificatonToken = crypto.randomUUID().toString();
+
+      await this._redisClient.saveData(
+        verificatonToken,
+        {
+          phoneNumber,
+          otp,
+          apiId,
+          userId
+        },
+        OTP_EXPIRED_IN_SEC
+      );
+
+      response.verificatonToken = verificatonToken;
+    }
+
+    return response;
   }
 
   public async sendSMS({

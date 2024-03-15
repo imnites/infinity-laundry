@@ -1,7 +1,27 @@
 import { DataTypes, Model } from 'sequelize';
 import { ModelDef } from '../types';
+import { PhoneNumber } from '~/types';
 
-export class UserInfo extends Model {}
+export class UserInfo extends Model {
+  public get Id(): string {
+    return this.getDataValue('id') as string;
+  }
+
+  public get Email(): string {
+    return this.getDataValue('email') as string;
+  }
+
+  public get PhoneNumber(): PhoneNumber {
+    const phoneNumber = this.getDataValue('phoneNumber') as string;
+
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      countryCode: phoneNumber.split(' ')[0],
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      phoneNumber: phoneNumber.split(' ')[1]
+    };
+  }
+}
 
 export const UserInfoDef: ModelDef = {
   fields: {

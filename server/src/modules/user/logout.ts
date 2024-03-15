@@ -8,7 +8,7 @@ export const logout = async (
 ): Promise<boolean> => {
   await context.keyCloakPublicClient.revokeAccessToken();
 
-  if (args.refreshToken) {
+  if (args.refreshToken != null) {
     await context.keyCloakPublicClient.revokeRefreshToken(args.refreshToken);
   }
 

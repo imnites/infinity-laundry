@@ -6,6 +6,7 @@ import { getMe } from './get-me';
 import { logout } from './logout';
 import { refreshToken } from './refresh-token';
 import { validatePhoneOTP } from './validate-phone-otp';
+import { updatePassword } from './update-password';
 
 export default {
   Mutation: {
@@ -15,7 +16,8 @@ export default {
     refreshToken: refreshToken,
     logout: logout,
     generatePhoneOTP: generatePhoneOTP,
-    validatePhoneOTP: validatePhoneOTP
+    validatePhoneOTP: validatePhoneOTP,
+    updatePassword: updatePassword
   },
   Query: {
     me: getMe
