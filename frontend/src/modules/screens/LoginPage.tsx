@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
-import Button from '../components/common/Button';
-import ModalPopUp from '../components/common/ModalPopUp';
-import TextWithLine from '../components/common/TextWithLine';
-import ClickableTextButton from '../components/common/ClickableTextButton';
-import useAuthenticateUser from './hooks/useAuthenticateUser';
-import useLoginHandlers from './hooks/useLoginHandlers';
+import {
+  Button,
+  ModalPopUp,
+  TextWithLine,
+  ClickableTextButton,
+} from '../components/common/components';
+import {useAuthenticateUser, useLoginHandlers} from './hooks';
 
-interface LoginScreenProps {
+interface LoginPageProps {
   navigation: any;
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
+const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
   const {authenticateUser, loading} = useAuthenticateUser();
   const [credential, setCredential] = useState<{
     userName: string;
@@ -112,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default LoginPage;

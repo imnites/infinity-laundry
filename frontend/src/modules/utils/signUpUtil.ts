@@ -3,8 +3,6 @@ interface FormattedSignUpInputType {
   lastName: string;
   email: string;
   phoneNumber: string;
-  password: string;
-  confirmPassword: string;
 }
 
 export const formattedSignUpInput = (userDetails: FormattedSignUpInputType) => {
@@ -13,7 +11,6 @@ export const formattedSignUpInput = (userDetails: FormattedSignUpInputType) => {
     lastName: userDetails.lastName,
     email: userDetails.email,
     enabled: true,
-    password: userDetails.password,
     phoneNumber: {
       countryCode: '+91',
       phoneNumber: userDetails.phoneNumber,
