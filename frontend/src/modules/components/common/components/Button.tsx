@@ -9,7 +9,7 @@ import {
 interface ButtonPropsType {
   name: string;
   onPress: any;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const Button = ({name, onPress, loading}: ButtonPropsType) => {

@@ -56,7 +56,7 @@ const useLoginHandlers = ({
   ]);
 
   const onSignUp = useCallback(
-    () => navigation.navigate('Sign Up'),
+    () => navigation.navigate('SignUpPage1'),
     [navigation],
   );
 
