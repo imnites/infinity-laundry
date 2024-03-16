@@ -1,24 +1,19 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {
   Button,
   ModalPopUp,
   TextWithLine,
 } from '../../../components/common/components';
 import Icon from 'react-native-vector-icons/Entypo';
-import {useAuthenticateUser, useLoginHandlers} from './hooks';
+import {useStyles, useAuthenticateUser, useLoginHandlers} from './hooks';
 
 interface LoginPageProps {
   navigation: any;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
+  const styles = useStyles();
   const {authenticateUser, loading} = useAuthenticateUser();
 
   const {
@@ -68,19 +63,32 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
         onPress={onSubmit}
         loading={loading}
         disabled={loading}
-        classes={buttonStyles}
+        classes={{
+          button: styles.loginButton,
+          buttonText: styles.loginButtonText,
+        }}
       />
       <Button
         name="Forgot Password?"
         onPress={() => {
           navigation.navigate('ForgotPasswordPage');
         }}
-        classes={forgotPasswordStyles}
+        classes={{
+          button: styles.forgotButton,
+          buttonText: styles.forgotButtonText,
+        }}
       />
       <TextWithLine text="or" />
       <Text>
         <Text style={styles.noAccount}>Don't have an account? </Text>
-        <Button name="Sign up." onPress={onSignUp} classes={signUpStyles} />
+        <Button
+          name="Sign up."
+          onPress={onSignUp}
+          classes={{
+            button: styles.signUpButton,
+            buttonText: styles.signUpButtonText,
+          }}
+        />
       </Text>
       <ModalPopUp
         message="Invalid Credentials."
@@ -90,106 +98,5 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  noAccount: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '80%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 10,
-    padding: 10,
-  },
-  or: {
-    marginVertical: 10,
-  },
-  button: {
-    width: '80%',
-  },
-  container1: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: 'black',
-  },
-  text: {
-    marginHorizontal: 10,
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '80%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  inputText: {
-    flex: 1,
-    height: '100%',
-    paddingHorizontal: 10,
-  },
-  iconContainer: {
-    paddingHorizontal: 10,
-  },
-});
-
-const buttonStyles = StyleSheet.create({
-  button: {
-    width: '80%',
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-});
-
-const signUpStyles = StyleSheet.create({
-  button: {},
-  buttonText: {
-    color: 'blue',
-    textAlign: 'center',
-    textDecorationLine: 'underline',
-  },
-});
-
-const forgotPasswordStyles = StyleSheet.create({
-  button: {
-    alignSelf: 'flex-end',
-    paddingTop: 5,
-    paddingRight: 38,
-  },
-  buttonText: {
-    color: 'red',
-  },
-});
 
 export default LoginPage;

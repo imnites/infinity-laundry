@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {Text, View, TextInput, StyleSheet, Alert} from 'react-native';
+import {Text, View, TextInput, Alert} from 'react-native';
 import {Button, Title} from '../../../components/common/components';
 import {
   useSaveUserDraft,
   useUpdatePassword,
 } from '../../../components/common/hooks/users';
+import {useSignUpPage3Styles} from './hooks';
 
 interface SignUpPage3Props {
   navigation: any;
@@ -12,6 +13,7 @@ interface SignUpPage3Props {
 }
 
 const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
+  const styles = useSignUpPage3Styles();
   const {userId, accessToken} = route.params;
   const {saveUserDraft, loading: isSavingUserDraft} = useSaveUserDraft();
   const {updatePassword, loading: isUpdatingPassword} = useUpdatePassword();
@@ -29,9 +31,15 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
       }
 
       const headers = {authorization: `Basic ${accessToken}`};
-      const isCreated = await saveUserDraft({draftId: userId}, headers);
-      // Add update password logic here.
-      if (isCreated) {
+      const userAdded = await saveUserDraft({draftId: userId}, headers);
+      const passwordUpdate = await updatePassword(
+        {
+          password: formData.password,
+        },
+        headers,
+      );
+
+      if (userAdded && passwordUpdate) {
         Alert.alert(
           'Account Created',
           'Your account has been successfully created.',
@@ -39,7 +47,6 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
         );
       }
     } catch (error) {
-      console.error('Error creating user:', error);
       Alert.alert('Error', 'Failed to create account. Please try again.');
     }
   };
@@ -67,50 +74,15 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
       <Button
         name="Sign Up"
         onPress={handleSubmit}
-        loading={isSavingUserDraft}
-        disabled={isSavingUserDraft}
-        classes={buttonStyles}
+        loading={isSavingUserDraft || isUpdatingPassword}
+        disabled={isSavingUserDraft || isUpdatingPassword}
+        classes={{
+          button: styles.submitButton,
+          buttonText: styles.submitButtonText,
+        }}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-  error: {
-    color: 'red',
-    alignSelf: 'flex-start',
-  },
-});
-
-const buttonStyles = StyleSheet.create({
-  button: {
-    width: '100%',
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-});
 
 export default SignUpPage3;

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, TextInput, View, StyleSheet} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import {Button, Title} from '../../../components/common/components';
-import {useForgotPasswordPageHandlers} from './hooks';
+import {useStyles, useForgotPasswordPageHandlers} from './hooks';
 import {
   useGeneratePhoneOTP,
   useValidatePhoneOTP,
@@ -15,6 +15,7 @@ interface ForgotPasswordPageProps {
 const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
   navigation,
 }) => {
+  const styles = useStyles();
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
   const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
   const {updatePassword, loading: isUpdatingPassword} = useUpdatePassword();
@@ -47,7 +48,10 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
         name="Submit"
         onPress={handleSubmit}
         loading={isGeneratingOTP}
-        classes={buttonStyles}
+        classes={{
+          button: styles.submitButton,
+          buttonText: styles.submitButtonText,
+        }}
         disabled={isGeneratingOTP || values.isOtpSent}
       />
       {values.isOtpSent && (
@@ -69,7 +73,10 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
             onPress={handlePhoneVerification}
             loading={isOTPValidating}
             disabled={isOTPValidating || values.verified}
-            classes={buttonStyles}
+            classes={{
+              button: styles.verifyButton,
+              buttonText: styles.verifyButtonText,
+            }}
           />
         </>
       )}
@@ -101,48 +108,15 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
             onPress={handleUpdatePassword}
             loading={isUpdatingPassword}
             disabled={isUpdatingPassword}
-            classes={buttonStyles}
+            classes={{
+              button: styles.updatePasswordButton,
+              buttonText: styles.updatePasswordButtonText,
+            }}
           />
         </>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  error: {
-    color: 'red',
-    alignSelf: 'flex-start',
-  },
-});
-
-const buttonStyles = StyleSheet.create({
-  button: {
-    width: '100%',
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-});
 
 export default ForgotPasswordPage;

@@ -14,8 +14,8 @@ const isEmail = (text: string): boolean => {
 };
 
 const isPhoneNumber = (text: string): boolean => {
-  const phoneRegex = /^\d{10}$/; // Matches a 10-digit number
-  return phoneRegex.test(text.replace(/\D/g, '')); // Remove non-digit characters before testing
+  const phoneRegex = /^\d{10}$/;
+  return phoneRegex.test(text.replace(/\D/g, ''));
 };
 
 const useForgotPasswordPageHandlers = ({
@@ -123,7 +123,6 @@ const useForgotPasswordPageHandlers = ({
         },
         headers,
       );
-      console.log('Result', result);
       if (result) {
         Alert.alert(
           'Success!',

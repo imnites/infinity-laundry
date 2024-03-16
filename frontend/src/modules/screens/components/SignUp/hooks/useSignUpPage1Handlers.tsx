@@ -45,7 +45,7 @@ const validateForm = ({values, setErrors}: ValidateFormPropTypes) => {
   return hasErrors;
 };
 
-const useSignUpPageHandlers = ({
+const useSignUpPage1Handlers = ({
   navigation,
   createUserDraft,
 }: FormStatePropsType) => {
@@ -80,4 +80,4 @@ const useSignUpPageHandlers = ({
   return {values, errors, handleChange, handleSubmit};
 };
 
-export default useSignUpPageHandlers;
+export default useSignUpPage1Handlers;

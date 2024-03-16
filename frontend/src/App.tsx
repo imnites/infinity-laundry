@@ -1,54 +1,26 @@
 import React from 'react';
-import LoginPage from './modules/screens/components/Login/LoginPage';
-import HomeScreen from '../src/modules/screens/HomeScreen';
-import {ForgotPasswordPage} from '../src/modules/screens/components/ForgotPassword';
-import {
-  SignUpPage1,
-  SignUpPage2,
-  SignUpPage3,
-} from '../src/modules/screens/components/SignUp';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ApolloProvider} from '@apollo/client';
 import {client} from '../src/wrapper/client';
+import {useStackScreen} from './hooks';
 
 const Stack = createNativeStackNavigator();
 
 const App: React.FC = () => {
+  const screens = useStackScreen();
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="LoginPage">
-          <Stack.Screen
-            name="LoginPage"
-            component={LoginPage}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ForgotPasswordPage"
-            component={ForgotPasswordPage}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignUpPage1"
-            component={SignUpPage1}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignUpPage2"
-            component={SignUpPage2}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SignUpPage3"
-            component={SignUpPage3}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Home Page"
-            component={HomeScreen}
-            options={{headerShown: false}}
-          />
+          {screens.map(screen => (
+            <Stack.Screen
+              key={screen.id}
+              name={screen.name}
+              component={screen.component}
+              options={screen.options}
+            />
+          ))}
         </Stack.Navigator>
       </NavigationContainer>
     </ApolloProvider>

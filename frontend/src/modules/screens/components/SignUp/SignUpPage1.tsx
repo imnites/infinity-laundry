@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, TextInput, View, StyleSheet} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import Title from '../../../components/common/components/Title';
-import {useSignUpPageHandlers} from './hooks';
+import {useSignUpPage1Styles, useSignUpPage1Handlers} from './hooks';
 import Button from '../../../components/common/components/Button';
 import {useCreateUserDraft} from '../../../components/common/hooks/users';
 
@@ -10,8 +10,9 @@ interface SignUpPage1Props {
 }
 
 const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
+  const styles = useSignUpPage1Styles();
   const {createUserDraft, loading} = useCreateUserDraft();
-  const {values, errors, handleChange, handleSubmit} = useSignUpPageHandlers({
+  const {values, errors, handleChange, handleSubmit} = useSignUpPage1Handlers({
     navigation,
     createUserDraft,
   });
@@ -56,48 +57,13 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
         onPress={handleSubmit}
         loading={loading}
         disabled={loading}
-        classes={buttonStyles}
+        classes={{
+          button: styles.continueButton,
+          buttonText: styles.continueButtonText,
+        }}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#fff',
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  error: {
-    color: 'red',
-    alignSelf: 'flex-start',
-    marginBottom: 5,
-  },
-});
-
-const buttonStyles = StyleSheet.create({
-  button: {
-    width: '100%',
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-});
 
 export default SignUpPage1;
