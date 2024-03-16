@@ -51,6 +51,7 @@ const typeDefs = `
     verified: Boolean
     accessToken: String
     expiresInSec: Int!
+    tokenType: String!
   }
 
   type PhoneNumber {
@@ -61,8 +62,8 @@ const typeDefs = `
   type AuthResult {
     accessToken: String!
     expiresInSec: Int!
-    refreshToken: String!
-    refreshExpiresInSec: Int!
+    refreshToken: String
+    refreshExpiresInSec: Int
     tokenType: String!
   }
 

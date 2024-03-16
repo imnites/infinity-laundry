@@ -27,7 +27,8 @@ export const validatePhoneOTP = async (
     verified,
     userId,
     accessToken: null,
-    expiresInSec: 0
+    expiresInSec: 0,
+    tokenType: ''
   };
 
   if (verified && userId !== null) {
@@ -46,6 +47,7 @@ export const validatePhoneOTP = async (
 
     response.accessToken = token;
     response.expiresInSec = DEFAULT_ACCESS_EXPIRED_IN_SEC;
+    response.tokenType = 'Basic';
   }
 
   return response;
