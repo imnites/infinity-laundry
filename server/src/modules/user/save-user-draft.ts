@@ -3,6 +3,8 @@ import { MutationSaveUserDraftArgs, UserInput } from '~/generated-types';
 import { GraphQLError } from 'graphql';
 import { AbstractDataType } from 'sequelize';
 
+const DEFAULT_ACCESS_EXPIRED_IN_SEC = 300;
+
 export const saveUserDraft = async (
   parent: { [key: string]: unknown } | null,
   args: MutationSaveUserDraftArgs,
@@ -36,17 +38,21 @@ export const saveUserDraft = async (
       `users?email=${data.email}`
     )) as { id: string }[];
 
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    const id = users[0].id as unknown as AbstractDataType;
+    const [{ id }] = users;
 
     await context.serviceClients.userService.createNewUser({
-      id: id,
+      id: id as unknown as AbstractDataType,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       enabled: data.enabled,
       phoneNumber: data.phoneNumber
     });
+
+    await context.keyCloakPublicClient.updateUserForAccessToken(
+      id,
+      DEFAULT_ACCESS_EXPIRED_IN_SEC
+    );
 
     return true;
   }
