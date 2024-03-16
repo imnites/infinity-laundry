@@ -30,14 +30,12 @@ const useAuthenticateUser = () => {
   return {
     authenticateUser: async (credential: CredentialType) => {
       try {
-        console.log('credential', credential);
         const {data} = await authenticateUser({
           variables: {credential: credential},
         });
 
         return data;
       } catch (err) {
-        console.log(err);
         return {error: true};
       }
     },

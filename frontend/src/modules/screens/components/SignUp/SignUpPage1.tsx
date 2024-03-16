@@ -20,7 +20,6 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Title title="Sign Up" />
-      
       <TextInput
         style={styles.input}
         placeholder="First Name"

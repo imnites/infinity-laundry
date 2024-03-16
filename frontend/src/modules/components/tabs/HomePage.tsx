@@ -1,6 +1,6 @@
 import React from 'react';
-import {useTabs} from './hooks';
-import {Tabs} from '../components/common/components';
+import {useTabs} from '../../screens/hooks';
+import {Tabs} from '../common/components';
 
 const HomePage: React.FC = () => {
   const tabs = useTabs();

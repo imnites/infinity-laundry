@@ -5,7 +5,7 @@ import {
   SignUpPage2,
   SignUpPage3,
 } from '../modules/screens/components/SignUp';
-import HomePage from '../modules/screens/HomePage';
+import {MainPage} from '../modules/screens';
 
 interface StachScreenReturnType {
   id: number;
@@ -58,8 +58,8 @@ const useStackScreen = (): StachScreenReturnType[] => {
     },
     {
       id: 6,
-      name: 'HomePage',
-      component: HomePage,
+      name: 'MainPage',
+      component: MainPage,
       options: {
         headerShown: false,
       },
