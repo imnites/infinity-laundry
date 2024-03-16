@@ -11,7 +11,7 @@ const getUserName = async (
   context: Context,
   cred: Credential
 ): Promise<string> => {
-  if (cred.userName) {
+  if (cred.userName != null) {
     return cred.userName;
   }
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">InfinityLaundry</string>
+    <string name="secretKeys">InfinityLaundrySecureTokens</string>
 </resources>
