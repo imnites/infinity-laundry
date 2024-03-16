@@ -1,43 +1,26 @@
 import React from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import {TouchableOpacity, Text, ActivityIndicator} from 'react-native';
 
 interface ButtonPropsType {
   name: string;
   onPress: any;
   loading?: boolean;
+  classes?: any;
 }
 
-const Button = ({name, onPress, loading}: ButtonPropsType) => {
+const Button = ({name, onPress, loading, classes}: ButtonPropsType) => {
   return (
     <TouchableOpacity
-      style={styles.button}
+      style={classes.button}
       onPress={onPress}
       disabled={loading}>
       {loading ? (
         <ActivityIndicator color="white" />
       ) : (
-        <Text style={styles.buttonText}>{name}</Text>
+        <Text style={classes.buttonText}>{name}</Text>
       )}
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    width: '80%',
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
-});
 
 export default Button;

@@ -18,11 +18,31 @@ const App: React.FC = () => {
     <ApolloProvider client={client}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="LoginPage">
-          <Stack.Screen name="LoginPage" component={LoginPage} />
-          <Stack.Screen name="SignUpPage1" component={SignUpPage1} />
-          <Stack.Screen name="SignUpPage2" component={SignUpPage2} />
-          <Stack.Screen name="SignUpPage3" component={SignUpPage3} />
-          <Stack.Screen name="Home Page" component={HomeScreen} />
+          <Stack.Screen
+            name="LoginPage"
+            component={LoginPage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignUpPage1"
+            component={SignUpPage1}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignUpPage2"
+            component={SignUpPage2}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SignUpPage3"
+            component={SignUpPage3}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Home Page"
+            component={HomeScreen}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </ApolloProvider>
