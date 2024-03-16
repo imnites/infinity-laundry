@@ -166,6 +166,27 @@ export class KeycloakPublicClient {
     throw new GraphQLError('unauthorized');
   }
 
+  public async updateUserForAccessToken(
+    userId: string,
+    expiresInSec: number
+  ): Promise<void> {
+    if (this.tokenType === 'Basic') {
+      const user = await this._redisClient.retrieveData<{
+        userId: string;
+        allowedAction: string[];
+      }>(this.accessToken);
+
+      await this._redisClient.saveData(
+        this.accessToken,
+        {
+          ...user,
+          userId
+        },
+        expiresInSec
+      );
+    }
+  }
+
   public async revokeAccessToken(): Promise<{ [key: string]: unknown }> {
     const url = `${this._rootUrl}/realms/${this._realm}/protocol/openid-connect/revoke`;
 
