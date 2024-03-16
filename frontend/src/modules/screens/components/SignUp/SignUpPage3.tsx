@@ -16,7 +16,7 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
   const styles = useSignUpPage3Styles();
   const {userId, accessToken} = route.params;
   const {saveUserDraft, loading: isSavingUserDraft} = useSaveUserDraft();
-  const {updatePassword, loading: isUpdatingPassword} = useUpdatePassword();
+  const {updatePassword, loading: isResettingPassword} = useUpdatePassword();
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: '',
@@ -25,8 +25,16 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
 
   const handleSubmit = async () => {
     try {
+      if (formData.password.length < 8) {
+        setFormData({
+          ...formData,
+          error: 'Password must contain at least 8 characters.',
+        });
+        return;
+      }
+
       if (formData.password !== formData.confirmPassword) {
-        setFormData({...formData, error: "Passwords don't match"});
+        setFormData({...formData, error: 'Passwords do not match.'});
         return;
       }
 
@@ -53,7 +61,7 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <Title title="Sign Up" />
+      <Title title="Almost Done!" />
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -74,8 +82,8 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
       <Button
         name="Sign Up"
         onPress={handleSubmit}
-        loading={isSavingUserDraft || isUpdatingPassword}
-        disabled={isSavingUserDraft || isUpdatingPassword}
+        loading={isSavingUserDraft || isResettingPassword}
+        disabled={isSavingUserDraft || isResettingPassword}
         classes={{
           button: styles.submitButton,
           buttonText: styles.submitButtonText,

@@ -52,7 +52,7 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
           onPress={toggleShowPassword}
           style={styles.iconContainer}>
           <Icon
-            name={showPassword ? 'eye-with-line' : 'eye'}
+            name={showPassword ? 'eye' : 'eye-with-line'}
             size={20}
             color="#999"
           />

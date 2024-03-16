@@ -34,7 +34,10 @@ const useForgotPasswordPageHandlers = ({
     isOtpSent: false,
     otpToken: '',
     accessToken: '',
+    showPassword: false,
+    showConfirmPassword: false,
   });
+
   const onUserNameChange = useCallback(
     (text: string) =>
       setValues({
@@ -104,15 +107,18 @@ const useForgotPasswordPageHandlers = ({
     }
   };
 
-  const handleUpdatePassword = async () => {
+  const handleResetPassword = async () => {
     try {
-      if (values.password !== values.confirmPassword) {
-        setValues({...values, error: "Passwords don't match"});
+      if (values.password.length < 8) {
+        setValues({
+          ...values,
+          error: 'Password must contain at least 8 characters.',
+        });
         return;
       }
 
-      if (values.password.length < 8) {
-        setValues({...values, error: "Passwords don't match"});
+      if (values.password !== values.confirmPassword) {
+        setValues({...values, error: 'Passwords do not match.'});
         return;
       }
 
@@ -124,11 +130,9 @@ const useForgotPasswordPageHandlers = ({
         headers,
       );
       if (result) {
-        Alert.alert(
-          'Success!',
-          'Your password has been updated successfully.',
-          [{text: 'OK', onPress: () => navigation.navigate('LoginPage')}],
-        );
+        Alert.alert('Success!', 'Your Password Reset Successful.', [
+          {text: 'OK', onPress: () => navigation.navigate('LoginPage')},
+        ]);
       }
     } catch (error) {
       Alert.alert(
@@ -144,7 +148,7 @@ const useForgotPasswordPageHandlers = ({
     onUserNameChange,
     handleSubmit,
     handlePhoneVerification,
-    handleUpdatePassword,
+    handleResetPassword,
   };
 };
 

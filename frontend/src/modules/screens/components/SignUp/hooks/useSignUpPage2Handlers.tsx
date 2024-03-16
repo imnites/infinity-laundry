@@ -55,11 +55,16 @@ const useSignUpPage2Handlers = ({
         otp: otpValues.phoneOTP,
       });
       if (verified) {
-        Alert.alert('Success', 'OTP Verified Successfully');
+        Alert.alert('Success', 'OTP Verified Successfully.');
         navigation.navigate('SignUpPage3', {
           ...route.params,
           userId,
           accessToken,
+        });
+        setOtpValues({
+          phoneOTP: '',
+          isOtpSent: false,
+          otpToken: '',
         });
       } else {
         Alert.alert('Invalid OTP', 'Please enter a valid OTP.');

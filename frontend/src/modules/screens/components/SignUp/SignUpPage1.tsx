@@ -20,21 +20,21 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Title title="Sign Up" />
-      {errors.firstName && <Text style={styles.error}>{errors.firstName}</Text>}
+      
       <TextInput
         style={styles.input}
         placeholder="First Name"
         value={values.firstName}
         onChangeText={text => handleChange('firstName', text)}
       />
-      {errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
+      {errors.firstName && <Text style={styles.error}>{errors.firstName}</Text>}
       <TextInput
         style={styles.input}
         placeholder="Last Name"
         value={values.lastName}
         onChangeText={text => handleChange('lastName', text)}
       />
-      {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+      {errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -42,9 +42,7 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
         value={values.email}
         onChangeText={text => handleChange('email', text)}
       />
-      {errors.phoneNumber && (
-        <Text style={styles.error}>{errors.phoneNumber}</Text>
-      )}
+      {errors.email && <Text style={styles.error}>{errors.email}</Text>}
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
@@ -52,6 +50,9 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
         value={values.phoneNumber}
         onChangeText={text => handleChange('phoneNumber', text)}
       />
+      {errors.phoneNumber && (
+        <Text style={styles.error}>{errors.phoneNumber}</Text>
+      )}
       <Button
         name="Continue"
         onPress={handleSubmit}

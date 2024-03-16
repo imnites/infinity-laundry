@@ -23,6 +23,9 @@ const useSignUpPage2Styles = () => {
     error: {
       color: 'red',
       alignSelf: 'flex-start',
+      position: 'relative',
+      left: 5,
+      top: -10,
     },
     submitButton: {
       width: '100%',

@@ -15,10 +15,9 @@ interface ForgotPasswordPageProps {
 const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
   navigation,
 }) => {
-  const styles = useStyles();
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
   const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
-  const {updatePassword, loading: isUpdatingPassword} = useUpdatePassword();
+  const {updatePassword, loading: isResettingPassword} = useUpdatePassword();
 
   const {
     values,
@@ -26,7 +25,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
     onUserNameChange,
     handleSubmit,
     handlePhoneVerification,
-    handleUpdatePassword,
+    handleResetPassword,
   } = useForgotPasswordPageHandlers({
     generatePhoneOTP,
     validatePhoneOTP,
@@ -34,6 +33,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
     updatePassword,
   });
 
+  const styles = useStyles({values});
   return (
     <View style={styles.container}>
       <Title title="Forgot Password" />
@@ -45,7 +45,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
         editable={!values.isOtpSent}
       />
       <Button
-        name="Submit"
+        name={values.isOtpSent ? 'SENT OTP' : 'SEND OTP'}
         onPress={handleSubmit}
         loading={isGeneratingOTP}
         classes={{
@@ -57,7 +57,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
       {values.isOtpSent && (
         <>
           <TextInput
-            style={styles.input}
+            style={styles.phoneOTPInputStyles}
             value={values.phoneOTP}
             onChangeText={text =>
               setValues({
@@ -67,9 +67,10 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
             }
             placeholder="Enter OTP"
             editable={!values.verified}
+            maxLength={6}
           />
           <Button
-            name="VERIFY"
+            name={values.verified ? 'VERIFIED' : 'VERIFY'}
             onPress={handlePhoneVerification}
             loading={isOTPValidating}
             disabled={isOTPValidating || values.verified}
@@ -104,13 +105,13 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
             <Text style={styles.error}>{values.error}</Text>
           ) : null}
           <Button
-            name="Update Password"
-            onPress={handleUpdatePassword}
-            loading={isUpdatingPassword}
-            disabled={isUpdatingPassword}
+            name="Reset Password"
+            onPress={handleResetPassword}
+            loading={isResettingPassword}
+            disabled={isResettingPassword}
             classes={{
-              button: styles.updatePasswordButton,
-              buttonText: styles.updatePasswordButtonText,
+              button: styles.resetPasswordButton,
+              buttonText: styles.resetPasswordButtonText,
             }}
           />
         </>

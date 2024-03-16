@@ -1,6 +1,13 @@
 import {StyleSheet} from 'react-native';
 
-const useSignUpPage2Styles = () => {
+interface otpValuesPropsType {
+  isOtpSent: boolean;
+}
+interface SignUpPage2StylesPropsType {
+  otpValues: otpValuesPropsType;
+}
+
+const useSignUpPage2Styles = ({otpValues}: SignUpPage2StylesPropsType) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -9,36 +16,57 @@ const useSignUpPage2Styles = () => {
       paddingHorizontal: 20,
     },
     inputContainer: {
-      marginBottom: 20,
+      marginVertical: 10,
+      width: '50%',
+      position: 'relative',
+      top: 150,
+      alignSelf: 'center',
     },
     input: {
-      width: '100%',
+      width: '40%',
       height: 40,
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      paddingHorizontal: 10,
       marginBottom: 10,
+      alignSelf: 'center',
+      position: 'relative',
+      top: 25,
+      textAlign: 'center',
     },
     otpButton: {
-      width: '100%',
-      backgroundColor: 'blue',
+      width: '45%',
+      backgroundColor: otpValues.isOtpSent ? '#ccc' : 'blue',
       padding: 10,
       borderRadius: 5,
+      alignSelf: 'center',
+      position: 'relative',
+      top: 10,
     },
     otpButtonText: {
-      color: 'white',
+      color: otpValues.isOtpSent ? '#999' : 'white',
       textAlign: 'center',
     },
     verifyButton: {
-      width: '100%',
+      width: '35%',
       backgroundColor: 'blue',
       padding: 10,
       borderRadius: 5,
+      alignSelf: 'center',
+      position: 'relative',
+      top: 25,
     },
     verifyButtonText: {
       color: 'white',
       textAlign: 'center',
+    },
+    details: {},
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      position: 'relative',
+      top: 125,
+      alignSelf: 'center',
     },
   });
 };

@@ -59,6 +59,7 @@ const useLoginHandlers = ({
       onReset();
     } else {
       navigation.navigate('HomePage');
+      setCredential({userName: '', password: ''});
     }
   }, [
     authenticateUser,

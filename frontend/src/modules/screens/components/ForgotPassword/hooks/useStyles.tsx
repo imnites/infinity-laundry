@@ -1,6 +1,10 @@
 import {StyleSheet} from 'react-native';
 
-const useStyles = () => {
+interface StylePropsType {
+  values: any;
+}
+
+const useStyles = ({values}: StylePropsType) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -10,7 +14,7 @@ const useStyles = () => {
       backgroundColor: '#fff',
     },
     input: {
-      width: '100%',
+      width: '90%',
       height: 40,
       borderWidth: 1,
       borderColor: '#ccc',
@@ -21,34 +25,49 @@ const useStyles = () => {
     error: {
       color: 'red',
       alignSelf: 'flex-start',
+      position: 'relative',
+      left: 20,
+      top: -10,
     },
     submitButton: {
-      width: '100%',
-      backgroundColor: 'blue',
+      width: '90%',
+      backgroundColor: values.isOtpSent ? '#ccc' : 'blue',
       padding: 10,
       borderRadius: 5,
+      marginBottom: 30,
     },
     submitButtonText: {
-      color: 'white',
+      color: values.isOtpSent ? '#999' : 'white',
+      textAlign: 'center',
+    },
+    phoneOTPInputStyles: {
+      width: '25%',
+      height: 40,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 5,
+      marginBottom: 10,
+      paddingHorizontal: 10,
       textAlign: 'center',
     },
     verifyButton: {
-      width: '100%',
-      backgroundColor: 'blue',
+      width: '25%',
+      backgroundColor: values.verified ? '#ccc' : 'blue',
       padding: 10,
       borderRadius: 5,
+      marginBottom: 30,
     },
     verifyButtonText: {
-      color: 'white',
+      color: values.verified ? '#999' : 'white',
       textAlign: 'center',
     },
-    updatePasswordButton: {
-      width: '100%',
+    resetPasswordButton: {
+      width: '90%',
       backgroundColor: 'blue',
       padding: 10,
       borderRadius: 5,
     },
-    updatePasswordButtonText: {
+    resetPasswordButtonText: {
       color: 'white',
       textAlign: 'center',
     },

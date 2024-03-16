@@ -22,6 +22,8 @@ const useSignUpPage1Styles = () => {
       color: 'red',
       alignSelf: 'flex-start',
       marginBottom: 5,
+      position: 'relative',
+      top: -10,
     },
     continueButton: {
       width: '100%',

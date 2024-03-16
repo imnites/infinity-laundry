@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View, TextInput} from 'react-native';
-import {Button, Title} from '../../../components/common/components';
+import {Button} from '../../../components/common/components';
 import {
   useGeneratePhoneOTP,
   useValidatePhoneOTP,
@@ -13,7 +13,6 @@ interface SignUpPage2Props {
 }
 
 const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
-  const styles = useSignUpPage2Styles();
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
   const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
 
@@ -29,23 +28,23 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
     generatePhoneOTP,
     validatePhoneOTP,
   });
+  const styles = useSignUpPage2Styles({otpValues});
   return (
-    <View style={styles.container}>
-      <Title title="Sign Up" />
+    <>
+      <Text style={styles.title}>Verification</Text>
       <View style={styles.inputContainer}>
-        <Text>Phone Number: {formData.phoneNumber}</Text>
-        {!otpValues.isOtpSent ? (
-          <Button
-            name="SEND OTP"
-            onPress={handleGetOTP}
-            loading={isGeneratingOTP}
-            disabled={isGeneratingOTP}
-            classes={{
-              button: styles.otpButton,
-              buttonText: styles.otpButtonText,
-            }}
-          />
-        ) : (
+        <Text style={styles.details}>Phone Number: {formData.phoneNumber}</Text>
+        <Button
+          name={otpValues.isOtpSent ? 'SENT OTP' : 'SEND OTP'}
+          onPress={handleGetOTP}
+          loading={isGeneratingOTP}
+          disabled={isGeneratingOTP || otpValues.isOtpSent}
+          classes={{
+            button: styles.otpButton,
+            buttonText: styles.otpButtonText,
+          }}
+        />
+        {otpValues.isOtpSent && (
           <>
             <TextInput
               style={styles.input}
@@ -57,6 +56,7 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
                 })
               }
               placeholder="Enter OTP"
+              maxLength={6}
             />
             <Button
               name="VERIFY"
@@ -71,7 +71,7 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
           </>
         )}
       </View>
-    </View>
+    </>
   );
 };
 
