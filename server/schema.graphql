@@ -56,6 +56,7 @@ type OTPValidationResult {
   verified: Boolean
   accessToken: String
   expiresInSec: Int!
+  tokenType: String!
 }
 
 type PhoneNumber {
@@ -66,8 +67,8 @@ type PhoneNumber {
 type AuthResult {
   accessToken: String!
   expiresInSec: Int!
-  refreshToken: String!
-  refreshExpiresInSec: Int!
+  refreshToken: String
+  refreshExpiresInSec: Int
   tokenType: String!
 }
 

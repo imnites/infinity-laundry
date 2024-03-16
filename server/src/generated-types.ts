@@ -20,8 +20,8 @@ export type AuthResult = {
   __typename?: 'AuthResult';
   accessToken: Scalars['String']['output'];
   expiresInSec: Scalars['Int']['output'];
-  refreshExpiresInSec: Scalars['Int']['output'];
-  refreshToken: Scalars['String']['output'];
+  refreshExpiresInSec?: Maybe<Scalars['Int']['output']>;
+  refreshToken?: Maybe<Scalars['String']['output']>;
   tokenType: Scalars['String']['output'];
 };
 
@@ -114,6 +114,7 @@ export type OtpValidationResult = {
   accessToken?: Maybe<Scalars['String']['output']>;
   expiresInSec: Scalars['Int']['output'];
   phoneNumber?: Maybe<PhoneNumber>;
+  tokenType: Scalars['String']['output'];
   userId?: Maybe<Scalars['String']['output']>;
   verified?: Maybe<Scalars['Boolean']['output']>;
 };
@@ -259,8 +260,8 @@ export type ResolversParentTypes = ResolversObject<{
 export type AuthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']> = ResolversObject<{
   accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   expiresInSec?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  refreshExpiresInSec?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  refreshExpiresInSec?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  refreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   tokenType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -299,6 +300,7 @@ export type OtpValidationResultResolvers<ContextType = any, ParentType extends R
   accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   expiresInSec?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
+  tokenType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   verified?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
