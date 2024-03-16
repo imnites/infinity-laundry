@@ -1,20 +1,24 @@
-import {useCallback} from 'react';
+import {useCallback, useState} from 'react';
 
 interface LoginHandlerPropsType {
   authenticateUser: any;
-  credential: any;
-  setInvalidCredentials: any;
-  setCredential: any;
   navigation: any;
 }
 
 const useLoginHandlers = ({
   authenticateUser,
-  credential,
-  setInvalidCredentials,
-  setCredential,
   navigation,
 }: LoginHandlerPropsType) => {
+  const [credential, setCredential] = useState<{
+    userName: string;
+    password: string;
+  }>({
+    userName: '',
+    password: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isInvalidCredentials, setInvalidCredentials] = useState(false);
+
   const onUserNameChange = useCallback(
     (text: string) =>
       setCredential({
@@ -38,7 +42,16 @@ const useLoginHandlers = ({
     [setCredential],
   );
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onSubmit = useCallback(async () => {
+    if (!credential.userName || !credential.password) {
+      setInvalidCredentials(true);
+      return;
+    }
+
     const result = await authenticateUser(credential);
 
     if (result.error) {
@@ -60,7 +73,17 @@ const useLoginHandlers = ({
     [navigation],
   );
 
-  return {onUserNameChange, onPasswordChange, onSubmit, onSignUp};
+  return {
+    credential,
+    showPassword,
+    isInvalidCredentials,
+    setInvalidCredentials,
+    toggleShowPassword,
+    onUserNameChange,
+    onPasswordChange,
+    onSubmit,
+    onSignUp,
+  };
 };
 
 export default useLoginHandlers;

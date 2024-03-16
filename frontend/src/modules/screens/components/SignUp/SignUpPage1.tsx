@@ -51,7 +51,12 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
         value={values.phoneNumber}
         onChangeText={text => handleChange('phoneNumber', text)}
       />
-      <Button name="Continue" onPress={handleSubmit} loading={loading} />
+      <Button
+        name="Continue"
+        onPress={handleSubmit}
+        loading={loading}
+        classes={buttonStyles}
+      />
     </View>
   );
 };
@@ -62,6 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    backgroundColor: '#fff',
   },
   input: {
     width: '100%',
@@ -75,6 +81,21 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     alignSelf: 'flex-start',
+    marginBottom: 5,
+  },
+});
+
+const buttonStyles = StyleSheet.create({
+  button: {
+    width: '100%',
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 
