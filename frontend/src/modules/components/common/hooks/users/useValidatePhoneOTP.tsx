@@ -1,4 +1,7 @@
 import {gql, useMutation} from '@apollo/client';
+import {NativeModules} from 'react-native';
+
+const {SecureStorageModule} = NativeModules;
 
 const VALIDATE_PHONE_OTP = gql`
   mutation validatePhoneOTP($verificationToken: String!, $otp: String!) {
@@ -6,12 +9,22 @@ const VALIDATE_PHONE_OTP = gql`
       accessToken
       userId
       verified
+      tokenType
     }
   }
 `;
 
 const useValidatePhoneOTP = () => {
-  const [validatePhoneOTP, {loading}] = useMutation(VALIDATE_PHONE_OTP);
+  const [validatePhoneOTP, {loading}] = useMutation(VALIDATE_PHONE_OTP, {
+    onCompleted: async ({
+      validatePhoneOTP: {verified, accessToken, tokenType},
+    }) => {
+      if (verified) {
+        SecureStorageModule.setValue('access-token', accessToken);
+        SecureStorageModule.setValue('token-type', tokenType);
+      }
+    },
+  });
 
   return {
     validatePhoneOTP: async (input: any) => {
