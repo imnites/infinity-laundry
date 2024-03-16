@@ -14,7 +14,7 @@ interface SignUpPage3Props {
 const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
   const {userId, accessToken} = route.params;
   const {saveUserDraft, loading: isSavingUserDraft} = useSaveUserDraft();
-  const {updatePassword, isUpdatingPassword} = useUpdatePassword();
+  const {updatePassword, loading: isUpdatingPassword} = useUpdatePassword();
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: '',
@@ -68,6 +68,8 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
         name="Sign Up"
         onPress={handleSubmit}
         loading={isSavingUserDraft}
+        disabled={isSavingUserDraft}
+        classes={buttonStyles}
       />
     </View>
   );
@@ -95,6 +97,19 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     alignSelf: 'flex-start',
+  },
+});
+
+const buttonStyles = StyleSheet.create({
+  button: {
+    width: '100%',
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

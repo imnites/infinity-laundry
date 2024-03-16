@@ -14,10 +14,7 @@ interface SignUpPage2Props {
 const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
   const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
-  const {
-    formData: {phoneNumber},
-    token,
-  } = route.params;
+  const {formData, token} = route.params;
   const [otpValues, setOtpValues] = useState({
     phoneOTP: '',
     isOtpSent: false,
@@ -26,7 +23,11 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
 
   const handleGetOTP = async () => {
     try {
-      const {success: isOTPSent, verificationToken} = await generatePhoneOTP({
+      const {
+        success: isOTPSent,
+        verificationToken,
+        phoneNumber: {phoneNumber},
+      } = await generatePhoneOTP({
         otpInput: {
           id: token,
         },
@@ -40,7 +41,10 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
         Alert.alert('OTP Sent', `An OTP has been sent to ${phoneNumber}`);
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to send OTP. Please try again.');
+      Alert.alert(
+        'Number Not Found',
+        'Invalid phone number. Please check and try again.',
+      );
     }
   };
 
@@ -61,7 +65,10 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
         Alert.alert('Invalid OTP', 'Please enter a valid OTP.');
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to verify OTP. Please try again.');
+      Alert.alert(
+        'Number Not Found',
+        'The provided phone number does not exist. Please check the number and try again.',
+      );
     }
   };
 
@@ -69,12 +76,14 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
     <View style={styles.container}>
       <Title title="Sign Up" />
       <View style={styles.inputContainer}>
-        <Text>Phone Number: {phoneNumber}</Text>
+        <Text>Phone Number: {formData.phoneNumber}</Text>
         {!otpValues.isOtpSent ? (
           <Button
             name="SEND OTP"
             onPress={handleGetOTP}
             loading={isGeneratingOTP}
+            disabled={isGeneratingOTP}
+            classes={buttonStyles}
           />
         ) : (
           <>
@@ -93,6 +102,8 @@ const SignUpPage2: React.FC<SignUpPage2Props> = ({navigation, route}) => {
               name="VERIFY"
               onPress={handlePhoneVerification}
               loading={isOTPValidating}
+              disabled={isOTPValidating}
+              classes={buttonStyles}
             />
           </>
         )}
@@ -119,6 +130,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
+  },
+});
+
+const buttonStyles = StyleSheet.create({
+  button: {
+    width: '100%',
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 });
 

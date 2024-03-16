@@ -55,6 +55,7 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
         name="Continue"
         onPress={handleSubmit}
         loading={loading}
+        disabled={loading}
         classes={buttonStyles}
       />
     </View>

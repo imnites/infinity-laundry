@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginPage from './modules/screens/components/Login/LoginPage';
 import HomeScreen from '../src/modules/screens/HomeScreen';
+import {ForgotPasswordPage} from '../src/modules/screens/components/ForgotPassword';
 import {
   SignUpPage1,
   SignUpPage2,
@@ -21,6 +22,11 @@ const App: React.FC = () => {
           <Stack.Screen
             name="LoginPage"
             component={LoginPage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ForgotPasswordPage"
+            component={ForgotPasswordPage}
             options={{headerShown: false}}
           />
           <Stack.Screen

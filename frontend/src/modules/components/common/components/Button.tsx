@@ -6,14 +6,21 @@ interface ButtonPropsType {
   onPress: any;
   loading?: boolean;
   classes?: any;
+  disabled?: boolean;
 }
 
-const Button = ({name, onPress, loading, classes}: ButtonPropsType) => {
+const Button = ({
+  name,
+  onPress,
+  loading,
+  classes,
+  disabled,
+}: ButtonPropsType) => {
   return (
     <TouchableOpacity
       style={classes.button}
       onPress={onPress}
-      disabled={loading}>
+      disabled={disabled}>
       {loading ? (
         <ActivityIndicator color="white" />
       ) : (

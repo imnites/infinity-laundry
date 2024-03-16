@@ -67,11 +67,14 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
         name="Login"
         onPress={onSubmit}
         loading={loading}
+        disabled={loading}
         classes={buttonStyles}
       />
       <Button
         name="Forgot Password?"
-        onPress={onSignUp}
+        onPress={() => {
+          navigation.navigate('ForgotPasswordPage');
+        }}
         classes={forgotPasswordStyles}
       />
       <TextWithLine text="or" />
