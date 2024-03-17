@@ -1,9 +1,9 @@
 import LoginPage from '../modules/screens/components/Login/LoginPage';
 import {ForgotPasswordPage} from '../modules/screens/components/ForgotPassword';
 import {
-  SignUpPage1,
-  SignUpPage2,
-  SignUpPage3,
+  PersonalDetails,
+  PhoneVerification,
+  ResetPassword,
 } from '../modules/screens/components/SignUp';
 import {MainPage} from '../modules/screens';
 
@@ -19,7 +19,7 @@ const useStackScreen = (): StachScreenReturnType[] => {
     {
       id: 1,
       name: 'LoginPage',
-      component: SignUpPage2,
+      component: LoginPage,
       options: {
         headerShown: false,
       },
@@ -34,24 +34,24 @@ const useStackScreen = (): StachScreenReturnType[] => {
     },
     {
       id: 3,
-      name: 'SignUpPage1',
-      component: SignUpPage1,
+      name: 'PersonalDetails',
+      component: PersonalDetails,
       options: {
         headerShown: false,
       },
     },
     {
       id: 4,
-      name: 'SignUpPage2',
-      component: SignUpPage2,
+      name: 'PhoneVerification',
+      component: PhoneVerification,
       options: {
         headerShown: false,
       },
     },
     {
       id: 5,
-      name: 'SignUpPage3',
-      component: SignUpPage3,
+      name: 'ResetPassword',
+      component: ResetPassword,
       options: {
         headerShown: false,
       },

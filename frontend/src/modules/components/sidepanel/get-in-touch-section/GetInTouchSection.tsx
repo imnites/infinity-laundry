@@ -6,14 +6,6 @@ const GetInTouchSection: React.FC = () => (
   <>
     <Text style={styles.sectionTitle}>Get in Touch</Text>
     <TouchableOpacity style={styles.item} onPress={() => {}}>
-      <Icon name="chatbubble-outline" size={24} color="black" />
-      <Text style={styles.itemText}>Live Chat</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.item} onPress={() => {}}>
-      <Icon name="bug-outline" size={24} color="black" />
-      <Text style={styles.itemText}>Report a Fault</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.item} onPress={() => {}}>
       <Icon name="document-text-outline" size={24} color="black" />
       <Text style={styles.itemText}>Terms & Conditions</Text>
     </TouchableOpacity>

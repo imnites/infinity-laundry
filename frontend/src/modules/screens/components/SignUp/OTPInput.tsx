@@ -7,9 +7,15 @@ interface TextFieldProps {
   onChangeText?: (value: string) => void;
   value: string | undefined;
   focus: boolean;
+  editable: boolean;
 }
 
-const TextField: React.FC<TextFieldProps> = ({value, onChangeText, focus}) => {
+const TextField: React.FC<TextFieldProps> = ({
+  value,
+  onChangeText,
+  focus,
+  editable,
+}) => {
   const ref = React.createRef<TextInput>();
 
   React.useEffect(() => {
@@ -24,16 +30,22 @@ const TextField: React.FC<TextFieldProps> = ({value, onChangeText, focus}) => {
       onChangeText={onChangeText}
       value={value}
       ref={ref}
+      editable={editable}
     />
   );
 };
 
 interface OTPInputProps {
   otpLength: number;
-  onOTPChange?: (value: string) => void;
+  onOTPChange: (value: string) => void;
+  editable: boolean;
 }
 
-const OTPInput: React.FC<OTPInputProps> = ({otpLength, onOTPChange}) => {
+const OTPInput: React.FC<OTPInputProps> = ({
+  otpLength,
+  onOTPChange,
+  editable,
+}) => {
   const [otp, setOtp] = useState(
     Array(otpLength)
       .fill('')
@@ -66,6 +78,7 @@ const OTPInput: React.FC<OTPInputProps> = ({otpLength, onOTPChange}) => {
           value={val}
           onChangeText={onChangeText(index)}
           focus={focus}
+          editable={editable}
         />
       ))}
     </View>

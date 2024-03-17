@@ -1,5 +1,4 @@
-export {default as useSignUpPage1Styles} from './useSignUpPage1Styles';
-export {default as useSignUpPage2Styles} from './useSignUpPage2Styles';
-export {default as useSignUpPage3Styles} from './useSignUpPage3Styles';
-export {default as useSignUpPage1Handlers} from './useSignUpPage1Handlers';
-export {default as useSignUpPage2Handlers} from './useSignUpPage2Handlers';
+export {default as usePersonalDetailsHandlers} from './usePersonalDetailsHandlers';
+export {default as usePhoneVerificationHandlers} from './usePhoneVerificationHandlers';
+export {default as usePersonalDetailsStyles} from './usePersonalDetailsStyles';
+export {default as useResetPasswordStyles} from './useResetPasswordStyles';

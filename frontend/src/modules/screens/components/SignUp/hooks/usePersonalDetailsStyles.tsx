@@ -1,15 +1,13 @@
 import {StyleSheet} from 'react-native';
 
-const useSignUpPage2Styles = () => {
+const usePersonalDetailsStyles = () => {
   return StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: 20,
-    },
-    inputContainer: {
-      marginBottom: 20,
+      backgroundColor: '#fff',
     },
     input: {
       width: '100%',
@@ -17,27 +15,28 @@ const useSignUpPage2Styles = () => {
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      paddingHorizontal: 10,
       marginBottom: 10,
+      paddingHorizontal: 10,
     },
     error: {
       color: 'red',
       alignSelf: 'flex-start',
+      marginBottom: 5,
       position: 'relative',
-      left: 5,
       top: -10,
     },
-    submitButton: {
+    continueButton: {
       width: '100%',
       backgroundColor: 'blue',
       padding: 10,
       borderRadius: 5,
+      marginTop: 10,
     },
-    submitButtonText: {
+    continueButtonText: {
       color: 'white',
       textAlign: 'center',
     },
   });
 };
 
-export default useSignUpPage2Styles;
+export default usePersonalDetailsStyles;
