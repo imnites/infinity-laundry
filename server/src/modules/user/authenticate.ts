@@ -6,6 +6,7 @@ import {
 } from '~/generated-types';
 import { isNullOrUndefined } from '~/utils';
 import { GraphQLError } from 'graphql';
+import { mapToMe } from './get-me';
 
 const getUserName = async (
   context: Context,
@@ -38,18 +39,27 @@ export const authenticate = async (
   const userName = await getUserName(context, args.credential);
 
   if (userName) {
-    const response = await context.keyCloakPublicClient.requestToken({
-      username: userName,
-      password: args.credential.password
-    });
+    try {
+      const response = await context.keyCloakPublicClient.requestToken({
+        username: userName,
+        password: args.credential.password
+      });
 
-    return {
-      accessToken: response.accessToken,
-      expiresInSec: response.expiresInSec,
-      refreshExpiresInSec: response.refreshTokenExpiresInSec,
-      refreshToken: response.refreshToken,
-      tokenType: response.tokenType
-    };
+      context.keyCloakPublicClient.authorization = `${response.tokenType} ${response.accessToken}`;
+
+      const me = await context.keyCloakPublicClient.getMe();
+
+      return {
+        accessToken: response.accessToken,
+        expiresInSec: response.expiresInSec,
+        refreshExpiresInSec: response.refreshTokenExpiresInSec,
+        refreshToken: response.refreshToken,
+        tokenType: response.tokenType,
+        me: mapToMe(me)
+      };
+    } catch (ex) {
+      throw new GraphQLError('Invalid Credentials!');
+    }
   }
 
   throw new GraphQLError('User not found');

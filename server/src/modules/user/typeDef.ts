@@ -65,6 +65,7 @@ const typeDefs = `
     refreshToken: String
     refreshExpiresInSec: Int
     tokenType: String!
+    me: Me!
   }
 
   type Me {

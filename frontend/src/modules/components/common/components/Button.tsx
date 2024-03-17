@@ -18,13 +18,13 @@ const Button = ({
 }: ButtonPropsType) => {
   return (
     <TouchableOpacity
-      style={classes.button}
+      style={classes?.button}
       onPress={onPress}
       disabled={disabled}>
       {loading ? (
         <ActivityIndicator color="white" />
       ) : (
-        <Text style={classes.buttonText}>{name}</Text>
+        <Text style={classes?.buttonText}>{name}</Text>
       )}
     </TouchableOpacity>
   );

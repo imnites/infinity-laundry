@@ -1,5 +1,6 @@
 import {gql, useMutation} from '@apollo/client';
 import {NativeModules} from 'react-native';
+import {useMeContext} from '../../../../../wrapper/Me';
 
 const {SecureStorageModule} = NativeModules;
 
@@ -9,6 +10,17 @@ const Authenticate_User = gql`
       accessToken
       refreshToken
       tokenType
+      me {
+        id
+        email
+        email
+        phoneNumber {
+          countryCode
+          phoneNumber
+        }
+        lastName
+        firstName
+      }
     }
   }
 `;
@@ -19,11 +31,13 @@ interface CredentialType {
 }
 
 const useAuthenticateUser = () => {
+  const {setUser} = useMeContext();
   const [authenticateUser, {loading, error}] = useMutation(Authenticate_User, {
     onCompleted: async ({authenticate}) => {
       SecureStorageModule.setValue('access-token', authenticate.accessToken);
       SecureStorageModule.setValue('refresh-token', authenticate.refreshToken);
       SecureStorageModule.setValue('token-type', authenticate.refreshToken);
+      setUser && setUser(authenticate.me);
     },
   });
 

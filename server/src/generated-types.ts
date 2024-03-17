@@ -20,6 +20,7 @@ export type AuthResult = {
   __typename?: 'AuthResult';
   accessToken: Scalars['String']['output'];
   expiresInSec: Scalars['Int']['output'];
+  me: Me;
   refreshExpiresInSec?: Maybe<Scalars['Int']['output']>;
   refreshToken?: Maybe<Scalars['String']['output']>;
   tokenType: Scalars['String']['output'];
@@ -260,6 +261,7 @@ export type ResolversParentTypes = ResolversObject<{
 export type AuthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']> = ResolversObject<{
   accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   expiresInSec?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
   refreshExpiresInSec?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   refreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   tokenType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

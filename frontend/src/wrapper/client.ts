@@ -15,9 +15,6 @@ const authLink = setContext(async (_, {headers}) => {
   const accessToken = await SecureStorageModule.getValue('access-token');
   const tokenType = await SecureStorageModule.getValue('token-type');
 
-  console.log(SecureStorageModule.getValue);
-  console.log(accessToken);
-
   return {
     headers: headers
       ? {

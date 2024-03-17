@@ -7,6 +7,7 @@ import {
 } from '../../../components/common/components';
 import Icon from 'react-native-vector-icons/Entypo';
 import {useStyles, useAuthenticateUser, useLoginHandlers} from './hooks';
+import {useMeContext} from '../../../../wrapper/Me';
 
 interface LoginPageProps {
   navigation: any;
@@ -15,6 +16,9 @@ interface LoginPageProps {
 const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
   const styles = useStyles();
   const {authenticateUser, loading} = useAuthenticateUser();
+  const {user} = useMeContext();
+
+  console.log(user);
 
   const {
     credential,

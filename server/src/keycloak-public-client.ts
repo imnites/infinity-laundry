@@ -35,7 +35,7 @@ export class KeycloakPublicClient {
 
   private readonly _clientId: string;
 
-  private readonly _authorization: string;
+  private _authorization: string;
 
   private readonly _redisClient: RedisClient;
 
@@ -74,6 +74,10 @@ export class KeycloakPublicClient {
     }
 
     return this._authorization;
+  }
+
+  public set authorization(authorization: string) {
+    this._authorization = authorization;
   }
 
   public async requestToken({
