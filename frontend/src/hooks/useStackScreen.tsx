@@ -19,7 +19,7 @@ const useStackScreen = (): StachScreenReturnType[] => {
     {
       id: 1,
       name: 'LoginPage',
-      component: SignUpPage2,
+      component: LoginPage,
       options: {
         headerShown: false,
       },
