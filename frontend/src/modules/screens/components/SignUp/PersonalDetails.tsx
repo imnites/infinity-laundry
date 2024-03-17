@@ -1,25 +1,26 @@
 import React from 'react';
 import {Text, TextInput, View} from 'react-native';
 import Title from '../../../components/common/components/Title';
-import {useSignUpPage1Styles, useSignUpPage1Handlers} from './hooks';
+import {usePersonalDetailsStyles, usePersonalDetailsHandlers} from './hooks';
 import Button from '../../../components/common/components/Button';
 import {useCreateUserDraft} from '../../../components/common/hooks/users';
 
-interface SignUpPage1Props {
+interface PersonalDetailsProps {
   navigation: any;
 }
 
-const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
-  const styles = useSignUpPage1Styles();
+const PersonalDetails: React.FC<PersonalDetailsProps> = ({navigation}) => {
+  const styles = usePersonalDetailsStyles();
   const {createUserDraft, loading} = useCreateUserDraft();
-  const {values, errors, handleChange, handleSubmit} = useSignUpPage1Handlers({
-    navigation,
-    createUserDraft,
-  });
+  const {values, errors, handleChange, handleSubmit} =
+    usePersonalDetailsHandlers({
+      navigation,
+      createUserDraft,
+    });
 
   return (
     <View style={styles.container}>
-      <Title title="Sign Up" />
+      <Title title="Personal Details" />
       <TextInput
         style={styles.input}
         placeholder="First Name"
@@ -66,4 +67,4 @@ const SignUpPage1: React.FC<SignUpPage1Props> = ({navigation}) => {
   );
 };
 
-export default SignUpPage1;
+export default PersonalDetails;

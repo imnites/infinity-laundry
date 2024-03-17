@@ -1,13 +1,15 @@
 import {StyleSheet} from 'react-native';
 
-const useSignUpPage1Styles = () => {
+const useResetPasswordStyles = () => {
   return StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: 20,
-      backgroundColor: '#fff',
+    },
+    inputContainer: {
+      marginBottom: 20,
     },
     input: {
       width: '100%',
@@ -15,28 +17,27 @@ const useSignUpPage1Styles = () => {
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      marginBottom: 10,
       paddingHorizontal: 10,
+      marginBottom: 10,
     },
     error: {
       color: 'red',
       alignSelf: 'flex-start',
-      marginBottom: 5,
       position: 'relative',
+      left: 5,
       top: -10,
     },
-    continueButton: {
+    submitButton: {
       width: '100%',
       backgroundColor: 'blue',
       padding: 10,
       borderRadius: 5,
-      marginTop: 10,
     },
-    continueButtonText: {
+    submitButtonText: {
       color: 'white',
       textAlign: 'center',
     },
   });
 };
 
-export default useSignUpPage1Styles;
+export default useResetPasswordStyles;

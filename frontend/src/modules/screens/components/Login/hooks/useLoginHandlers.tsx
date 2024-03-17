@@ -70,7 +70,7 @@ const useLoginHandlers = ({
   ]);
 
   const onSignUp = useCallback(
-    () => navigation.navigate('SignUpPage1'),
+    () => navigation.navigate('PersonalDetails'),
     [navigation],
   );
 

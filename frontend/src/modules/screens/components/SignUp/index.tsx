@@ -1,3 +1,3 @@
-export {default as SignUpPage1} from './SignUpPage1';
-export {default as SignUpPage2} from './SignUpPage2';
-export {default as SignUpPage3} from './SignUpPage3';
+export {default as PersonalDetails} from './PersonalDetails';
+export {default as PhoneVerification} from './PhoneVerification';
+export {default as ResetPassword} from './ResetPassword';

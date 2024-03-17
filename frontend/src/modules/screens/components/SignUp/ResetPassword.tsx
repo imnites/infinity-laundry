@@ -5,15 +5,15 @@ import {
   useSaveUserDraft,
   useUpdatePassword,
 } from '../../../components/common/hooks/users';
-import {useSignUpPage3Styles} from './hooks';
+import {useResetPasswordStyles} from './hooks';
 
-interface SignUpPage3Props {
+interface ResetPasswordProps {
   navigation: any;
   route: any;
 }
 
-const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
-  const styles = useSignUpPage3Styles();
+const ResetPassword: React.FC<ResetPasswordProps> = ({navigation, route}) => {
+  const styles = useResetPasswordStyles();
   const {userId, accessToken} = route.params;
   const {saveUserDraft, loading: isSavingUserDraft} = useSaveUserDraft();
   const {updatePassword, loading: isResettingPassword} = useUpdatePassword();
@@ -93,4 +93,4 @@ const SignUpPage3: React.FC<SignUpPage3Props> = ({navigation, route}) => {
   );
 };
 
-export default SignUpPage3;
+export default ResetPassword;

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icons from 'react-native-vector-icons/FontAwesome';
 
 const HomeSection: React.FC = () => (
   <>
@@ -10,15 +11,11 @@ const HomeSection: React.FC = () => (
       <Text style={styles.itemText}>Home</Text>
     </TouchableOpacity>
     <TouchableOpacity style={styles.item} onPress={() => {}}>
-      <Icon name="add-circle-outline" size={24} color="black" />
-      <Text style={styles.itemText}>Add Funds</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.item} onPress={() => {}}>
-      <Icon name="washing-machine-outline" size={24} color="black" />
+      <Icon name="cog" size={24} color="black" />
       <Text style={styles.itemText}>Use Machine</Text>
     </TouchableOpacity>
     <TouchableOpacity style={styles.item} onPress={() => {}}>
-      <Icon name="md-information-circle-outline" size={24} color="black" />
+      <Icons name="signal" size={24} color="black" />
       <Text style={styles.itemText}>Wash/Dry Status</Text>
     </TouchableOpacity>
   </>

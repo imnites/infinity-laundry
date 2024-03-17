@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {formattedSignUpInput} from '../../../../utils/signUpUtil';
+import {useGeneratePhoneOTP} from '../../../../components/common/hooks/users';
 
 interface FormStatePropsType {
   navigation: any;
@@ -45,10 +46,11 @@ const validateForm = ({values, setErrors}: ValidateFormPropTypes) => {
   return hasErrors;
 };
 
-const useSignUpPage1Handlers = ({
+const usePersonalDetailsHandlers = ({
   navigation,
   createUserDraft,
 }: FormStatePropsType) => {
+  const {generatePhoneOTP} = useGeneratePhoneOTP();
   const [values, setValues] = useState({
     firstName: '',
     lastName: '',
@@ -69,7 +71,12 @@ const useSignUpPage1Handlers = ({
       const token = await createUserDraft({
         input: formattedSignUpInput(values),
       });
-      navigation.navigate('SignUpPage2', {formData: values, token});
+      await generatePhoneOTP({
+        otpInput: {
+          id: token,
+        },
+      });
+      navigation.navigate('PhoneVerification', {formData: values, token});
     }
   };
 
@@ -80,4 +87,4 @@ const useSignUpPage1Handlers = ({
   return {values, errors, handleChange, handleSubmit};
 };
 
-export default useSignUpPage1Handlers;
+export default usePersonalDetailsHandlers;
