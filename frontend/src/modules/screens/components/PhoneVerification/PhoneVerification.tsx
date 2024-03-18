@@ -47,7 +47,7 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
         <View style={styles.content}>
           <View style={styles.numberInfoContainer}>
             <Text style={styles.numberInfoMessage}>
-              {getVerificationMessage(route.params.otpInput)}
+              {getVerificationMessage(route.params.contact)}
             </Text>
           </View>
           <View style={styles.otpInputContainer}>

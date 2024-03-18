@@ -8,12 +8,12 @@ import {getOTPInput, isValidEmail} from '../../../../utils/signUpUtil';
 
 const DEFAULT_RESEND_TIME_IN_SEC = 30;
 
-const getOTPSentAlertMessage = (otpInput: any) => {
-  if (isValidEmail(otpInput)) {
+const getOTPSentAlertMessage = (contact: any) => {
+  if (isValidEmail(contact)) {
     return 'Verification code has been sent to linked mobile number.';
   }
 
-  return `An OTP has been sent to ********${otpInput.toString().slice(-2)}`;
+  return `An OTP has been sent to ********${contact.toString().slice(-2)}`;
 };
 
 interface PhoneVerificationHandlersType {
@@ -25,14 +25,14 @@ const usePhoneVerificationHandlers = ({
   route,
   navigation,
 }: PhoneVerificationHandlersType) => {
-  const {link, otpInput} = route.params;
+  const {link, contact, token} = route.params;
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
   const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
 
   const [formDetails, setFormDetails] = useState({
     otp: '',
+    otpToken: token,
     resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC,
-    otpToken: '',
   });
 
   const onOTPChange = useCallback((value: any) => {
@@ -42,7 +42,7 @@ const usePhoneVerificationHandlers = ({
   const handleGetOTP = async () => {
     try {
       const {success: isOTPSent, verificationToken} = await generatePhoneOTP({
-        otpInput: getOTPInput(otpInput),
+        otpInput: getOTPInput(contact),
       });
 
       if (isOTPSent) {
@@ -51,7 +51,7 @@ const usePhoneVerificationHandlers = ({
           resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC,
           otpToken: verificationToken,
         }));
-        Alert.alert('OTP Sent', getOTPSentAlertMessage(otpInput));
+        Alert.alert('OTP Sent', getOTPSentAlertMessage(contact));
       }
     } catch (error) {
       Alert.alert(
@@ -74,6 +74,12 @@ const usePhoneVerificationHandlers = ({
           resendTimeOutInSec: 0,
         }));
         Alert.alert('Success', 'OTP Verified Successfully.');
+        if (route.params?.onCallbackFunction) {
+          route.params.onCallbackFunction({
+            userId: route.params.userId,
+            accessToken: route.params.accessToken,
+          });
+        }
         navigation.navigate(link, {
           ...route.params,
           userId,

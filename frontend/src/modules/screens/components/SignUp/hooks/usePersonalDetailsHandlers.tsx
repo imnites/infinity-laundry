@@ -1,4 +1,5 @@
 import {useState, useCallback} from 'react';
+import {Alert} from 'react-native';
 import {formattedSignUpInput} from '../../../../utils/signUpUtil';
 import {
   useGeneratePhoneOTP,
@@ -75,9 +76,6 @@ const usePersonalDetailsHandlers = ({
 
   const onCallbackFunction = useCallback(
     async ({userId, accessToken}: any) => {
-      console.log('coming');
-      console.log('userId');
-      console.log('accessToken');
       const headers = {authorization: `Basic ${accessToken}`};
       await saveUserDraft({draftId: userId}, headers);
     },
@@ -85,23 +83,34 @@ const usePersonalDetailsHandlers = ({
   );
 
   const handleSubmit = async () => {
-    const hasErrors = validateForm({values, setErrors});
+    if (validateForm({values, setErrors})) {
+      return;
+    }
 
-    if (!hasErrors) {
-      const token = await createUserDraft({
-        input: formattedSignUpInput(values),
-      });
-      await generatePhoneOTP({
+    const token = await createUserDraft({
+      input: formattedSignUpInput(values),
+    });
+
+    try {
+      const {success, verificationToken} = await generatePhoneOTP({
         otpInput: {
           id: token,
         },
       });
-      navigation.navigate('PhoneVerification', {
-        link: 'ResetPassword',
-        otpInput: values.phoneNumber,
-        userId: token,
-        onCallbackFunction: onCallbackFunction,
-      });
+      if (success) {
+        navigation.navigate('PhoneVerification', {
+          parent: 'signUp',
+          link: 'ResetPassword',
+          contact: values.phoneNumber,
+          token: verificationToken,
+          onCallbackFunction: onCallbackFunction,
+        });
+      }
+    } catch (error) {
+      Alert.alert(
+        'Account Not Found',
+        'This account does not exist. Please sign up.',
+      );
     }
   };
   return {values, errors, handleChange, handleSubmit};

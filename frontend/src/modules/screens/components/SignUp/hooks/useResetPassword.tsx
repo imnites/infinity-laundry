@@ -45,19 +45,13 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
     }
 
     if (formValues.password !== formValues.confirmPassword) {
-      Alert.alert('Error', "Passwords don't match");
+      Alert.alert('Error', 'Passwords do not match');
       return;
     }
 
     setFormValues(prevDetails => ({...prevDetails, isSubmitting: true}));
     try {
       const headers = {authorization: `Basic ${accessToken}`};
-      if (route.params?.onCallbackFunction) {
-        await route.params.onCallbackFunction(
-          route.params.userId,
-          route.params.accessToken,
-        );
-      }
       const isPasswordUpdated = await updatePassword(
         {
           password: formValues.password,
@@ -67,11 +61,17 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
 
       setFormValues(prevDetails => ({...prevDetails, isSubmitting: false}));
       if (isPasswordUpdated) {
-        Alert.alert(
-          'Account Created',
-          'Your account has been successfully created.',
-          [{text: 'OK', onPress: () => navigation.navigate('LoginPage')}],
-        );
+        if (route.params.parent === 'signUp') {
+          Alert.alert(
+            'Account Created',
+            'Your account has been successfully created.',
+            [{text: 'OK', onPress: () => navigation.navigate('LoginPage')}],
+          );
+        } else {
+          Alert.alert('Success!', 'Your Password Reset Successful.', [
+            {text: 'OK', onPress: () => navigation.navigate('LoginPage')},
+          ]);
+        }
       }
     } catch (error) {
       Alert.alert('Error', 'Failed to create account. Please try again.');

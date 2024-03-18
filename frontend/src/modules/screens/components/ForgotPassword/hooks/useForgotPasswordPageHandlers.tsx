@@ -41,14 +41,16 @@ const useForgotPasswordPageHandlers = ({
     }
 
     try {
-      const {success: isOTPSent} = await generatePhoneOTP({
+      const {success, verificationToken} = await generatePhoneOTP({
         otpInput: getOTPInput(values.userName),
       });
 
-      if (isOTPSent) {
+      if (success) {
         navigation.navigate('PhoneVerification', {
+          parent: 'forgetPassword',
           link: 'ResetPassword',
-          otpInput: values.userName,
+          contact: values.userName,
+          token: verificationToken,
         });
       }
     } catch (error) {
