@@ -22,7 +22,7 @@ const Button = ({
       onPress={onPress}
       disabled={disabled}>
       {loading ? (
-        <ActivityIndicator color="white" />
+        <ActivityIndicator color="#fff" size="large" />
       ) : (
         <Text style={classes?.buttonText}>{name}</Text>
       )}

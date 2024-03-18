@@ -1,96 +1,131 @@
-import React, {useState} from 'react';
-import {Text, View, TextInput, Alert} from 'react-native';
-import {Button, Title} from '../../../components/common/components';
-import {
-  useSaveUserDraft,
-  useUpdatePassword,
-} from '../../../components/common/hooks/users';
-import {useResetPasswordStyles} from './hooks';
-
-interface ResetPasswordProps {
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
+import {TextInput, Button, DefaultTheme} from 'react-native-paper';
+import useResetPassword from './hooks/useResetPassword';
+interface ResetPasswordPropsType {
   navigation: any;
   route: any;
 }
 
-const ResetPassword: React.FC<ResetPasswordProps> = ({navigation, route}) => {
-  const styles = useResetPasswordStyles();
-  const {userId, accessToken} = route.params;
-  const {saveUserDraft, loading: isSavingUserDraft} = useSaveUserDraft();
-  const {updatePassword, loading: isResettingPassword} = useUpdatePassword();
-  const [formData, setFormData] = useState({
-    password: '',
-    confirmPassword: '',
-    error: '',
-  });
-
-  const handleSubmit = async () => {
-    try {
-      if (formData.password.length < 8) {
-        setFormData({
-          ...formData,
-          error: 'Password must contain at least 8 characters.',
-        });
-        return;
-      }
-
-      if (formData.password !== formData.confirmPassword) {
-        setFormData({...formData, error: 'Passwords do not match.'});
-        return;
-      }
-
-      const headers = {authorization: `Basic ${accessToken}`};
-      const userAdded = await saveUserDraft({draftId: userId}, headers);
-      const passwordUpdate = await updatePassword(
-        {
-          password: formData.password,
-        },
-        headers,
-      );
-
-      if (userAdded && passwordUpdate) {
-        Alert.alert(
-          'Account Created',
-          'Your account has been successfully created.',
-          [{text: 'OK', onPress: () => navigation.navigate('LoginPage')}],
-        );
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to create account. Please try again.');
-    }
-  };
+const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
+  const {
+    formValues,
+    handlePasswordChange,
+    handleConfirmPasswordChange,
+    handleSubmit,
+  } = useResetPassword({navigation, route});
 
   return (
     <View style={styles.container}>
-      <Title title="Almost Done!" />
       <TextInput
         style={styles.input}
         placeholder="Password"
-        secureTextEntry
-        value={formData.password}
-        onChangeText={text => setFormData({...formData, password: text})}
+        secureTextEntry={true}
+        onChangeText={handlePasswordChange}
+        value={formValues.password}
       />
       <TextInput
         style={styles.input}
         placeholder="Confirm Password"
-        secureTextEntry
-        value={formData.confirmPassword}
-        onChangeText={text => setFormData({...formData, confirmPassword: text})}
+        secureTextEntry={true}
+        onChangeText={handleConfirmPasswordChange}
+        value={formValues.confirmPassword}
       />
-      {formData.error ? (
-        <Text style={styles.error}>{formData.error}</Text>
-      ) : null}
+      <View style={styles.tabsContainer}>
+        <Button
+          style={[
+            styles.tab,
+            formValues.strength === 'Weak' && {
+              backgroundColor: theme.colors.weak,
+            },
+          ]}
+          labelStyle={styles.tabLabel}>
+          Weak
+        </Button>
+        <Button
+          style={[
+            styles.tab,
+            formValues.strength === 'Medium' && {
+              backgroundColor: theme.colors.medium,
+            },
+          ]}
+          labelStyle={styles.tabLabel}>
+          Medium
+        </Button>
+        <Button
+          style={[
+            styles.tab,
+            formValues.strength === 'Strong' && {
+              backgroundColor: theme.colors.success,
+            },
+          ]}
+          labelStyle={styles.tabLabel}>
+          Strong
+        </Button>
+      </View>
       <Button
-        name="Sign Up"
+        style={styles.submitButton}
+        labelStyle={styles.submitButtonText}
+        mode="contained"
         onPress={handleSubmit}
-        loading={isSavingUserDraft || isResettingPassword}
-        disabled={isSavingUserDraft || isResettingPassword}
-        classes={{
-          button: styles.submitButton,
-          buttonText: styles.submitButtonText,
-        }}
-      />
+        loading={formValues.isSubmitting}>
+        Next
+      </Button>
     </View>
   );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  input: {
+    width: '80%',
+    backgroundColor: 'white',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  tab: {
+    marginHorizontal: 5,
+  },
+  tabLabel: {
+    color: 'black',
+  },
+  error: {
+    color: 'red',
+    alignSelf: 'flex-start',
+    marginVertical: 5,
+  },
+  submitButton: {
+    width: '80%',
+    marginTop: 10,
+    backgroundColor: '#3930d8',
+  },
+  submitButtonText: {
+    color: 'white',
+  },
+});
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    success: '#32CD32',
+    medium: '#FFA500',
+    weak: '#FF0000',
+  },
 };
 
 export default ResetPassword;

@@ -41,7 +41,7 @@ interface OTPInputProps {
   editable: boolean;
 }
 
-const OTPInput: React.FC<OTPInputProps> = ({
+const OtpInput: React.FC<OTPInputProps> = ({
   otpLength,
   onOTPChange,
   editable,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   box: {
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: '#3930d8',
     width: 40,
     height: 40,
     margin: 10,
@@ -102,4 +102,4 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
 });
-export default OTPInput;
+export default OtpInput;

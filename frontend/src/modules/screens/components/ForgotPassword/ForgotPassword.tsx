@@ -1,12 +1,8 @@
 import React from 'react';
-import {Text, TextInput, View} from 'react-native';
-import {Button, Title} from '../../../components/common/components';
-import {useStyles, useForgotPasswordPageHandlers} from './hooks';
-import {
-  useGeneratePhoneOTP,
-  useValidatePhoneOTP,
-  useUpdatePassword,
-} from '../../../components/common/hooks/users';
+import {View, StyleSheet} from 'react-native';
+import {Button} from '../../../components/common/components';
+import {useForgotPasswordPageHandlers} from './hooks';
+import {Provider as PaperProvider, Title, TextInput} from 'react-native-paper';
 
 interface ForgotPasswordPageProps {
   navigation: any;
@@ -15,109 +11,74 @@ interface ForgotPasswordPageProps {
 const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
   navigation,
 }) => {
-  const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
-  const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
-  const {updatePassword, loading: isResettingPassword} = useUpdatePassword();
+  const {values, onUserNameChange, handleSubmit} =
+    useForgotPasswordPageHandlers({
+      navigation,
+    });
 
-  const {
-    values,
-    setValues,
-    onUserNameChange,
-    handleSubmit,
-    handlePhoneVerification,
-    handleResetPassword,
-  } = useForgotPasswordPageHandlers({
-    generatePhoneOTP,
-    validatePhoneOTP,
-    navigation,
-    updatePassword,
-  });
-
-  const styles = useStyles({values});
+  const styles = useStyles();
   return (
-    <View style={styles.container}>
-      <Title title="Forgot Password" />
-      <TextInput
-        style={styles.input}
-        placeholder="Email or Phone"
-        value={values.userName}
-        onChangeText={onUserNameChange}
-        editable={!values.isOtpSent}
-      />
-      <Button
-        name={values.isOtpSent ? 'SENT OTP' : 'SEND OTP'}
-        onPress={handleSubmit}
-        loading={isGeneratingOTP}
-        classes={{
-          button: styles.submitButton,
-          buttonText: styles.submitButtonText,
-        }}
-        disabled={isGeneratingOTP || values.isOtpSent}
-      />
-      {values.isOtpSent && (
-        <>
-          <TextInput
-            style={styles.phoneOTPInputStyles}
-            value={values.phoneOTP}
-            onChangeText={text =>
-              setValues({
-                ...values,
-                phoneOTP: text,
-              })
-            }
-            placeholder="Enter OTP"
-            editable={!values.verified}
-            maxLength={6}
-          />
-          <Button
-            name={values.verified ? 'VERIFIED' : 'VERIFY'}
-            onPress={handlePhoneVerification}
-            loading={isOTPValidating}
-            disabled={isOTPValidating || values.verified}
-            classes={{
-              button: styles.verifyButton,
-              buttonText: styles.verifyButtonText,
-            }}
-          />
-        </>
-      )}
-      {values.verified && (
-        <>
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry
-            value={values.password}
-            onChangeText={text =>
-              setValues({...values, password: text, error: ''})
-            }
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password"
-            secureTextEntry
-            value={values.confirmPassword}
-            onChangeText={text =>
-              setValues({...values, confirmPassword: text, error: ''})
-            }
-          />
-          {values.error ? (
-            <Text style={styles.error}>{values.error}</Text>
-          ) : null}
-          <Button
-            name="Reset Password"
-            onPress={handleResetPassword}
-            loading={isResettingPassword}
-            disabled={isResettingPassword}
-            classes={{
-              button: styles.resetPasswordButton,
-              buttonText: styles.resetPasswordButtonText,
-            }}
-          />
-        </>
-      )}
-    </View>
+    <PaperProvider>
+      <View style={styles.container}>
+        <Title style={styles.titleText}>Account Recovery</Title>
+        <TextInput
+          style={styles.input}
+          placeholder="Email or Phone"
+          onChangeText={onUserNameChange}
+          value={values.userName}
+        />
+        <Button
+          name="Next"
+          onPress={handleSubmit}
+          classes={{
+            button: styles.submitButton,
+            buttonText: styles.submitButtonText,
+          }}
+        />
+      </View>
+    </PaperProvider>
   );
 };
 
 export default ForgotPasswordPage;
+
+const useStyles = () => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    titleText: {
+      marginTop: 20,
+      marginBottom: 10,
+      fontSize: 24,
+    },
+    input: {
+      width: '80%',
+      backgroundColor: 'transparent',
+      height: 40,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 5,
+      marginBottom: 10,
+    },
+    error: {
+      color: 'red',
+      alignSelf: 'flex-start',
+      position: 'relative',
+      left: 20,
+      top: -10,
+    },
+    submitButton: {
+      width: '80%',
+      backgroundColor: '#3930d8',
+      padding: 10,
+      borderRadius: 5,
+    },
+    submitButtonText: {
+      color: 'white',
+      textAlign: 'center',
+    },
+  });
+};

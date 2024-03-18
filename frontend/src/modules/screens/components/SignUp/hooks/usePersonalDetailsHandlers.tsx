@@ -1,6 +1,9 @@
-import {useState} from 'react';
+import {useState, useCallback} from 'react';
 import {formattedSignUpInput} from '../../../../utils/signUpUtil';
-import {useGeneratePhoneOTP} from '../../../../components/common/hooks/users';
+import {
+  useGeneratePhoneOTP,
+  useSaveUserDraft,
+} from '../../../../components/common/hooks/users';
 
 interface FormStatePropsType {
   navigation: any;
@@ -51,6 +54,7 @@ const usePersonalDetailsHandlers = ({
   createUserDraft,
 }: FormStatePropsType) => {
   const {generatePhoneOTP} = useGeneratePhoneOTP();
+  const {saveUserDraft} = useSaveUserDraft();
   const [values, setValues] = useState({
     firstName: '',
     lastName: '',
@@ -64,6 +68,22 @@ const usePersonalDetailsHandlers = ({
     phoneNumber: '',
   });
 
+  const handleChange = (field: string, value: string) => {
+    setValues({...values, [field]: value});
+    setErrors({...errors, [field]: ''});
+  };
+
+  const onCallbackFunction = useCallback(
+    async ({userId, accessToken}: any) => {
+      console.log('coming');
+      console.log('userId');
+      console.log('accessToken');
+      const headers = {authorization: `Basic ${accessToken}`};
+      await saveUserDraft({draftId: userId}, headers);
+    },
+    [saveUserDraft],
+  );
+
   const handleSubmit = async () => {
     const hasErrors = validateForm({values, setErrors});
 
@@ -76,13 +96,13 @@ const usePersonalDetailsHandlers = ({
           id: token,
         },
       });
-      navigation.navigate('PhoneVerification', {formData: values, token});
+      navigation.navigate('PhoneVerification', {
+        link: 'ResetPassword',
+        otpInput: values.phoneNumber,
+        userId: token,
+        onCallbackFunction: onCallbackFunction,
+      });
     }
-  };
-
-  const handleChange = (field: string, value: string) => {
-    setValues({...values, [field]: value});
-    setErrors({...errors, [field]: ''});
   };
   return {values, errors, handleChange, handleSubmit};
 };

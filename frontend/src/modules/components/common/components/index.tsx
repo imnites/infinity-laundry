@@ -5,3 +5,4 @@ export {default as Tabs} from './Tabs';
 export {default as TextWithLine} from './TextWithLine';
 export {default as Title} from './Title';
 export {default as TabIcon} from './TabIcon';
+export {default as OtpInput} from './OtpInput';

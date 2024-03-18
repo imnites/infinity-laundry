@@ -1,41 +1,22 @@
 import {useState, useCallback} from 'react';
 import {Alert} from 'react-native';
+import {useGeneratePhoneOTP} from '../../../../components/common/hooks/users';
+import {
+  isValidEmail,
+  isValidPhoneNumber,
+  getOTPInput,
+} from '../../../../utils/signUpUtil';
 
 interface ForgotPasswordHandlersPropsType {
   navigation: any;
-  generatePhoneOTP: any;
-  validatePhoneOTP: any;
-  updatePassword: any;
 }
 
-const isEmail = (text: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(text);
-};
-
-const isPhoneNumber = (text: string): boolean => {
-  const phoneRegex = /^\d{10}$/;
-  return phoneRegex.test(text.replace(/\D/g, ''));
-};
-
 const useForgotPasswordPageHandlers = ({
-  generatePhoneOTP,
-  validatePhoneOTP,
   navigation,
-  updatePassword,
 }: ForgotPasswordHandlersPropsType) => {
+  const {generatePhoneOTP} = useGeneratePhoneOTP();
   const [values, setValues] = useState({
     userName: '',
-    password: '',
-    confirmPassword: '',
-    error: '',
-    verified: false,
-    phoneOTP: '',
-    isOtpSent: false,
-    otpToken: '',
-    accessToken: '',
-    showPassword: false,
-    showConfirmPassword: false,
   });
 
   const onUserNameChange = useCallback(
@@ -48,7 +29,10 @@ const useForgotPasswordPageHandlers = ({
   );
 
   const handleSubmit = async () => {
-    if (!isEmail(values.userName) && !isPhoneNumber(values.userName)) {
+    if (
+      !isValidEmail(values.userName) &&
+      !isValidPhoneNumber(values.userName)
+    ) {
       Alert.alert(
         'Invalid Input',
         'Please enter a valid email address or phone number.',
@@ -57,27 +41,15 @@ const useForgotPasswordPageHandlers = ({
     }
 
     try {
-      const {
-        success: isOTPSent,
-        verificationToken,
-        phoneNumber: {phoneNumber},
-      } = await generatePhoneOTP({
-        otpInput: isEmail(values.userName)
-          ? {email: values.userName}
-          : {
-              phoneNumber: {
-                countryCode: '+91',
-                phoneNumber: values.userName,
-              },
-            },
+      const {success: isOTPSent} = await generatePhoneOTP({
+        otpInput: getOTPInput(values.userName),
       });
+
       if (isOTPSent) {
-        setValues({
-          ...values,
-          isOtpSent: isOTPSent,
-          otpToken: verificationToken,
+        navigation.navigate('PhoneVerification', {
+          link: 'ResetPassword',
+          otpInput: values.userName,
         });
-        Alert.alert('OTP Sent', `An OTP has been sent to ${phoneNumber}`);
       }
     } catch (error) {
       Alert.alert(
@@ -87,68 +59,11 @@ const useForgotPasswordPageHandlers = ({
     }
   };
 
-  const handlePhoneVerification = async () => {
-    try {
-      const {verified, accessToken} = await validatePhoneOTP({
-        verificationToken: values.otpToken,
-        otp: values.phoneOTP,
-      });
-      if (verified) {
-        setValues({...values, accessToken: accessToken, verified: verified});
-        Alert.alert('Success', 'OTP Verified Successfully');
-      } else {
-        Alert.alert('Invalid OTP', 'Please enter a valid OTP.');
-      }
-    } catch (error) {
-      Alert.alert(
-        'Number Not Found',
-        'The provided phone number does not exist. Please check the number and try again.',
-      );
-    }
-  };
-
-  const handleResetPassword = async () => {
-    try {
-      if (values.password.length < 8) {
-        setValues({
-          ...values,
-          error: 'Password must contain at least 8 characters.',
-        });
-        return;
-      }
-
-      if (values.password !== values.confirmPassword) {
-        setValues({...values, error: 'Passwords do not match.'});
-        return;
-      }
-
-      const headers = {authorization: `Basic ${values.accessToken}`};
-      const result = await updatePassword(
-        {
-          password: values.password,
-        },
-        headers,
-      );
-      if (result) {
-        Alert.alert('Success!', 'Your Password Reset Successful.', [
-          {text: 'OK', onPress: () => navigation.navigate('LoginPage')},
-        ]);
-      }
-    } catch (error) {
-      Alert.alert(
-        'Number Not Found',
-        'The provided phone number does not exist. Please check the number and try again.',
-      );
-    }
-  };
-
   return {
     values,
     setValues,
     onUserNameChange,
     handleSubmit,
-    handlePhoneVerification,
-    handleResetPassword,
   };
 };
 
