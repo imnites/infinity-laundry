@@ -6,11 +6,17 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import {NativeModules} from 'react-native';
+
+const {QRCodeScannerModule} = NativeModules;
 
 const MachineTab: React.FC = () => {
   const [machineCode, setMachineCode] = useState<string>('');
 
-  const handleQRScan = () => {};
+  const handleQRScan = async () => {
+    const data = await QRCodeScannerModule.scan();
+    console.log('data', data);
+  };
 
   const handleSubmitMachineCode = () => {};
 

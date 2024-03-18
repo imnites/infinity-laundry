@@ -11,6 +11,8 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.tflite.java.TfLite
 
 class MainApplication : Application(), ReactApplication {
 
@@ -21,6 +23,7 @@ class MainApplication : Application(), ReactApplication {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
                 add(SecureStoragePackage());
+                add(QRCodeScannerPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
@@ -36,6 +39,28 @@ class MainApplication : Application(), ReactApplication {
 
   override fun onCreate() {
     super.onCreate()
+    val moduleInstallClient = ModuleInstall.getClient(this)
+
+    val optionalModuleApi = TfLite.getClient(this)
+    moduleInstallClient
+            .areModulesAvailable(optionalModuleApi)
+            .addOnSuccessListener {
+              if (it.areModulesAvailable()) {
+                moduleInstallClient.deferredInstall(optionalModuleApi)
+                // Modules are present on the device...
+              } else {
+                // Modules are not present on the device...
+
+              }
+            }
+            .addOnFailureListener {
+              // Handle failure...
+            }
+
+//    val optionalModuleApi = TfLite.getClient(this)
+    moduleInstallClient.deferredInstall(optionalModuleApi)
+
+
     SoLoader.init(this, false)
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
