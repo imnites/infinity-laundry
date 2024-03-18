@@ -45,11 +45,15 @@ export default ForgotPasswordPage;
 const useStyles = () => {
   return StyleSheet.create({
     container: {
+      width: '100%',
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      padding: 20,
+      backgroundColor: '#fff',
     },
     titleText: {
+      color: '#3930d8',
       marginTop: 20,
       marginBottom: 10,
       fontSize: 24,

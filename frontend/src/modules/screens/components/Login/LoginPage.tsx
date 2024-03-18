@@ -1,12 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {
-  Button,
-  ModalPopUp,
-  TextWithLine,
-} from '../../../components/common/components';
+import {Text, View, StyleSheet} from 'react-native';
+import {ModalPopUp, TextWithLine} from '../../../components/common/components';
 import {useAuthenticateUser, useLoginHandlers} from './hooks';
-import {TextInput} from 'react-native-paper';
+import {Title, Button, TextInput} from 'react-native-paper';
 import {useMeContext} from '../../../../wrapper/Me';
 
 interface LoginPageProps {
@@ -37,12 +33,16 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Infinity Laundry</Text>
+      <Title style={styles.titleText}>Infinity Laundry</Title>
       <TextInput
         style={styles.input}
         placeholder="Email or Phone"
         value={credential.userName}
         onChangeText={onUserNameChange}
+        maxLength={15}
+        theme={{
+          colors: {primary: '#3930d8'},
+        }}
       />
       <View style={styles.inputContainer}>
         <TextInput
@@ -51,6 +51,10 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
           secureTextEntry={!showPassword}
           value={credential.password}
           onChangeText={onPasswordChange}
+          maxLength={15}
+          theme={{
+            colors: {primary: '#3930d8'},
+          }}
           right={
             <TextInput.Icon
               icon={showPassword ? 'eye-off' : 'eye'}
@@ -61,37 +65,32 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
         />
       </View>
       <Button
-        name="Login"
+        mode="contained"
         onPress={onSubmit}
         loading={loading}
         disabled={loading}
-        classes={{
-          button: styles.loginButton,
-          buttonText: styles.loginButtonText,
-        }}
-      />
+        style={styles.continueButton}
+        labelStyle={styles.continueButtonText}>
+        Login
+      </Button>
       <Button
-        name="Forgot Password?"
         onPress={() => {
           navigation.navigate('ForgotPasswordPage');
         }}
-        classes={{
-          button: styles.forgotButton,
-          buttonText: styles.forgotButtonText,
-        }}
-      />
+        style={styles.forgotButton}
+        labelStyle={styles.forgotButtonText}>
+        Forgot Password?
+      </Button>
       <TextWithLine text="or" />
-      <Text>
+      <View style={styles.noAccountContainer}>
         <Text style={styles.noAccount}>Don't have an account? </Text>
         <Button
-          name="Sign up."
           onPress={onSignUp}
-          classes={{
-            button: styles.signUpButton,
-            buttonText: styles.signUpButtonText,
-          }}
-        />
-      </Text>
+          style={styles.signUpButton}
+          labelStyle={styles.signUpButtonText}>
+          Sign up
+        </Button>
+      </View>
       <ModalPopUp
         message="Invalid Credentials."
         isInvalidCredentials={isInvalidCredentials}
@@ -113,14 +112,16 @@ const useStyles = () => {
       padding: 20,
       backgroundColor: '#fff',
     },
-    title: {
+    titleText: {
+      color: '#3930d8',
+      marginTop: 20,
+      marginBottom: 10,
       fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 20,
     },
     noAccount: {
       fontSize: 15,
       fontWeight: 'bold',
+      textAlign: 'center',
     },
     input: {
       width: '80%',
@@ -182,17 +183,29 @@ const useStyles = () => {
     },
     forgotButton: {
       alignSelf: 'flex-end',
-      paddingTop: 5,
       paddingRight: 38,
     },
     forgotButtonText: {
       color: 'red',
     },
-    signUpButton: {},
+    signUpButton: {
+      marginTop: -10,
+    },
     signUpButtonText: {
       color: '#3930d8',
-      textAlign: 'center',
       textDecorationLine: 'underline',
+    },
+    continueButton: {
+      width: '80%',
+      backgroundColor: '#3930d8',
+      borderRadius: 5,
+    },
+    continueButtonText: {
+      color: 'white',
+      textAlign: 'center',
+    },
+    noAccountContainer: {
+      flexDirection: 'row',
     },
   });
 };

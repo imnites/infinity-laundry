@@ -23,6 +23,10 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
         secureTextEntry={true}
         onChangeText={handlePasswordChange}
         value={formValues.password}
+        maxLength={15}
+        theme={{
+          colors: {primary: '#3930d8'},
+        }}
       />
       <TextInput
         style={styles.input}
@@ -30,6 +34,10 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
         secureTextEntry={true}
         onChangeText={handleConfirmPasswordChange}
         value={formValues.confirmPassword}
+        maxLength={15}
+        theme={{
+          colors: {primary: '#3930d8'},
+        }}
       />
       <View style={styles.tabsContainer}>
         <Button
@@ -110,11 +118,12 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     width: '80%',
-    marginTop: 10,
     backgroundColor: '#3930d8',
+    borderRadius: 5,
   },
   submitButtonText: {
     color: 'white',
+    textAlign: 'center',
   },
 });
 

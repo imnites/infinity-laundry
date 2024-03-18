@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {Button, OtpInput} from '../../../components/common/components';
+import {OtpInput} from '../../../components/common/components';
 import {usePhoneVerificationHandlers} from '../SignUp/hooks';
 import {getVerificationMessage} from '../../../utils/signUpUtil';
-import {Provider as PaperProvider, Title} from 'react-native-paper';
+import {Button, Provider as PaperProvider, Title} from 'react-native-paper';
 
 interface PhoneVerificationProps {
   navigation: any;
@@ -53,38 +53,33 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
           <View style={styles.otpInputContainer}>
             <OtpInput otpLength={6} onOTPChange={onOTPChange} editable={true} />
           </View>
+          <Text style={styles.resendMessage}>
+            Haven't received the Verification code?
+          </Text>
           <View style={styles.resendContainer}>
-            <Text style={styles.resendMessage}>
-              Haven't received the Verification code?
-            </Text>
-            <View style={styles.resendButtonContainer}>
-              <Button
-                classes={{
-                  button: styles.resendButton,
-                  buttonText: styles.resendButtonText,
-                }}
-                name="Resend"
-                loading={isGeneratingOTP}
-                disabled={formDetails.resendTimeOutInSec > 0}
-                onPress={handleGetOTP}
-              />
-              {formDetails.resendTimeOutInSec > 0 && (
-                <Text>{` in ${formDetails.resendTimeOutInSec} Sec`}</Text>
-              )}
-            </View>
-          </View>
-          <View style={styles.verifyButtonContainer}>
             <Button
-              classes={{
-                button: styles.verifyButton,
-                buttonText: styles.verifyButtonText,
-              }}
-              name={'Verify'}
-              loading={isOTPValidating}
-              disabled={isOTPValidating}
-              onPress={handlePhoneVerification}
-            />
+              style={styles.resendButton}
+              labelStyle={styles.resendButtonText}
+              loading={isGeneratingOTP}
+              disabled={formDetails.resendTimeOutInSec > 0}
+              onPress={handleGetOTP}>
+              {isGeneratingOTP ? '' : 'Resend'}
+            </Button>
+            {formDetails.resendTimeOutInSec > 0 && (
+              <Text style={styles.sec}>
+                {` in ${formDetails.resendTimeOutInSec} Sec`}
+              </Text>
+            )}
           </View>
+          <Button
+            style={styles.verifyButton}
+            labelStyle={styles.verifyButtonText}
+            mode="contained"
+            loading={isOTPValidating}
+            disabled={isOTPValidating}
+            onPress={handlePhoneVerification}>
+            {isOTPValidating ? '' : 'Verify'}
+          </Button>
         </View>
       </View>
     </PaperProvider>
@@ -96,11 +91,15 @@ export default PhoneVerification;
 const useStyles = () => {
   return StyleSheet.create({
     container: {
+      width: '100%',
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      padding: 20,
+      backgroundColor: '#fff',
     },
     titleText: {
+      color: '#3930d8',
       marginTop: 20,
       marginBottom: 10,
       fontSize: 24,
@@ -120,34 +119,23 @@ const useStyles = () => {
       marginBottom: 20,
     },
     resendContainer: {
+      flexDirection: 'row',
       marginBottom: 20,
     },
     resendMessage: {
       textAlign: 'center',
     },
-    resendButtonContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 20,
-    },
     resendButton: {},
     resendButtonText: {
       color: '#3930d8',
     },
-    verifyButtonContainer: {
-      width: '100%',
-      alignItems: 'center',
-    },
     verifyButton: {
+      width: '100%',
       backgroundColor: '#3930d8',
-      textDecorationLine: 'underline',
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginTop: 3,
-      width: '75%',
-      height: 40,
-      borderRadius: 16,
+      height: 45,
+      justifyContent: 'center',
+      borderRadius: 5,
+      paddingVertical: 10,
     },
     verifyButtonText: {
       color: 'white',
@@ -155,6 +143,11 @@ const useStyles = () => {
       marginTop: 'auto',
       marginBottom: 'auto',
       fontSize: 20,
+    },
+    sec: {
+      marginTop: 9.5,
+      marginLeft: -12,
+      color: 'black',
     },
   });
 };

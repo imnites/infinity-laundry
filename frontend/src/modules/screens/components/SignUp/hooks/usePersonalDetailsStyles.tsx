@@ -1,36 +1,42 @@
 import {StyleSheet} from 'react-native';
+import {useTheme} from 'react-native-paper';
 
 const usePersonalDetailsStyles = () => {
+  const theme = useTheme();
   return StyleSheet.create({
     container: {
       flex: 1,
+      paddingHorizontal: 20,
       justifyContent: 'center',
       alignItems: 'center',
-      paddingHorizontal: 20,
-      backgroundColor: '#fff',
+      backgroundColor: theme.colors.background,
+    },
+    title: {
+      fontSize: 24,
+      marginBottom: 20,
+      color: '#3930d8',
     },
     input: {
-      width: '100%',
+      width: '80%',
+      backgroundColor: 'transparent',
       height: 40,
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
       marginBottom: 10,
-      paddingHorizontal: 10,
     },
     error: {
-      color: 'red',
+      color: theme.colors.error,
+      marginBottom: 10,
+      marginTop: -10,
       alignSelf: 'flex-start',
-      marginBottom: 5,
-      position: 'relative',
-      top: -10,
+      marginLeft: 35,
     },
     continueButton: {
-      width: '100%',
-      backgroundColor: 'blue',
-      padding: 10,
+      marginTop: 20,
+      width: '80%',
+      backgroundColor: '#3930d8',
       borderRadius: 5,
-      marginTop: 10,
     },
     continueButtonText: {
       color: 'white',
