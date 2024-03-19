@@ -1,10 +1,9 @@
 import React from 'react';
-import {MachineUsage, PersonalDetails} from './components';
+import {MachineUsage} from './components';
 
 const HomeTab: React.FC = () => {
   return (
     <>
-      <PersonalDetails />
       <MachineUsage />
     </>
   );

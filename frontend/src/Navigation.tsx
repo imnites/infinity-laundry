@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useMeContext} from '~/me';
 import {LoginPage} from '~/pages/Login';
 import {ForgotPasswordPage} from '~/pages/ForgotPassword';
+import {ProfileDetailsPage} from '~/pages/ProfileDetails';
 import {
   PersonalDetails,
   PhoneVerification,
@@ -64,6 +65,14 @@ export const stackScreens: StackScreen[] = [
     id: 6,
     name: 'MainPage',
     component: MainPage,
+    options: {
+      headerShown: false
+    }
+  },
+  {
+    id: 7,
+    name: 'ProfileDetailsPage',
+    component: ProfileDetailsPage,
     options: {
       headerShown: false
     }

@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {HomeSection} from './home-section';
 import {ProfileSection} from './profile-section';
 import {GetInTouchSection} from './get-in-touch-section';
 import HelpSection from './help-section/HelpSection';
@@ -9,8 +8,6 @@ import AdditionalOptions from './AdditionalOptions';
 
 const SidePanel: React.FC = () => (
   <View style={styles.container}>
-    <HomeSection />
-    <Divider />
     <ProfileSection />
     <Divider />
     <HelpSection />
