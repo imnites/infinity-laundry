@@ -17,13 +17,13 @@ export const MeContextProvider: React.FC<MeContextProviderProps> = ({
 
   useMe({
     onCompleted: user => {
-      setIsLoading(false);
       setMe(user);
+      setIsLoading(false);
     },
     onError: async () => {
       const user = await refreshToken();
-      setIsLoading(false);
       setMe(user);
+      setIsLoading(false);
     }
   });
 

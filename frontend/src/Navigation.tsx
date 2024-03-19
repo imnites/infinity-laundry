@@ -75,7 +75,7 @@ const Stack = createNativeStackNavigator();
 export const Navigation: React.FC = () => {
   const {me} = useMeContext();
 
-  const initialRouteName = me && me.id ? 'LoginPage' : 'MainPage';
+  const initialRouteName = me && me.id ? 'MainPage' : 'LoginPage';
 
   return (
     <NavigationContainer>
