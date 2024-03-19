@@ -35,7 +35,7 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
         placeholder="Email or Phone"
         value={credential.userName}
         onChangeText={onUserNameChange}
-        maxLength={15}
+        maxLength={25}
         theme={{
           colors: {primary: '#3930d8'},
         }}
@@ -47,7 +47,7 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
           secureTextEntry={!showPassword}
           value={credential.password}
           onChangeText={onPasswordChange}
-          maxLength={15}
+          maxLength={25}
           theme={{
             colors: {primary: '#3930d8'},
           }}

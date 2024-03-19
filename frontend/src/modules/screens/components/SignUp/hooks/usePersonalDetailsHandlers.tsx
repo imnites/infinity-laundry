@@ -104,7 +104,7 @@ const usePersonalDetailsHandlers = ({
           contact: values.phoneNumber,
           verificationToken: verificationToken,
           otpInput: token,
-          onSaveUserDraft: onSaveUserDraft,
+          onSaveUserDraft,
         });
       }
     } catch (error) {
