@@ -25,13 +25,13 @@ const usePhoneVerificationHandlers = ({
   route,
   navigation,
 }: PhoneVerificationHandlersType) => {
-  const {link, contact, token} = route.params;
+  const {link, contact, otpInput, verificationToken} = route.params;
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
   const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
 
   const [formDetails, setFormDetails] = useState({
     otp: '',
-    otpToken: token,
+    verificationToken: verificationToken,
     resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC,
   });
 
@@ -41,15 +41,21 @@ const usePhoneVerificationHandlers = ({
 
   const handleGetOTP = async () => {
     try {
-      const {success: isOTPSent, verificationToken} = await generatePhoneOTP({
-        otpInput: getOTPInput(contact),
-      });
+      const {success: isOTPSent, verificationToken: newVerificationToken} =
+        await generatePhoneOTP({
+          otpInput:
+            route.params.link === 'SignUp'
+              ? {
+                  id: otpInput,
+                }
+              : getOTPInput(route.params.contact),
+        });
 
       if (isOTPSent) {
         setFormDetails(prevDetails => ({
           ...prevDetails,
           resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC,
-          otpToken: verificationToken,
+          verificationToken: newVerificationToken,
         }));
         Alert.alert('OTP Sent', getOTPSentAlertMessage(contact));
       }
@@ -64,20 +70,19 @@ const usePhoneVerificationHandlers = ({
   const handlePhoneVerification = async () => {
     try {
       const {verified, userId, accessToken} = await validatePhoneOTP({
-        verificationToken: formDetails.otpToken,
+        verificationToken: formDetails.verificationToken,
         otp: formDetails.otp,
       });
       if (verified) {
         setFormDetails(prevDetails => ({
           ...prevDetails,
-          otpToken: '',
           resendTimeOutInSec: 0,
         }));
         Alert.alert('Success', 'OTP Verified Successfully.');
-        if (route.params?.onCallbackFunction) {
-          route.params.onCallbackFunction({
-            userId: route.params.userId,
-            accessToken: route.params.accessToken,
+        if (route.params.parent === 'SignUp') {
+          await route.params.onSaveUserDraft({
+            userId: userId,
+            accessToken: accessToken,
           });
         }
         navigation.navigate(link, {
@@ -89,10 +94,7 @@ const usePhoneVerificationHandlers = ({
         Alert.alert('Invalid OTP', 'Please enter a valid OTP.');
       }
     } catch (error) {
-      Alert.alert(
-        'Number Not Found',
-        'The provided phone number does not exist. Please check the number and try again.',
-      );
+      Alert.alert('Invalid OTP', 'Please enter a valid OTP.');
     }
   };
   return {

@@ -3,7 +3,6 @@ import {Text, View, StyleSheet} from 'react-native';
 import {ModalPopUp, TextWithLine} from '../../../components/common/components';
 import {useAuthenticateUser, useLoginHandlers} from './hooks';
 import {Title, Button, TextInput} from 'react-native-paper';
-import {useMeContext} from '../../../../wrapper/Me';
 
 interface LoginPageProps {
   navigation: any;
@@ -12,9 +11,6 @@ interface LoginPageProps {
 const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
   const styles = useStyles();
   const {authenticateUser, loading} = useAuthenticateUser();
-  const {user} = useMeContext();
-
-  console.log(user);
 
   const {
     credential,

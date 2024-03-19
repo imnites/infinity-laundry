@@ -61,7 +61,7 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
 
       setFormValues(prevDetails => ({...prevDetails, isSubmitting: false}));
       if (isPasswordUpdated) {
-        if (route.params.parent === 'signUp') {
+        if (route.params.parent === 'SignUp') {
           Alert.alert(
             'Account Created',
             'Your account has been successfully created.',

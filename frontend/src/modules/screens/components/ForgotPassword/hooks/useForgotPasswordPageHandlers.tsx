@@ -47,10 +47,10 @@ const useForgotPasswordPageHandlers = ({
 
       if (success) {
         navigation.navigate('PhoneVerification', {
-          parent: 'forgetPassword',
+          parent: 'ForgetPassword',
           link: 'ResetPassword',
           contact: values.userName,
-          token: verificationToken,
+          verificationToken: verificationToken,
         });
       }
     } catch (error) {

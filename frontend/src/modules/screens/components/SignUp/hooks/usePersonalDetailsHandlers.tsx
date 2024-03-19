@@ -74,7 +74,7 @@ const usePersonalDetailsHandlers = ({
     setErrors({...errors, [field]: ''});
   };
 
-  const onCallbackFunction = useCallback(
+  const onSaveUserDraft = useCallback(
     async ({userId, accessToken}: any) => {
       const headers = {authorization: `Basic ${accessToken}`};
       await saveUserDraft({draftId: userId}, headers);
@@ -99,11 +99,12 @@ const usePersonalDetailsHandlers = ({
       });
       if (success) {
         navigation.navigate('PhoneVerification', {
-          parent: 'signUp',
+          parent: 'SignUp',
           link: 'ResetPassword',
           contact: values.phoneNumber,
-          token: verificationToken,
-          onCallbackFunction: onCallbackFunction,
+          verificationToken: verificationToken,
+          otpInput: token,
+          onSaveUserDraft: onSaveUserDraft,
         });
       }
     } catch (error) {

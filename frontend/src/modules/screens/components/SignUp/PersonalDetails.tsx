@@ -72,7 +72,7 @@ const PersonalDetails: React.FC = ({navigation}: any) => {
         disabled={loading}
         style={styles.continueButton}
         labelStyle={styles.continueButtonText}>
-        Continue
+        {loading ? '' : 'Continue'}
       </Button>
     </View>
   );
