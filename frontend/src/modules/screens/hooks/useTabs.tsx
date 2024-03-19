@@ -1,6 +1,6 @@
 import React from 'react';
-import {HomeTab, MachineTab, StatusTab} from '../../components/tabs';
-import {TabIcon} from '../../components/common/components';
+import {HomeTab, MachineTab, StatusTab} from '~/modules/tabs';
+import {TabIcon} from '~/modules/common/components';
 
 interface TabsReturnType {
   id: number;
@@ -17,8 +17,8 @@ const useTabs = (): TabsReturnType[] => {
       component: HomeTab,
       options: {
         headerShown: false,
-        tabBarIcon: () => <TabIcon name="home" color="#000" size={24} />,
-      },
+        tabBarIcon: () => <TabIcon name="home" color="#000" size={24} />
+      }
     },
     {
       id: 2,
@@ -26,8 +26,8 @@ const useTabs = (): TabsReturnType[] => {
       component: MachineTab,
       options: {
         headerShown: false,
-        tabBarIcon: () => <TabIcon name="cog" color="#000" size={24} />,
-      },
+        tabBarIcon: () => <TabIcon name="cog" color="#000" size={24} />
+      }
     },
     {
       id: 3,
@@ -35,9 +35,9 @@ const useTabs = (): TabsReturnType[] => {
       component: StatusTab,
       options: {
         headerShown: false,
-        tabBarIcon: () => <TabIcon name="signal" color="#000" size={24} />,
-      },
-    },
+        tabBarIcon: () => <TabIcon name="signal" color="#000" size={24} />
+      }
+    }
   ];
 };
 

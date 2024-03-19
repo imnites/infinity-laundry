@@ -16,6 +16,11 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AmountInput = {
+  amount: Scalars['Float']['input'];
+  currencyId: Scalars['String']['input'];
+};
+
 export type AuthResult = {
   __typename?: 'AuthResult';
   accessToken: Scalars['String']['output'];
@@ -24,6 +29,13 @@ export type AuthResult = {
   refreshExpiresInSec?: Maybe<Scalars['Int']['output']>;
   refreshToken?: Maybe<Scalars['String']['output']>;
   tokenType: Scalars['String']['output'];
+};
+
+export type CashfreeOrderResult = {
+  __typename?: 'CashfreeOrderResult';
+  cfPaymentId: Scalars['String']['output'];
+  orderId: Scalars['String']['output'];
+  paymentSessionId: Scalars['String']['output'];
 };
 
 export type Credential = {
@@ -47,6 +59,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['String']['output']>;
   authenticate: AuthResult;
+  createCashfreeOrder: CashfreeOrderResult;
   createUserDraft: Scalars['String']['output'];
   generatePhoneOTP: OtpResult;
   logout: Scalars['Boolean']['output'];
@@ -59,6 +72,12 @@ export type Mutation = {
 
 export type MutationAuthenticateArgs = {
   credential: Credential;
+};
+
+
+export type MutationCreateCashfreeOrderArgs = {
+  amount: AmountInput;
+  userId: Scalars['String']['input'];
 };
 
 
@@ -134,7 +153,15 @@ export type PhoneNumberInput = {
 export type Query = {
   __typename?: 'Query';
   _?: Maybe<Scalars['String']['output']>;
+  fetchCashfreeOrder: Scalars['Boolean']['output'];
   me: Me;
+};
+
+
+export type QueryFetchCashfreeOrderArgs = {
+  cfPaymentId: Scalars['String']['input'];
+  orderId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 };
 
 export type Subscription = {
@@ -222,9 +249,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AmountInput: AmountInput;
   AuthResult: ResolverTypeWrapper<AuthResult>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  CashfreeOrderResult: ResolverTypeWrapper<CashfreeOrderResult>;
   Credential: Credential;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Me: ResolverTypeWrapper<Me>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -241,9 +271,12 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AmountInput: AmountInput;
   AuthResult: AuthResult;
   Boolean: Scalars['Boolean']['output'];
+  CashfreeOrderResult: CashfreeOrderResult;
   Credential: Credential;
+  Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
   Me: Me;
   Mutation: {};
@@ -268,6 +301,13 @@ export type AuthResultResolvers<ContextType = any, ParentType extends ResolversP
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type CashfreeOrderResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CashfreeOrderResult'] = ResolversParentTypes['CashfreeOrderResult']> = ResolversObject<{
+  cfPaymentId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  orderId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  paymentSessionId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Me'] = ResolversParentTypes['Me']> = ResolversObject<{
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -282,6 +322,7 @@ export type MeResolvers<ContextType = any, ParentType extends ResolversParentTyp
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   authenticate?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'credential'>>;
+  createCashfreeOrder?: Resolver<ResolversTypes['CashfreeOrderResult'], ParentType, ContextType, RequireFields<MutationCreateCashfreeOrderArgs, 'amount' | 'userId'>>;
   createUserDraft?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateUserDraftArgs, 'input'>>;
   generatePhoneOTP?: Resolver<ResolversTypes['OTPResult'], ParentType, ContextType, RequireFields<MutationGeneratePhoneOtpArgs, 'otpInput'>>;
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationLogoutArgs>>;
@@ -316,6 +357,7 @@ export type PhoneNumberResolvers<ContextType = any, ParentType extends Resolvers
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fetchCashfreeOrder?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryFetchCashfreeOrderArgs, 'cfPaymentId' | 'orderId' | 'userId'>>;
   me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
 }>;
 
@@ -325,6 +367,7 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   AuthResult?: AuthResultResolvers<ContextType>;
+  CashfreeOrderResult?: CashfreeOrderResultResolvers<ContextType>;
   Me?: MeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   OTPResult?: OtpResultResolvers<ContextType>;

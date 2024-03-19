@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {Title, TextInput, Button} from 'react-native-paper';
 import {usePersonalDetailsStyles, usePersonalDetailsHandlers} from './hooks';
-import {useCreateUserDraft} from '../../../components/common/hooks/users';
+import {useCreateUserDraft} from '~/modules/common/hooks';
 
 const PersonalDetails: React.FC = ({navigation}: any) => {
   const styles = usePersonalDetailsStyles();
@@ -11,7 +11,7 @@ const PersonalDetails: React.FC = ({navigation}: any) => {
   const {values, errors, handleChange, handleSubmit} =
     usePersonalDetailsHandlers({
       navigation,
-      createUserDraft,
+      createUserDraft
     });
 
   return (
@@ -24,7 +24,7 @@ const PersonalDetails: React.FC = ({navigation}: any) => {
         style={styles.input}
         maxLength={15}
         theme={{
-          colors: {primary: '#3930d8'},
+          colors: {primary: '#3930d8'}
         }}
       />
       {errors.firstName && <Text style={styles.error}>{errors.firstName}</Text>}
@@ -35,7 +35,7 @@ const PersonalDetails: React.FC = ({navigation}: any) => {
         style={styles.input}
         maxLength={15}
         theme={{
-          colors: {primary: '#3930d8'},
+          colors: {primary: '#3930d8'}
         }}
       />
       {errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
@@ -47,7 +47,7 @@ const PersonalDetails: React.FC = ({navigation}: any) => {
         style={styles.input}
         maxLength={30}
         theme={{
-          colors: {primary: '#3930d8'},
+          colors: {primary: '#3930d8'}
         }}
       />
       {errors.email && <Text style={styles.error}>{errors.email}</Text>}
@@ -59,7 +59,7 @@ const PersonalDetails: React.FC = ({navigation}: any) => {
         style={styles.input}
         maxLength={10}
         theme={{
-          colors: {primary: '#3930d8'},
+          colors: {primary: '#3930d8'}
         }}
       />
       {errors.phoneNumber && (

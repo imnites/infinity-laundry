@@ -12,7 +12,7 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
     formValues,
     handlePasswordChange,
     handleConfirmPasswordChange,
-    handleSubmit,
+    handleSubmit
   } = useResetPassword({navigation, route});
 
   return (
@@ -25,7 +25,7 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
         value={formValues.password}
         maxLength={15}
         theme={{
-          colors: {primary: '#3930d8'},
+          colors: {primary: '#3930d8'}
         }}
       />
       <TextInput
@@ -36,7 +36,7 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
         value={formValues.confirmPassword}
         maxLength={15}
         theme={{
-          colors: {primary: '#3930d8'},
+          colors: {primary: '#3930d8'}
         }}
       />
       <View style={styles.tabsContainer}>
@@ -44,8 +44,8 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
           style={[
             styles.tab,
             formValues.strength === 'Weak' && {
-              backgroundColor: theme.colors.weak,
-            },
+              backgroundColor: theme.colors.weak
+            }
           ]}
           labelStyle={styles.tabLabel}>
           Weak
@@ -54,8 +54,8 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
           style={[
             styles.tab,
             formValues.strength === 'Medium' && {
-              backgroundColor: theme.colors.medium,
-            },
+              backgroundColor: theme.colors.medium
+            }
           ]}
           labelStyle={styles.tabLabel}>
           Medium
@@ -64,8 +64,8 @@ const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
           style={[
             styles.tab,
             formValues.strength === 'Strong' && {
-              backgroundColor: theme.colors.success,
-            },
+              backgroundColor: theme.colors.success
+            }
           ]}
           labelStyle={styles.tabLabel}>
           Strong
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   input: {
     width: '80%',
@@ -99,32 +99,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 10
   },
   tabsContainer: {
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 10
   },
   tab: {
-    marginHorizontal: 5,
+    marginHorizontal: 5
   },
   tabLabel: {
-    color: 'black',
+    color: 'black'
   },
   error: {
     color: 'red',
     alignSelf: 'flex-start',
-    marginVertical: 5,
+    marginVertical: 5
   },
   submitButton: {
     width: '80%',
     backgroundColor: '#3930d8',
-    borderRadius: 5,
+    borderRadius: 5
   },
   submitButtonText: {
     color: 'white',
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });
 
 const theme = {
@@ -133,8 +133,8 @@ const theme = {
     ...DefaultTheme.colors,
     success: '#32CD32',
     medium: '#FFA500',
-    weak: '#FF0000',
-  },
+    weak: '#FF0000'
+  }
 };
 
 export default ResetPassword;

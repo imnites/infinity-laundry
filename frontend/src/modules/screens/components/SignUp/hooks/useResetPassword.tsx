@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {useUpdatePassword} from '../../../../components/common/hooks/users';
+import {useUpdatePassword} from '~/modules/common/hooks';
 import {Alert} from 'react-native';
 
 interface ResetPasswordPropsType {
@@ -15,7 +15,7 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
     password: '',
     confirmPassword: '',
     strength: '',
-    isSubmitting: false,
+    isSubmitting: false
   });
 
   const calculateStrength = (text: string) => {
@@ -54,9 +54,9 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
       const headers = {authorization: `Basic ${accessToken}`};
       const isPasswordUpdated = await updatePassword(
         {
-          password: formValues.password,
+          password: formValues.password
         },
-        headers,
+        headers
       );
 
       setFormValues(prevDetails => ({...prevDetails, isSubmitting: false}));
@@ -65,11 +65,11 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
           Alert.alert(
             'Account Created',
             'Your account has been successfully created.',
-            [{text: 'OK', onPress: () => navigation.navigate('LoginPage')}],
+            [{text: 'OK', onPress: () => navigation.navigate('LoginPage')}]
           );
         } else {
           Alert.alert('Success!', 'Your Password Reset Successful.', [
-            {text: 'OK', onPress: () => navigation.navigate('LoginPage')},
+            {text: 'OK', onPress: () => navigation.navigate('LoginPage')}
           ]);
         }
       }
@@ -82,7 +82,7 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
     formValues,
     handlePasswordChange,
     handleConfirmPasswordChange,
-    handleSubmit,
+    handleSubmit
   };
 };
 

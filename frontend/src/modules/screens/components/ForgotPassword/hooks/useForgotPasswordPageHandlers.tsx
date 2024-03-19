@@ -1,31 +1,27 @@
 import {useState, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {useGeneratePhoneOTP} from '../../../../components/common/hooks/users';
-import {
-  isValidEmail,
-  isValidPhoneNumber,
-  getOTPInput,
-} from '../../../../utils/signUpUtil';
+import {useGeneratePhoneOTP} from '~/modules/common/hooks';
+import {isValidEmail, isValidPhoneNumber, getOTPInput} from '~/utils';
 
 interface ForgotPasswordHandlersPropsType {
   navigation: any;
 }
 
 const useForgotPasswordPageHandlers = ({
-  navigation,
+  navigation
 }: ForgotPasswordHandlersPropsType) => {
   const {generatePhoneOTP} = useGeneratePhoneOTP();
   const [values, setValues] = useState({
-    userName: '',
+    userName: ''
   });
 
   const onUserNameChange = useCallback(
     (text: string) =>
       setValues({
         ...values,
-        userName: text,
+        userName: text
       }),
-    [values],
+    [values]
   );
 
   const handleSubmit = async () => {
@@ -35,14 +31,14 @@ const useForgotPasswordPageHandlers = ({
     ) {
       Alert.alert(
         'Invalid Input',
-        'Please enter a valid email address or phone number.',
+        'Please enter a valid email address or phone number.'
       );
       return;
     }
 
     try {
       const {success, verificationToken} = await generatePhoneOTP({
-        otpInput: getOTPInput(values.userName),
+        otpInput: getOTPInput(values.userName)
       });
 
       if (success) {
@@ -50,13 +46,13 @@ const useForgotPasswordPageHandlers = ({
           parent: 'ForgetPassword',
           link: 'ResetPassword',
           contact: values.userName,
-          verificationToken: verificationToken,
+          verificationToken: verificationToken
         });
       }
     } catch (error) {
       Alert.alert(
         'Account Not Found',
-        'This account does not exist. Please sign up.',
+        'This account does not exist. Please sign up.'
       );
     }
   };
@@ -65,7 +61,7 @@ const useForgotPasswordPageHandlers = ({
     values,
     setValues,
     onUserNameChange,
-    handleSubmit,
+    handleSubmit
   };
 };
 

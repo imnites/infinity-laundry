@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {OtpInput} from '../../../components/common/components';
+import {OtpInput} from '~/modules/common/components';
 import {usePhoneVerificationHandlers} from '../SignUp/hooks';
-import {getVerificationMessage} from '../../../utils/signUpUtil';
+import {getVerificationMessage} from '~/utils';
 import {Button, Provider as PaperProvider, Title} from 'react-native-paper';
 
 interface PhoneVerificationProps {
@@ -12,7 +12,7 @@ interface PhoneVerificationProps {
 
 const PhoneVerification: React.FC<PhoneVerificationProps> = ({
   navigation,
-  route,
+  route
 }) => {
   const {
     isGeneratingOTP,
@@ -21,10 +21,10 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
     setFormDetails,
     onOTPChange,
     handleGetOTP,
-    handlePhoneVerification,
+    handlePhoneVerification
   } = usePhoneVerificationHandlers({
     route,
-    navigation,
+    navigation
   });
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
       if (formDetails.resendTimeOutInSec > 0) {
         setFormDetails(prevDetails => ({
           ...prevDetails,
-          resendTimeOutInSec: formDetails.resendTimeOutInSec - 1,
+          resendTimeOutInSec: formDetails.resendTimeOutInSec - 1
         }));
       }
     }, 1000);
@@ -96,38 +96,38 @@ const useStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       padding: 20,
-      backgroundColor: '#fff',
+      backgroundColor: '#fff'
     },
     titleText: {
       color: '#3930d8',
       marginTop: 20,
       marginBottom: 10,
-      fontSize: 24,
+      fontSize: 24
     },
     content: {
       width: '100%',
       alignItems: 'center',
-      paddingHorizontal: 20,
+      paddingHorizontal: 20
     },
     numberInfoContainer: {
-      marginBottom: 20,
+      marginBottom: 20
     },
     numberInfoMessage: {
-      textAlign: 'center',
+      textAlign: 'center'
     },
     otpInputContainer: {
-      marginBottom: 20,
+      marginBottom: 20
     },
     resendContainer: {
       flexDirection: 'row',
-      marginBottom: 20,
+      marginBottom: 20
     },
     resendMessage: {
-      textAlign: 'center',
+      textAlign: 'center'
     },
     resendButton: {},
     resendButtonText: {
-      color: '#3930d8',
+      color: '#3930d8'
     },
     verifyButton: {
       width: '100%',
@@ -135,19 +135,19 @@ const useStyles = () => {
       height: 45,
       justifyContent: 'center',
       borderRadius: 5,
-      paddingVertical: 10,
+      paddingVertical: 10
     },
     verifyButtonText: {
       color: 'white',
       textAlign: 'center',
       marginTop: 'auto',
       marginBottom: 'auto',
-      fontSize: 20,
+      fontSize: 20
     },
     sec: {
       marginTop: 9.5,
       marginLeft: -12,
-      color: 'black',
-    },
+      color: 'black'
+    }
   });
 };

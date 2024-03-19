@@ -1,10 +1,7 @@
 import {useState, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {formattedSignUpInput} from '../../../../utils/signUpUtil';
-import {
-  useGeneratePhoneOTP,
-  useSaveUserDraft,
-} from '../../../../components/common/hooks/users';
+import {formattedSignUpInput} from '~/utils';
+import {useGeneratePhoneOTP, useSaveUserDraft} from '~/modules/common/hooks';
 
 interface FormStatePropsType {
   navigation: any;
@@ -52,7 +49,7 @@ const validateForm = ({values, setErrors}: ValidateFormPropTypes) => {
 
 const usePersonalDetailsHandlers = ({
   navigation,
-  createUserDraft,
+  createUserDraft
 }: FormStatePropsType) => {
   const {generatePhoneOTP} = useGeneratePhoneOTP();
   const {saveUserDraft} = useSaveUserDraft();
@@ -60,13 +57,13 @@ const usePersonalDetailsHandlers = ({
     firstName: '',
     lastName: '',
     email: '',
-    phoneNumber: '',
+    phoneNumber: ''
   });
   const [errors, setErrors] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    phoneNumber: '',
+    phoneNumber: ''
   });
 
   const handleChange = (field: string, value: string) => {
@@ -79,7 +76,7 @@ const usePersonalDetailsHandlers = ({
       const headers = {authorization: `Basic ${accessToken}`};
       await saveUserDraft({draftId: userId}, headers);
     },
-    [saveUserDraft],
+    [saveUserDraft]
   );
 
   const handleSubmit = async () => {
@@ -88,14 +85,14 @@ const usePersonalDetailsHandlers = ({
     }
 
     const token = await createUserDraft({
-      input: formattedSignUpInput(values),
+      input: formattedSignUpInput(values)
     });
 
     try {
       const {success, verificationToken} = await generatePhoneOTP({
         otpInput: {
-          id: token,
-        },
+          id: token
+        }
       });
       if (success) {
         navigation.navigate('PhoneVerification', {
@@ -104,13 +101,13 @@ const usePersonalDetailsHandlers = ({
           contact: values.phoneNumber,
           verificationToken: verificationToken,
           otpInput: token,
-          onSaveUserDraft: onSaveUserDraft,
+          onSaveUserDraft: onSaveUserDraft
         });
       }
     } catch (error) {
       Alert.alert(
         'Account Not Found',
-        'This account does not exist. Please sign up.',
+        'This account does not exist. Please sign up.'
       );
     }
   };

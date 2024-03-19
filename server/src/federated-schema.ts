@@ -1,4 +1,9 @@
-import { userTypeDefs, userResolvers } from './modules';
+import {
+  userTypeDefs,
+  userResolvers,
+  orderTypeDefs,
+  orderResolvers
+} from './modules';
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 
 const root = `
@@ -16,6 +21,6 @@ type Subscription {
 `;
 
 export default {
-  typeDefs: mergeTypeDefs([root, userTypeDefs]),
-  resolvers: mergeResolvers([userResolvers])
+  typeDefs: mergeTypeDefs([root, userTypeDefs, orderTypeDefs]),
+  resolvers: mergeResolvers([userResolvers, orderResolvers])
 };

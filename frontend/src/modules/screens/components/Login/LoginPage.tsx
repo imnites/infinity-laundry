@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {ModalPopUp, TextWithLine} from '../../../components/common/components';
+import {ModalPopUp, TextWithLine} from '~/modules/common/components';
 import {useAuthenticateUser, useLoginHandlers} from './hooks';
 import {Title, Button, TextInput} from 'react-native-paper';
 
@@ -21,10 +21,10 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
     onUserNameChange,
     onPasswordChange,
     onSubmit,
-    onSignUp,
+    onSignUp
   } = useLoginHandlers({
     authenticateUser,
-    navigation,
+    navigation
   });
 
   return (
@@ -37,7 +37,7 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
         onChangeText={onUserNameChange}
         maxLength={15}
         theme={{
-          colors: {primary: '#3930d8'},
+          colors: {primary: '#3930d8'}
         }}
       />
       <View style={styles.inputContainer}>
@@ -49,7 +49,7 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
           onChangeText={onPasswordChange}
           maxLength={15}
           theme={{
-            colors: {primary: '#3930d8'},
+            colors: {primary: '#3930d8'}
           }}
           right={
             <TextInput.Icon
@@ -106,18 +106,18 @@ const useStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       padding: 20,
-      backgroundColor: '#fff',
+      backgroundColor: '#fff'
     },
     titleText: {
       color: '#3930d8',
       marginTop: 20,
       marginBottom: 10,
-      fontSize: 24,
+      fontSize: 24
     },
     noAccount: {
       fontSize: 15,
       fontWeight: 'bold',
-      textAlign: 'center',
+      textAlign: 'center'
     },
     input: {
       width: '80%',
@@ -126,28 +126,28 @@ const useStyles = () => {
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      marginBottom: 10,
+      marginBottom: 10
     },
     or: {
-      marginVertical: 10,
+      marginVertical: 10
     },
     button: {
-      width: '80%',
+      width: '80%'
     },
     container1: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 10,
+      marginVertical: 10
     },
     line: {
       flex: 1,
       height: 1,
-      backgroundColor: 'black',
+      backgroundColor: 'black'
     },
     text: {
       marginHorizontal: 10,
       color: 'black',
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     },
     inputContainer: {
       flexDirection: 'row',
@@ -157,7 +157,7 @@ const useStyles = () => {
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      marginBottom: 10,
+      marginBottom: 10
     },
     inputText: {
       flex: 1,
@@ -165,43 +165,43 @@ const useStyles = () => {
       backgroundColor: 'transparent',
       borderWidth: 1,
       borderColor: '#ccc',
-      borderRadius: 5,
+      borderRadius: 5
     },
     loginButton: {
       width: '80%',
       backgroundColor: '#3930d8',
       padding: 10,
-      borderRadius: 5,
+      borderRadius: 5
     },
     loginButtonText: {
       color: 'white',
-      textAlign: 'center',
+      textAlign: 'center'
     },
     forgotButton: {
       alignSelf: 'flex-end',
-      paddingRight: 38,
+      paddingRight: 38
     },
     forgotButtonText: {
-      color: 'red',
+      color: 'red'
     },
     signUpButton: {
-      marginTop: -10,
+      marginTop: -10
     },
     signUpButtonText: {
       color: '#3930d8',
-      textDecorationLine: 'underline',
+      textDecorationLine: 'underline'
     },
     continueButton: {
       width: '80%',
       backgroundColor: '#3930d8',
-      borderRadius: 5,
+      borderRadius: 5
     },
     continueButtonText: {
       color: 'white',
-      textAlign: 'center',
+      textAlign: 'center'
     },
     noAccountContainer: {
-      flexDirection: 'row',
-    },
+      flexDirection: 'row'
+    }
   });
 };
