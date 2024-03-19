@@ -2,24 +2,24 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useMeContext} from '~/modules/me';
-import LoginPage from '~/modules/screens/components/Login/LoginPage';
-import {ForgotPasswordPage} from '~/modules/screens/components/ForgotPassword';
+import {useMeContext} from '~/me';
+import {LoginPage} from '~/pages/Login';
+import {ForgotPasswordPage} from '~/pages/ForgotPassword';
 import {
   PersonalDetails,
   PhoneVerification,
   ResetPassword
-} from '~/modules/screens/components/SignUp';
-import {MainPage} from '~/modules/screens';
+} from '~/pages/SignUp';
+import {MainPage} from '~/pages/MainPage';
 
-interface StachScreen {
+interface StackScreen {
   id: number;
   name: string;
   component: React.FC<any>;
   options: any;
 }
 
-export const stackScreens: StachScreen[] = [
+export const stackScreens: StackScreen[] = [
   {
     id: 1,
     name: 'LoginPage',

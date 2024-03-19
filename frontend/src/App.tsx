@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {ApolloProvider} from '@apollo/client';
 import {client} from './apolloClient';
-import {MeContextProvider} from '~/modules/me';
+import {MeContextProvider} from '~/me';
 import {Navigation} from './Navigation';
 
 const App: React.FC = () => {
