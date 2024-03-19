@@ -7,7 +7,24 @@ export const createUserDraft = async (
   context: Context
 ): Promise<string> => {
   const id = crypto.randomUUID();
-  await context.redisClient.saveData(id, { ...args.input, id });
 
-  return id;
+  const [userDetailsByEmail, userDetailsByPhoneNumber] = await Promise.all([
+    context.serviceClients.userService.getUserDetailsByEmail(args.input.email),
+    context.serviceClients.userService.getUserDetailsByPhoneNumber(args.input.phoneNumber)
+  ]);
+
+  const { GraphQLError } = require('graphql');
+  if (userDetailsByEmail) {
+    throw new GraphQLError('Email already exists', null, null, null, null, null, {
+      code: 201
+    });
+
+  } else if (userDetailsByPhoneNumber) {
+    throw new GraphQLError('Phone number already exists', null, null, null, null, null, {
+      code: 202
+    });
+  } else {
+    await context.redisClient.saveData(id, { ...args.input, id });
+    return id;
+  }
 };

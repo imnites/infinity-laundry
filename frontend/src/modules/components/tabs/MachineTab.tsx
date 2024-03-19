@@ -15,7 +15,6 @@ const MachineTab: React.FC = () => {
 
   const handleQRScan = async () => {
     const data = await QRCodeScannerModule.scan();
-    console.log('data', data);
   };
 
   const handleSubmitMachineCode = () => {};

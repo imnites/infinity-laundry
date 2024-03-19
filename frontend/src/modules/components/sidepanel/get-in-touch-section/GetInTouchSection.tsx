@@ -1,20 +1,32 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, NativeModules} from 'react-native';
+import {Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const GetInTouchSection: React.FC = () => (
-  <>
-    <Text style={styles.sectionTitle}>Get in Touch</Text>
-    <TouchableOpacity style={styles.item} onPress={() => {}}>
-      <Icon name="document-text-outline" size={24} color="black" />
-      <Text style={styles.itemText}>Terms & Conditions</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.item} onPress={() => {}}>
-      <Icon name="log-out-outline" size={24} color="black" />
-      <Text style={styles.itemText}>Log Out</Text>
-    </TouchableOpacity>
-  </>
-);
+const GetInTouchSection: React.FC = () => {
+  const {SecureStorageModule} = NativeModules;
+  const handleLogout = async () => {
+    await SecureStorageModule.deleteValue('access-token');
+    await SecureStorageModule.deleteValue('token-type');
+  };
+
+  return (
+    <>
+      <Text style={styles.sectionTitle}>Get in Touch</Text>
+      <TouchableOpacity style={styles.item} onPress={() => {}}>
+        <Icon name="document-text-outline" size={24} color="black" />
+        <Text style={styles.itemText}>Terms & Conditions</Text>
+      </TouchableOpacity>
+      <Button
+        mode="outlined"
+        onPress={handleLogout}
+        style={styles.button}
+        labelStyle={styles.itemText}>
+        Log Out
+      </Button>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   sectionTitle: {
@@ -31,6 +43,9 @@ const styles = StyleSheet.create({
   itemText: {
     marginLeft: 10,
     fontSize: 16,
+  },
+  button: {
+    marginTop: 10,
   },
 });
 
