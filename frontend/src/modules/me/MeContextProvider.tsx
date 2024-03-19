@@ -1,8 +1,8 @@
 import React, {ReactElement, useState} from 'react';
-import {Text, View} from 'react-native';
 import {MeContext} from './MeContext';
 import {Me, useMe} from './useMe';
 import {useRefreshToken} from '../common/hooks/useRefreshToken';
+import {LoadingScreen} from '~/modules/common/components';
 
 interface MeContextProviderProps {
   children: ReactElement;
@@ -29,13 +29,7 @@ export const MeContextProvider: React.FC<MeContextProviderProps> = ({
 
   return (
     <MeContext.Provider value={{me, setMe}}>
-      {isLoading ? (
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      ) : (
-        children
-      )}
+      {isLoading ? <LoadingScreen /> : children}
     </MeContext.Provider>
   );
 };
