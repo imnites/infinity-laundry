@@ -1,10 +1,7 @@
 import {useState, useCallback} from 'react';
 import {Alert} from 'react-native';
-import {
-  useGeneratePhoneOTP,
-  useValidatePhoneOTP,
-} from '../../../../components/common/hooks/users';
-import {getOTPInput, isValidEmail} from '../../../../utils/signUpUtil';
+import {useGeneratePhoneOTP, useValidatePhoneOTP} from '~/modules/common/hooks';
+import {getOTPInput, isValidEmail} from '~/utils';
 
 const DEFAULT_RESEND_TIME_IN_SEC = 30;
 
@@ -23,7 +20,7 @@ interface PhoneVerificationHandlersType {
 
 const usePhoneVerificationHandlers = ({
   route,
-  navigation,
+  navigation
 }: PhoneVerificationHandlersType) => {
   const {link, contact, otpInput, verificationToken} = route.params;
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
@@ -32,7 +29,7 @@ const usePhoneVerificationHandlers = ({
   const [formDetails, setFormDetails] = useState({
     otp: '',
     verificationToken: verificationToken,
-    resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC,
+    resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC
   });
 
   const onOTPChange = useCallback((value: any) => {
@@ -46,23 +43,23 @@ const usePhoneVerificationHandlers = ({
           otpInput:
             route.params.link === 'SignUp'
               ? {
-                  id: otpInput,
+                  id: otpInput
                 }
-              : getOTPInput(route.params.contact),
+              : getOTPInput(route.params.contact)
         });
 
       if (isOTPSent) {
         setFormDetails(prevDetails => ({
           ...prevDetails,
           resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC,
-          verificationToken: newVerificationToken,
+          verificationToken: newVerificationToken
         }));
         Alert.alert('OTP Sent', getOTPSentAlertMessage(contact));
       }
     } catch (error) {
       Alert.alert(
         'Number Not Found',
-        'Invalid phone number. Please check and try again.',
+        'Invalid phone number. Please check and try again.'
       );
     }
   };
@@ -71,24 +68,24 @@ const usePhoneVerificationHandlers = ({
     try {
       const {verified, userId, accessToken} = await validatePhoneOTP({
         verificationToken: formDetails.verificationToken,
-        otp: formDetails.otp,
+        otp: formDetails.otp
       });
       if (verified) {
         setFormDetails(prevDetails => ({
           ...prevDetails,
-          resendTimeOutInSec: 0,
+          resendTimeOutInSec: 0
         }));
         Alert.alert('Success', 'OTP Verified Successfully.');
         if (route.params.parent === 'SignUp') {
           await route.params.onSaveUserDraft({
             userId: userId,
-            accessToken: accessToken,
+            accessToken: accessToken
           });
         }
         navigation.navigate(link, {
           ...route.params,
           userId,
-          accessToken,
+          accessToken
         });
       } else {
         Alert.alert('Invalid OTP', 'Please enter a valid OTP.');
@@ -104,7 +101,7 @@ const usePhoneVerificationHandlers = ({
     setFormDetails,
     onOTPChange,
     handleGetOTP,
-    handlePhoneVerification,
+    handlePhoneVerification
   };
 };
 

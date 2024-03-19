@@ -11,6 +11,10 @@ export class UserInfo extends Model {
     return this.getDataValue('email') as string;
   }
 
+  public get Name(): string {
+    return `${this.getDataValue('firstName') as string} ${this.getDataValue('lastName') as string}`;
+  }
+
   public get PhoneNumber(): PhoneNumber {
     const phoneNumber = this.getDataValue('phoneNumber') as string;
 

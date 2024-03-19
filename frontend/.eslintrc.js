@@ -5,8 +5,9 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        endOfLine: 'auto',
-      },
+        endOfLine: 'auto'
+      }
     ],
-  },
+    'comma-dangle': ['error', 'never']
+  }
 };

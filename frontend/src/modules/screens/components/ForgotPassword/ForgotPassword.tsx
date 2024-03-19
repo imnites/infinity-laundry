@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Button} from '../../../components/common/components';
+import {Button} from '~/modules/common/components';
 import {useForgotPasswordPageHandlers} from './hooks';
 import {Provider as PaperProvider, Title, TextInput} from 'react-native-paper';
 
@@ -9,11 +9,11 @@ interface ForgotPasswordPageProps {
 }
 
 const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
-  navigation,
+  navigation
 }) => {
   const {values, onUserNameChange, handleSubmit} =
     useForgotPasswordPageHandlers({
-      navigation,
+      navigation
     });
 
   const styles = useStyles();
@@ -32,7 +32,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
           onPress={handleSubmit}
           classes={{
             button: styles.submitButton,
-            buttonText: styles.submitButtonText,
+            buttonText: styles.submitButtonText
           }}
         />
       </View>
@@ -50,13 +50,13 @@ const useStyles = () => {
       justifyContent: 'center',
       alignItems: 'center',
       padding: 20,
-      backgroundColor: '#fff',
+      backgroundColor: '#fff'
     },
     titleText: {
       color: '#3930d8',
       marginTop: 20,
       marginBottom: 10,
-      fontSize: 24,
+      fontSize: 24
     },
     input: {
       width: '80%',
@@ -65,24 +65,24 @@ const useStyles = () => {
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      marginBottom: 10,
+      marginBottom: 10
     },
     error: {
       color: 'red',
       alignSelf: 'flex-start',
       position: 'relative',
       left: 20,
-      top: -10,
+      top: -10
     },
     submitButton: {
       width: '80%',
       backgroundColor: '#3930d8',
       padding: 10,
-      borderRadius: 5,
+      borderRadius: 5
     },
     submitButtonText: {
       color: 'white',
-      textAlign: 'center',
-    },
+      textAlign: 'center'
+    }
   });
 };

@@ -7,14 +7,14 @@ interface LoginHandlerPropsType {
 
 const useLoginHandlers = ({
   authenticateUser,
-  navigation,
+  navigation
 }: LoginHandlerPropsType) => {
   const [credential, setCredential] = useState<{
     userName: string;
     password: string;
   }>({
     userName: '',
-    password: '',
+    password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isInvalidCredentials, setInvalidCredentials] = useState(false);
@@ -23,23 +23,23 @@ const useLoginHandlers = ({
     (text: string) =>
       setCredential({
         ...credential,
-        userName: text,
+        userName: text
       }),
-    [credential, setCredential],
+    [credential, setCredential]
   );
 
   const onPasswordChange = useCallback(
     (text: string) =>
       setCredential({
         ...credential,
-        password: text,
+        password: text
       }),
-    [credential, setCredential],
+    [credential, setCredential]
   );
 
   const onReset = useCallback(
     () => setCredential({userName: '', password: ''}),
-    [setCredential],
+    [setCredential]
   );
 
   const toggleShowPassword = () => {
@@ -66,12 +66,12 @@ const useLoginHandlers = ({
     credential,
     navigation,
     onReset,
-    setInvalidCredentials,
+    setInvalidCredentials
   ]);
 
   const onSignUp = useCallback(
     () => navigation.navigate('PersonalDetails'),
-    [navigation],
+    [navigation]
   );
 
   return {
@@ -83,7 +83,7 @@ const useLoginHandlers = ({
     onUserNameChange,
     onPasswordChange,
     onSubmit,
-    onSignUp,
+    onSignUp
   };
 };
 
