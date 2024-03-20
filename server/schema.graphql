@@ -75,6 +75,16 @@ type AuthResult {
   me: Me!
 }
 
+type Money {
+  amount: Float!
+  currency: Currency
+}
+
+type Currency {
+  code: String!
+  symbol: String!
+}
+
 type Me {
   id: String!
   name: String!
@@ -83,6 +93,7 @@ type Me {
   email: String!
   enabled: Boolean!
   phoneNumber: PhoneNumber
+  balance: Money!
 }
 
 input AmountInput {

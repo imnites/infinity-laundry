@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeTab from './HomeTab';
+import {HomeTab} from './HomeTab';
 import MachineTab from './MachineTab';
 import StatusTab from './StatusTab';
 import HistoryTab from './HistoryTab';

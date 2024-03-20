@@ -44,8 +44,15 @@ export type Credential = {
   userName?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Currency = {
+  __typename?: 'Currency';
+  code: Scalars['String']['output'];
+  symbol: Scalars['String']['output'];
+};
+
 export type Me = {
   __typename?: 'Me';
+  balance: Money;
   email: Scalars['String']['output'];
   enabled: Scalars['Boolean']['output'];
   firstName: Scalars['String']['output'];
@@ -53,6 +60,12 @@ export type Me = {
   lastName: Scalars['String']['output'];
   name: Scalars['String']['output'];
   phoneNumber?: Maybe<PhoneNumber>;
+};
+
+export type Money = {
+  __typename?: 'Money';
+  amount: Scalars['Float']['output'];
+  currency?: Maybe<Currency>;
 };
 
 export type Mutation = {
@@ -254,9 +267,11 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CashfreeOrderResult: ResolverTypeWrapper<CashfreeOrderResult>;
   Credential: Credential;
+  Currency: ResolverTypeWrapper<Currency>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Me: ResolverTypeWrapper<Me>;
+  Money: ResolverTypeWrapper<Money>;
   Mutation: ResolverTypeWrapper<{}>;
   OTPInput: OtpInput;
   OTPResult: ResolverTypeWrapper<OtpResult>;
@@ -276,9 +291,11 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean']['output'];
   CashfreeOrderResult: CashfreeOrderResult;
   Credential: Credential;
+  Currency: Currency;
   Float: Scalars['Float']['output'];
   Int: Scalars['Int']['output'];
   Me: Me;
+  Money: Money;
   Mutation: {};
   OTPInput: OtpInput;
   OTPResult: OtpResult;
@@ -308,7 +325,14 @@ export type CashfreeOrderResultResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type CurrencyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Currency'] = ResolversParentTypes['Currency']> = ResolversObject<{
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Me'] = ResolversParentTypes['Me']> = ResolversObject<{
+  balance?: Resolver<ResolversTypes['Money'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -316,6 +340,12 @@ export type MeResolvers<ContextType = any, ParentType extends ResolversParentTyp
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['PhoneNumber']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type MoneyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Money'] = ResolversParentTypes['Money']> = ResolversObject<{
+  amount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  currency?: Resolver<Maybe<ResolversTypes['Currency']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -368,7 +398,9 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
 export type Resolvers<ContextType = any> = ResolversObject<{
   AuthResult?: AuthResultResolvers<ContextType>;
   CashfreeOrderResult?: CashfreeOrderResultResolvers<ContextType>;
+  Currency?: CurrencyResolvers<ContextType>;
   Me?: MeResolvers<ContextType>;
+  Money?: MoneyResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   OTPResult?: OtpResultResolvers<ContextType>;
   OTPValidationResult?: OtpValidationResultResolvers<ContextType>;

@@ -12,6 +12,7 @@ import {
   ResetPassword
 } from '~/pages/SignUp';
 import {MainPage} from '~/pages/MainPage';
+import PaymentPage from './pages/Payment/PaymentPage';
 
 interface StackScreen {
   id: number;
@@ -73,6 +74,14 @@ export const stackScreens: StackScreen[] = [
     id: 7,
     name: 'ProfileDetailsPage',
     component: ProfileDetailsPage,
+    options: {
+      headerShown: false
+    }
+  },
+  {
+    id: 8,
+    name: 'PaymentPage',
+    component: PaymentPage,
     options: {
       headerShown: false
     }

@@ -13,6 +13,13 @@ export const ME = gql`
       }
       lastName
       firstName
+      balance {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
     }
   }
 `;

@@ -68,6 +68,16 @@ const typeDefs = `
     me: Me!
   }
 
+  type Money {
+    amount: Float!
+    currency: Currency
+  }
+
+  type Currency {
+    code: String!
+    symbol: String!
+  }
+
   type Me {
     id: String!
     name: String!
@@ -76,6 +86,7 @@ const typeDefs = `
     email: String!
     enabled: Boolean!
     phoneNumber: PhoneNumber
+    balance: Money!
   }
 `;
 

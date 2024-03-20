@@ -7,4 +7,11 @@ export type Me = {
   };
   lastName: string;
   firstName: string;
+  balance: {
+    amount: number;
+    currency: {
+      code: string;
+      symbol: string;
+    };
+  };
 };
