@@ -10,11 +10,10 @@ const useUpdatePassword = () => {
   const [updatePassword, {loading}] = useMutation(UPDATE_PASSWORD);
 
   return {
-    updatePassword: async (input: any, headers: any) => {
+    updatePassword: async (input: any) => {
       try {
         const {data} = await updatePassword({
-          variables: input,
-          context: {headers}
+          variables: input
         });
         return data.updatePassword;
       } catch (err) {

@@ -8,7 +8,6 @@ interface ResetPasswordPropsType {
 }
 
 const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
-  const {accessToken} = route.params;
   const {updatePassword} = useUpdatePassword();
 
   const [formValues, setFormValues] = useState({
@@ -51,13 +50,9 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
 
     setFormValues(prevDetails => ({...prevDetails, isSubmitting: true}));
     try {
-      const headers = {authorization: `Basic ${accessToken}`};
-      const isPasswordUpdated = await updatePassword(
-        {
-          password: formValues.password
-        },
-        headers
-      );
+      const isPasswordUpdated = await updatePassword({
+        password: formValues.password
+      });
 
       setFormValues(prevDetails => ({...prevDetails, isSubmitting: false}));
       if (isPasswordUpdated) {
