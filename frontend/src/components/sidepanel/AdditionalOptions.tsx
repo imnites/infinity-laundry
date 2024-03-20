@@ -22,6 +22,10 @@ const AdditionalOptions: React.FC = () => {
 
   const {logout} = useLogout();
 
+  const onTermsAndConditionsClick = useCallback(() => {
+    (navigation.navigate as any)('TermsAndConditions');
+  }, [navigation.navigate]);
+
   const onLogoutClick = useCallback(() => {
     logout(onSuccess, onError);
   }, [logout, onError, onSuccess]);
@@ -30,7 +34,9 @@ const AdditionalOptions: React.FC = () => {
     <View style={styles.root}>
       <Divider />
       <View style={styles.container}>
-        <TouchableOpacity style={styles.item} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.item}
+          onPress={onTermsAndConditionsClick}>
           <Icon name="document-text-outline" size={24} color="black" />
           <Text style={styles.itemText}>Terms & Conditions</Text>
         </TouchableOpacity>

@@ -13,6 +13,7 @@ import {
 } from '~/pages/SignUp';
 import {MainPage} from '~/pages/MainPage';
 import PaymentPage from './pages/Payment/PaymentPage';
+import {TermsAndConditions} from './components/sidepanel/additional-options';
 
 interface StackScreen {
   id: number;
@@ -82,6 +83,14 @@ export const stackScreens: StackScreen[] = [
     id: 8,
     name: 'PaymentPage',
     component: PaymentPage,
+    options: {
+      headerShown: false
+    }
+  },
+  {
+    id: 9,
+    name: 'TermsAndConditions',
+    component: TermsAndConditions,
     options: {
       headerShown: false
     }
