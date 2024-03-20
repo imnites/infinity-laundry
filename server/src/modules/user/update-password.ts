@@ -10,11 +10,12 @@ export const updatePassword = async (
   const user = await context.keyCloakPublicClient.getMe();
 
   if (
-    Boolean(user.allowedAction) &&
-    (user.allowedAction as string[]).includes('UPDATE_PASSWORD')
+    (Boolean(user.allowedAction) &&
+      (user.allowedAction as string[]).includes('UPDATE_PASSWORD')) ||
+    Boolean(user.sub)
   ) {
     await context.keycloakClient.put({
-      methodName: `users/${user.id as string}/reset-password`,
+      methodName: `users/${(user.id as string) || (user.sub as string)}/reset-password`,
       input: {
         type: 'password',
         userLabel: 'password',

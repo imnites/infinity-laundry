@@ -188,6 +188,7 @@ export class KeycloakClient {
         }: {
           response: { data: { error: string; error_description: string } };
         }) => {
+          console.log(response.data);
           throw new GraphQLError(response.data.error, {
             extensions: { description: response.data.error_description }
           });
