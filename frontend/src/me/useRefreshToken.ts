@@ -1,9 +1,7 @@
 import {gql, useMutation} from '@apollo/client';
-import {NativeModules} from 'react-native';
 import {setTokenValue} from '~/utils';
 import {Me} from './types';
-
-const {SecureStorageModule} = NativeModules;
+import {getTokenValue} from '~/utils/token-utils';
 
 const REFRESH_TOKEN = gql`
   mutation refreshToken($refreshToken: String!) {
@@ -31,9 +29,7 @@ export const useRefreshToken = (onError?: () => void) => {
 
   return {
     refreshToken: async (): Promise<Me | undefined> => {
-      const refreshTokenVal = await SecureStorageModule.getValue(
-        'refresh-token'
-      );
+      const {refreshToken: refreshTokenVal} = await getTokenValue();
 
       try {
         if (refreshTokenVal) {

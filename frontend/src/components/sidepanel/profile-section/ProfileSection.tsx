@@ -2,9 +2,6 @@ import React, {useCallback} from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
-import {NativeModules} from 'react-native';
-
-const {SecureStorageModule} = NativeModules;
 
 const ProfileSection: React.FC = () => {
   const navigation = useNavigation();
@@ -14,10 +11,8 @@ const ProfileSection: React.FC = () => {
   }, [navigation.navigate]);
 
   const onChangePasswordPress = useCallback(async () => {
-    const accessToken = await SecureStorageModule.getValue('access-token');
     (navigation.navigate as any)('ResetPassword', {
-      parent: 'ProfileSection',
-      accessToken
+      parent: 'ProfileSection'
     });
   }, [navigation.navigate]);
 

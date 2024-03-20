@@ -1,9 +1,7 @@
 import {ApolloClient, InMemoryCache} from '@apollo/client';
 import {setContext} from 'apollo-link-context';
 import {createHttpLink} from 'apollo-link-http';
-import {NativeModules} from 'react-native';
-
-const {SecureStorageModule} = NativeModules;
+import {getTokenValue} from '~/utils/token-utils';
 
 const LOCAL_SYSTEM_IP_ADDRESS = '192.168.1.8';
 
@@ -12,8 +10,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext(async () => {
-  const accessToken = await SecureStorageModule.getValue('access-token');
-  const tokenType = await SecureStorageModule.getValue('token-type');
+  const {accessToken, tokenType} = await getTokenValue();
 
   return {
     headers: {
