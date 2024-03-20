@@ -1,7 +1,7 @@
 import {useState, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useGeneratePhoneOTP, useValidatePhoneOTP} from '~/hooks';
-import {getOTPInput, isValidEmail} from '~/utils';
+import {getOTPInput, isValidEmail, setTokenValue} from '~/utils';
 
 const DEFAULT_RESEND_TIME_IN_SEC = 30;
 
@@ -82,10 +82,14 @@ const usePhoneVerificationHandlers = ({
             accessToken: accessToken
           });
         }
+        await setTokenValue({
+          accessToken: accessToken,
+          refreshToken: undefined,
+          tokenType: 'Basic'
+        });
         navigation.navigate(link, {
           ...route.params,
-          userId,
-          accessToken
+          userId
         });
       } else {
         Alert.alert('Invalid OTP', 'Please enter a valid OTP.');

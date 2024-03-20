@@ -35,8 +35,6 @@ const getUser = async (
   if (!isNullOrUndefined(id)) {
     const user = await context.redisClient.retrieveData<UserRef>(id ?? '');
 
-    console.log(user);
-
     if (user !== null) {
       return user;
     }
