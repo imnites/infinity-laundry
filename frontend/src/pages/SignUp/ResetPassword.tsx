@@ -7,7 +7,10 @@ interface ResetPasswordPropsType {
   route: any;
 }
 
-const ResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
+const ResetPassword: React.FC<ResetPasswordPropsType> = ({
+  navigation,
+  route
+}: ResetPasswordPropsType) => {
   const {
     formValues,
     handlePasswordChange,

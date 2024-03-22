@@ -25,19 +25,19 @@ const HistoryTab: React.FC = () => {
     return (
       <View style={styles.transaction}>
         <View style={styles.transactionDetails}>
-          <Text style={styles.transactionText}>{item.type}</Text>
-          {item.machineNumber && (
-            <Text style={styles.transactionText}>
-              Machine Number: {item.machineNumber}
-            </Text>
-          )}
+          <Text style={styles.transactionType}>{item.type}</Text>
           {item.machineId && (
             <Text style={styles.transactionText}>
               Machine ID: {item.machineId}
             </Text>
           )}
+          {item.machineNumber && (
+            <Text style={styles.transactionText}>
+              Machine Number: {item.machineNumber}
+            </Text>
+          )}
           <Text style={styles.transactionText}>
-            Date: {moment(item.timestamp).format('MMMM D, YYYY [at] hh:mm A')}
+            {moment(item.timestamp).format('MMMM D, YYYY [at] hh:mm A')}
           </Text>
         </View>
         <View style={styles.amountContainer}>
@@ -58,17 +58,22 @@ const HistoryTab: React.FC = () => {
   };
 
   return (
-    <FlatList
-      data={transactions}
-      renderItem={renderTransactionItem}
-      keyExtractor={item => item.id}
-      contentContainerStyle={styles.list}
-      onEndReachedThreshold={0.1}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={transactions}
+        renderItem={renderTransactionItem}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.list}
+        onEndReachedThreshold={0.1}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff'
+  },
   list: {
     paddingHorizontal: 16,
     paddingVertical: 8
@@ -81,9 +86,15 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     paddingVertical: 12
   },
+  transactionType: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#1e1e1e',
+    marginBottom: 4
+  },
   transactionText: {
     fontSize: 14,
-    color: '#666',
+    color: '#333',
     marginBottom: 4
   },
   transactionDetails: {

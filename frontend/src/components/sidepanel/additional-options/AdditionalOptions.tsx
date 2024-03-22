@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
-import {Text, TouchableOpacity, StyleSheet, View} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Divider} from 'react-native-paper';
 import {useLogout} from '~/hooks';
 import {useMeContext} from '~/me';
 import {useNavigation} from '@react-navigation/native';
@@ -31,32 +30,26 @@ const AdditionalOptions: React.FC = () => {
   }, [logout, onError, onSuccess]);
 
   return (
-    <View style={styles.root}>
-      <Divider />
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.item}
-          onPress={onTermsAndConditionsClick}>
-          <Icon name="document-text-outline" size={24} color="black" />
-          <Text style={styles.itemText}>Terms & Conditions</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.item} onPress={onLogoutClick}>
-          <Icon name="document-text-outline" size={24} color="black" />
-          <Text style={styles.itemText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <>
+      <Text style={styles.sectionTitle}>Other</Text>
+      <TouchableOpacity style={styles.item} onPress={onTermsAndConditionsClick}>
+        <Icon name="document-text-outline" size={24} color="#f5f5f5" />
+        <Text style={styles.itemText}>Terms & Conditions</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.item} onPress={onLogoutClick}>
+        <Icon name="document-text-outline" size={24} color="#f5f5f5" />
+        <Text style={styles.itemText}>Logout</Text>
+      </TouchableOpacity>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 20,
-    paddingBottom: 20
-  },
-  root: {
-    position: 'absolute',
-    bottom: 0
+  sectionTitle: {
+    color: '#f5f5f5',
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop: 20
   },
   item: {
     flexDirection: 'row',
@@ -64,8 +57,9 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   itemText: {
-    marginLeft: 10,
-    fontSize: 16
+    color: '#f5f5f5',
+    fontSize: 14,
+    marginLeft: 10
   }
 });
 

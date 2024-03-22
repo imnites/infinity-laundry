@@ -5,11 +5,6 @@ import {useNavigation} from '@react-navigation/native';
 
 const ProfileSection: React.FC = () => {
   const navigation = useNavigation();
-
-  const onProfilePress = useCallback(async () => {
-    (navigation.navigate as any)('ProfileDetailsPage');
-  }, [navigation.navigate]);
-
   const onChangePasswordPress = useCallback(async () => {
     (navigation.navigate as any)('ResetPassword', {
       parent: 'ProfileSection'
@@ -18,13 +13,9 @@ const ProfileSection: React.FC = () => {
 
   return (
     <>
-      <Text style={styles.sectionTitle}>Profile</Text>
-      <TouchableOpacity style={styles.item} onPress={onProfilePress}>
-        <Icon name="person-outline" size={24} color="black" />
-        <Text style={styles.itemText}>Profile</Text>
-      </TouchableOpacity>
+      <Text style={styles.sectionTitle}>Setting</Text>
       <TouchableOpacity style={styles.item} onPress={onChangePasswordPress}>
-        <Icon name="lock-closed-outline" size={24} color="black" />
+        <Icon name="lock-closed-outline" size={24} color="#f5f5f5" />
         <Text style={styles.itemText}>Change Password</Text>
       </TouchableOpacity>
     </>
@@ -33,10 +24,9 @@ const ProfileSection: React.FC = () => {
 
 const styles = StyleSheet.create({
   sectionTitle: {
+    color: '#f5f5f5',
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 20
+    marginBottom: 10
   },
   item: {
     flexDirection: 'row',
@@ -44,8 +34,9 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   itemText: {
-    marginLeft: 10,
-    fontSize: 16
+    color: '#f5f5f5',
+    fontSize: 14,
+    marginLeft: 10
   }
 });
 
