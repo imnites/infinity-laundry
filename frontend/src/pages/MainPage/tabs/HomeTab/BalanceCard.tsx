@@ -31,7 +31,7 @@ export const BalanceCard: React.FC = () => {
           <Button
             classes={buttonClasses}
             onPress={onAddFundsClick}
-            name="Add Funds"
+            name="Add Money"
           />
         </View>
       </View>
