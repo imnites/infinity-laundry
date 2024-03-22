@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useMeContext} from '~/me';
 
-const ProfileDetailsPage = () => {
+const ProfileDetailsPage: React.FC = () => {
   const {me} = useMeContext();
 
   return (

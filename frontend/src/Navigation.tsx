@@ -13,7 +13,9 @@ import {
 } from '~/pages/SignUp';
 import {MainPage} from '~/pages/MainPage';
 import PaymentPage from './pages/Payment/PaymentPage';
-import {TermsAndConditions} from './components/sidepanel/additional-options';
+import {TermsAndConditions} from './components/sidepanel/additional-options/components';
+import {ContactUs} from './components/sidepanel/get-in-touch-section/components';
+import {Faqs} from './components/sidepanel/help-section/components';
 
 interface StackScreen {
   id: number;
@@ -89,6 +91,22 @@ export const stackScreens: StackScreen[] = [
   },
   {
     id: 9,
+    name: 'Faqs',
+    component: Faqs,
+    options: {
+      headerShown: false
+    }
+  },
+  {
+    id: 10,
+    name: 'ContactUs',
+    component: ContactUs,
+    options: {
+      headerShown: false
+    }
+  },
+  {
+    id: 11,
     name: 'TermsAndConditions',
     component: TermsAndConditions,
     options: {

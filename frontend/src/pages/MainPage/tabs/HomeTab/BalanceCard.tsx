@@ -25,8 +25,8 @@ export const BalanceCard: React.FC = () => {
       <View style={styles.card}>
         <View style={styles.content}>
           <Text style={styles.title}>{`${
-            me?.balance.currency.symbol
-          } ${me?.balance.amount.toFixed(2)}`}</Text>
+            me?.balance?.currency?.symbol
+          } ${me?.balance?.amount?.toFixed(2)}`}</Text>
           <Text style={styles.subtitle}>Current Balance</Text>
           <Button
             classes={buttonClasses}
