@@ -67,7 +67,7 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
         disabled={loading}
         style={styles.continueButton}
         labelStyle={styles.continueButtonText}>
-        Login
+        {loading ? '' : 'Login'}
       </Button>
       <Button
         onPress={() => {

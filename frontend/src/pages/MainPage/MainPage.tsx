@@ -16,7 +16,7 @@ const MainPage: React.FC = () => (
       headerLeft: () => (
         <DrawerToggleButton onPress={navigation.toggleDrawer} />
       ),
-      drawerStyle: {width: 200}
+      drawerStyle: {width: 240}
     })}>
     <Drawer.Screen
       name="Main"

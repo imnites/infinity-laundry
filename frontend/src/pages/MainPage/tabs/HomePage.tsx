@@ -2,7 +2,7 @@ import React from 'react';
 import {HomeTab} from './HomeTab';
 import MachineTab from './MachineTab';
 import StatusTab from './StatusTab';
-import HistoryTab from './HistoryTab';
+import HistoryTab from './history-tab/HistoryTab';
 import {TabIcon} from '~/components/common';
 import {Tabs} from '~/components/common';
 

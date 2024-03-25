@@ -4,7 +4,11 @@ import {useTheme} from 'react-native-paper';
 const usePersonalDetailsStyles = () => {
   const theme = useTheme();
   return StyleSheet.create({
-    container: {
+    backButton: {
+      padding: 20,
+      backgroundColor: '#fff'
+    },
+    content: {
       flex: 1,
       paddingHorizontal: 20,
       justifyContent: 'center',

@@ -3,11 +3,11 @@ import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-const ProfileSection: React.FC = () => {
+const SettingSection: React.FC = () => {
   const navigation = useNavigation();
   const onChangePasswordPress = useCallback(async () => {
     (navigation.navigate as any)('ResetPassword', {
-      parent: 'ProfileSection'
+      parent: 'SettingSection'
     });
   }, [navigation.navigate]);
 
@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: '#f5f5f5',
     fontSize: 18,
-    marginBottom: 10
+    marginBottom: 10,
+    marginTop: 20
   },
   item: {
     flexDirection: 'row',
@@ -40,4 +41,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProfileSection;
+export default SettingSection;

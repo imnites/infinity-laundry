@@ -1,8 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet, Linking, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import BackButton from '~/components/common/BackButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const ContactUs: React.FC = () => {
+  const navigation = useNavigation();
   const email = 'infinitylaundry@gmail.com';
   const phoneNumber = '+1234567890';
 
@@ -14,39 +17,52 @@ const ContactUs: React.FC = () => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
 
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Contact Us</Text>
-        </View>
-        <View style={styles.infoContainer}>
-          <TouchableOpacity style={styles.infoItem} onPress={handleEmailPress}>
-            <Icon
-              name="mail-outline"
-              size={24}
-              color="#3930d8"
-              style={styles.icon}
-            />
-            <Text style={styles.infoText}>{email}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.infoItem} onPress={handlePhonePress}>
-            <Icon
-              name="call-outline"
-              size={24}
-              color="#3930d8"
-              style={styles.icon}
-            />
-            <Text style={styles.infoText}>{phoneNumber}</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.info}>
-          Our dedicated support team is available to assist you with any
-          questions or concerns you may have. Feel free to reach out to us via
-          email or phone, and we'll get back to you as soon as possible.
-        </Text>
+    <>
+      <View style={styles.backButton}>
+        <BackButton size={35} handleBackPress={handleBackPress} />
       </View>
-    </View>
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Contact Us</Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <TouchableOpacity
+              style={styles.infoItem}
+              onPress={handleEmailPress}>
+              <Icon
+                name="mail-outline"
+                size={24}
+                color="#3930d8"
+                style={styles.icon}
+              />
+              <Text style={styles.infoText}>{email}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.infoItem}
+              onPress={handlePhonePress}>
+              <Icon
+                name="call-outline"
+                size={24}
+                color="#3930d8"
+                style={styles.icon}
+              />
+              <Text style={styles.infoText}>{phoneNumber}</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.info}>
+            Our dedicated support team is available to assist you with any
+            questions or concerns you may have. Feel free to reach out to us via
+            email or phone, and we'll get back to you as soon as possible.
+          </Text>
+        </View>
+      </View>
+    </>
   );
 };
 
@@ -56,6 +72,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff'
+  },
+  backButton: {
     padding: 20,
     backgroundColor: '#fff'
   },

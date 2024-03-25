@@ -2,23 +2,27 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Button} from '~/components/common';
 import {useForgotPasswordPageHandlers} from './hooks';
-import {Provider as PaperProvider, Title, TextInput} from 'react-native-paper';
+import {Title, TextInput} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+import BackButton from '~/components/common/BackButton';
 
-interface ForgotPasswordPageProps {
-  navigation: any;
-}
-
-const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
-  navigation
-}) => {
+const ForgotPasswordPage: React.FC = () => {
+  const navigation = useNavigation();
   const {values, onUserNameChange, handleSubmit} =
     useForgotPasswordPageHandlers({
       navigation
     });
 
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
   const styles = useStyles();
   return (
-    <PaperProvider>
+    <>
+      <View style={styles.backButton}>
+        <BackButton size={35} handleBackPress={handleBackPress} />
+      </View>
       <View style={styles.container}>
         <Title style={styles.titleText}>Account Recovery</Title>
         <TextInput
@@ -36,7 +40,7 @@ const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
           }}
         />
       </View>
-    </PaperProvider>
+    </>
   );
 };
 
@@ -44,6 +48,10 @@ export default ForgotPasswordPage;
 
 const useStyles = () => {
   return StyleSheet.create({
+    backButton: {
+      padding: 20,
+      backgroundColor: '#fff'
+    },
     container: {
       width: '100%',
       flex: 1,

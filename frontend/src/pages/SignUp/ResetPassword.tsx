@@ -1,16 +1,19 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {TextInput, Button, DefaultTheme} from 'react-native-paper';
+import {TextInput, Button, DefaultTheme, Title} from 'react-native-paper';
 import useResetPassword from './hooks/useResetPassword';
+import {useNavigation} from '@react-navigation/native';
+import BackButton from '~/components/common/BackButton';
 interface ResetPasswordPropsType {
   navigation: any;
   route: any;
 }
 
 const ResetPassword: React.FC<ResetPasswordPropsType> = ({
-  navigation,
   route
 }: ResetPasswordPropsType) => {
+  const navigation = useNavigation();
+
   const {
     formValues,
     handlePasswordChange,
@@ -18,82 +21,102 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
     handleSubmit
   } = useResetPassword({navigation, route});
 
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true}
-        onChangeText={handlePasswordChange}
-        value={formValues.password}
-        maxLength={15}
-        theme={{
-          colors: {primary: '#3930d8'}
-        }}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        secureTextEntry={true}
-        onChangeText={handleConfirmPasswordChange}
-        value={formValues.confirmPassword}
-        maxLength={15}
-        theme={{
-          colors: {primary: '#3930d8'}
-        }}
-      />
-      <View style={styles.tabsContainer}>
+    <>
+      <View style={styles.backButton}>
+        <BackButton size={35} handleBackPress={handleBackPress} />
+      </View>
+      <View style={styles.content}>
+        <Title style={styles.titleText}>Reset Password</Title>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry={true}
+          onChangeText={handlePasswordChange}
+          value={formValues.password}
+          maxLength={15}
+          theme={{
+            colors: {primary: '#3930d8'}
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          secureTextEntry={true}
+          onChangeText={handleConfirmPasswordChange}
+          value={formValues.confirmPassword}
+          maxLength={15}
+          theme={{
+            colors: {primary: '#3930d8'}
+          }}
+        />
+        <View style={styles.tabsContainer}>
+          <Button
+            style={[
+              styles.tab,
+              formValues.strength === 'Weak' && {
+                backgroundColor: theme.colors.weak
+              }
+            ]}
+            labelStyle={styles.tabLabel}>
+            Weak
+          </Button>
+          <Button
+            style={[
+              styles.tab,
+              formValues.strength === 'Medium' && {
+                backgroundColor: theme.colors.medium
+              }
+            ]}
+            labelStyle={styles.tabLabel}>
+            Medium
+          </Button>
+          <Button
+            style={[
+              styles.tab,
+              formValues.strength === 'Strong' && {
+                backgroundColor: theme.colors.success
+              }
+            ]}
+            labelStyle={styles.tabLabel}>
+            Strong
+          </Button>
+        </View>
         <Button
-          style={[
-            styles.tab,
-            formValues.strength === 'Weak' && {
-              backgroundColor: theme.colors.weak
-            }
-          ]}
-          labelStyle={styles.tabLabel}>
-          Weak
-        </Button>
-        <Button
-          style={[
-            styles.tab,
-            formValues.strength === 'Medium' && {
-              backgroundColor: theme.colors.medium
-            }
-          ]}
-          labelStyle={styles.tabLabel}>
-          Medium
-        </Button>
-        <Button
-          style={[
-            styles.tab,
-            formValues.strength === 'Strong' && {
-              backgroundColor: theme.colors.success
-            }
-          ]}
-          labelStyle={styles.tabLabel}>
-          Strong
+          style={styles.submitButton}
+          labelStyle={styles.submitButtonText}
+          mode="contained"
+          onPress={handleSubmit}
+          loading={formValues.isSubmitting}>
+          Next
         </Button>
       </View>
-      <Button
-        style={styles.submitButton}
-        labelStyle={styles.submitButtonText}
-        mode="contained"
-        onPress={handleSubmit}
-        loading={formValues.isSubmitting}>
-        Next
-      </Button>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  backButton: {
+    padding: 20,
+    backgroundColor: '#fff'
+  },
+  content: {
     width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#fff'
+  },
+  titleText: {
+    color: '#3930d8',
+    marginTop: 20,
+    marginBottom: 10,
+    fontSize: 24
   },
   input: {
     width: '80%',

@@ -5,6 +5,7 @@ import {GetInTouchSection} from './get-in-touch-section';
 import HelpSection from './help-section/HelpSection';
 import AdditionalOptions from './additional-options/AdditionalOptions';
 import Header from './user-details/UserDetails';
+import {SettingSection} from './setting-section';
 
 const SidePanel: React.FC = () => (
   <>
@@ -14,6 +15,7 @@ const SidePanel: React.FC = () => (
       </View>
       <View style={styles.remainingDetails}>
         <UserDetails />
+        <SettingSection />
         <HelpSection />
         <GetInTouchSection />
         <AdditionalOptions />

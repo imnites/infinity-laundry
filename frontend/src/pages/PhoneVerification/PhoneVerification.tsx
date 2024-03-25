@@ -3,17 +3,16 @@ import {Text, View, StyleSheet} from 'react-native';
 import {OtpInput} from '~/components/common';
 import {usePhoneVerificationHandlers} from '../SignUp/hooks';
 import {getVerificationMessage} from '~/utils';
-import {Button, Provider as PaperProvider, Title} from 'react-native-paper';
+import {Button, Title} from 'react-native-paper';
+import BackButton from '~/components/common/BackButton';
+import {useNavigation} from '@react-navigation/native';
 
 interface PhoneVerificationProps {
-  navigation: any;
   route: any;
 }
 
-const PhoneVerification: React.FC<PhoneVerificationProps> = ({
-  navigation,
-  route
-}) => {
+const PhoneVerification: React.FC<PhoneVerificationProps> = ({route}) => {
+  const navigation = useNavigation();
   const {
     isGeneratingOTP,
     isOTPValidating,
@@ -40,9 +39,16 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
 
   const styles = useStyles();
 
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
   return (
-    <PaperProvider>
-      <View style={styles.container}>
+    <>
+      <View style={styles.backButton}>
+        <BackButton size={35} handleBackPress={handleBackPress} />
+      </View>
+      <View style={styles.phoneVerification}>
         <Title style={styles.titleText}>Phone Verification</Title>
         <View style={styles.content}>
           <View style={styles.numberInfoContainer}>
@@ -82,7 +88,7 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
           </Button>
         </View>
       </View>
-    </PaperProvider>
+    </>
   );
 };
 
@@ -90,7 +96,11 @@ export default PhoneVerification;
 
 const useStyles = () => {
   return StyleSheet.create({
-    container: {
+    backButton: {
+      padding: 20,
+      backgroundColor: '#fff'
+    },
+    phoneVerification: {
       width: '100%',
       flex: 1,
       justifyContent: 'center',

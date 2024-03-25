@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import FilterDialog from './components/FilterDialog';
 
 interface Transaction {
   id: string;
@@ -14,6 +16,12 @@ interface Transaction {
 }
 
 const HistoryTab: React.FC = () => {
+  const [visible, setVisible] = useState(false);
+
+  const showDialog = () => {
+    setVisible(true);
+  };
+
   const renderTransactionItem = ({item}: {item: Transaction}) => {
     const inrSymbol = '\u20B9';
     const amountColor =
@@ -59,13 +67,19 @@ const HistoryTab: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={transactions}
-        renderItem={renderTransactionItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.list}
-        onEndReachedThreshold={0.1}
-      />
+      <View style={styles.filterIcon}>
+        <Icon name="filter" color="#000" size={24} onPress={showDialog} />
+      </View>
+      <FilterDialog visible={visible} setVisible={setVisible} />
+      <View>
+        <FlatList
+          data={transactions}
+          renderItem={renderTransactionItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.list}
+          onEndReachedThreshold={0.1}
+        />
+      </View>
     </View>
   );
 };
@@ -73,6 +87,11 @@ const HistoryTab: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff'
+  },
+  filterIcon: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 16
   },
   list: {
     paddingHorizontal: 16,
