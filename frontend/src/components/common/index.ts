@@ -7,3 +7,6 @@ export {default as Title} from './Title';
 export {default as TabIcon} from './TabIcon';
 export {default as OtpInput} from './OtpInput';
 export {default as LoadingScreen} from './LoadingScreen';
+export {NumericInput, MoneyInput} from './NumericInput';
+export {Money} from './Money';
+export {default as Number} from './Number';

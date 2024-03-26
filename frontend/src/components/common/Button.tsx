@@ -1,11 +1,20 @@
 import React from 'react';
-import {TouchableOpacity, Text, ActivityIndicator} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+  StyleProp,
+  TextStyle
+} from 'react-native';
 
 interface ButtonPropsType {
   name: string;
   onPress: any;
   loading?: boolean;
-  classes?: any;
+  classes?: {
+    button?: StyleProp<TextStyle>;
+    buttonText?: StyleProp<TextStyle>;
+  };
   disabled?: boolean;
 }
 
