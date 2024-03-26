@@ -18,15 +18,15 @@ const HelpSection: React.FC = () => {
     <>
       <Text style={styles.sectionTitle}>Help</Text>
       <TouchableOpacity style={styles.item} onPress={onHowToVideosPress}>
-        <Icon name="videocam-outline" size={24} color="#f5f5f5" />
+        <Icon name="videocam-outline" size={24} color="black" />
         <Text style={styles.itemText}>How To Videos</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.item} onPress={() => {}}>
-        <Icon name="book-outline" size={24} color="#f5f5f5" />
+        <Icon name="book-outline" size={24} color="black" />
         <Text style={styles.itemText}>How To Guides</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.item} onPress={onFaqsPress}>
-        <Icon name="help-circle-outline" size={24} color="#f5f5f5" />
+        <Icon name="help-circle-outline" size={24} color="black" />
         <Text style={styles.itemText}>FAQs</Text>
       </TouchableOpacity>
     </>
@@ -35,7 +35,7 @@ const HelpSection: React.FC = () => {
 
 const styles = StyleSheet.create({
   sectionTitle: {
-    color: '#f5f5f5',
+    color: 'black',
     fontSize: 18,
     marginBottom: 10,
     marginTop: 20
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   itemText: {
-    color: '#f5f5f5',
+    color: 'black',
     fontSize: 14,
     marginLeft: 10
   }

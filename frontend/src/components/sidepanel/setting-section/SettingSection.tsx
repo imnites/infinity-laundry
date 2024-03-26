@@ -15,7 +15,7 @@ const SettingSection: React.FC = () => {
     <>
       <Text style={styles.sectionTitle}>Setting</Text>
       <TouchableOpacity style={styles.item} onPress={onChangePasswordPress}>
-        <Icon name="lock-closed-outline" size={24} color="#f5f5f5" />
+        <Icon name="lock-closed-outline" size={24} color="black" />
         <Text style={styles.itemText}>Change Password</Text>
       </TouchableOpacity>
     </>
@@ -24,10 +24,9 @@ const SettingSection: React.FC = () => {
 
 const styles = StyleSheet.create({
   sectionTitle: {
-    color: '#f5f5f5',
+    color: 'black',
     fontSize: 18,
-    marginBottom: 10,
-    marginTop: 20
+    marginBottom: 10
   },
   item: {
     flexDirection: 'row',
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   itemText: {
-    color: '#f5f5f5',
+    color: 'black',
     fontSize: 14,
     marginLeft: 10
   }

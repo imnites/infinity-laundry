@@ -1,20 +1,23 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {UserDetails} from './user-details';
 import {GetInTouchSection} from './get-in-touch-section';
 import HelpSection from './help-section/HelpSection';
 import AdditionalOptions from './additional-options/AdditionalOptions';
-import Header from './user-details/UserDetails';
+import UserDetails from './user-details/UserDetails';
 import {SettingSection} from './setting-section';
+import LinearGradient from 'react-native-linear-gradient';
 
 const SidePanel: React.FC = () => (
   <>
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Header />
+      <View style={styles.userDetails}>
+        <LinearGradient
+          colors={['#4c669f', '#3b5998', '#192f6a']}
+          style={styles.linearGradient}>
+          <UserDetails />
+        </LinearGradient>
       </View>
       <View style={styles.remainingDetails}>
-        <UserDetails />
         <SettingSection />
         <HelpSection />
         <GetInTouchSection />
@@ -26,15 +29,25 @@ const SidePanel: React.FC = () => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#FF000080'
+    flex: 1
   },
-  header: {
-    height: '25%'
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5
+  },
+  userDetails: {
+    height: '23.8%'
   },
   remainingDetails: {
-    paddingVertical: 20,
-    paddingHorizontal: 10
+    paddingVertical: 10,
+    paddingHorizontal: 15
+  },
+  imageBackground: {
+    flex: 1,
+    width: '100%',
+    height: '100%'
   }
 });
 
