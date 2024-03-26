@@ -14,7 +14,7 @@ const GetInTouchSection: React.FC = () => {
     <>
       <Text style={styles.sectionTitle}>Get in Touch</Text>
       <TouchableOpacity style={styles.item} onPress={onContactUsPress}>
-        <Icon name="document-text-outline" size={24} color="#f5f5f5" />
+        <Icon name="document-text-outline" size={24} color="black" />
         <Text style={styles.itemText}>Contact us</Text>
       </TouchableOpacity>
     </>
@@ -23,7 +23,7 @@ const GetInTouchSection: React.FC = () => {
 
 const styles = StyleSheet.create({
   sectionTitle: {
-    color: '#f5f5f5',
+    color: 'black',
     fontSize: 18,
     marginBottom: 10,
     marginTop: 20
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   itemText: {
-    color: '#f5f5f5',
+    color: 'black',
     fontSize: 14,
     marginLeft: 10
   }

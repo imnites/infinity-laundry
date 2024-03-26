@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useLogout} from '~/hooks';
 import {useMeContext} from '~/me';
@@ -31,25 +31,28 @@ const AdditionalOptions: React.FC = () => {
 
   return (
     <>
-      <Text style={styles.sectionTitle}>Other</Text>
-      <TouchableOpacity style={styles.item} onPress={onTermsAndConditionsClick}>
-        <Icon name="document-text-outline" size={24} color="#f5f5f5" />
-        <Text style={styles.itemText}>Terms & Conditions</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.item} onPress={onLogoutClick}>
-        <Icon name="document-text-outline" size={24} color="#f5f5f5" />
-        <Text style={styles.itemText}>Logout</Text>
-      </TouchableOpacity>
+      <View style={styles.section}>
+        <TouchableOpacity
+          style={styles.item}
+          onPress={onTermsAndConditionsClick}>
+          <Icon name="document-text-outline" size={24} color="black" />
+          <Text style={styles.itemText}>Terms & Conditions</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.item} onPress={onLogoutClick}>
+          <Icon name="document-text-outline" size={24} color="black" />
+          <Text style={styles.itemText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionTitle: {
-    color: '#f5f5f5',
+  section: {
+    color: 'black',
     fontSize: 18,
     marginBottom: 10,
-    marginTop: 20
+    marginTop: 175
   },
   item: {
     flexDirection: 'row',
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   itemText: {
-    color: '#f5f5f5',
+    color: 'black',
     fontSize: 14,
     marginLeft: 10
   }
