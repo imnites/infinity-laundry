@@ -7,10 +7,7 @@ interface FilterDialogPropsType {
   setVisible: any;
 }
 
-const FilterDialog: React.FC = ({
-  visible,
-  setVisible
-}: FilterDialogPropsType) => {
+const FilterDialog = ({visible, setVisible}: FilterDialogPropsType) => {
   const handleCancel = () => {
     setVisible(false);
   };
