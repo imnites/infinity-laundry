@@ -16,7 +16,7 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
-export type AddPaymentInput = {
+export type AddTransactionInput = {
   amount: Scalars['Float']['input'];
   completed: Scalars['Boolean']['input'];
   currencyId: Scalars['String']['input'];
@@ -89,7 +89,7 @@ export type Money = {
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['String']['output']>;
-  addPayment: Scalars['String']['output'];
+  addTransaction: Scalars['String']['output'];
   authenticate: AuthResult;
   createCashfreeOrder: CashfreeOrderResult;
   createUserDraft: Scalars['String']['output'];
@@ -102,8 +102,8 @@ export type Mutation = {
 };
 
 
-export type MutationAddPaymentArgs = {
-  input: AddPaymentInput;
+export type MutationAddTransactionArgs = {
+  input: AddTransactionInput;
 };
 
 
@@ -176,21 +176,6 @@ export type OtpValidationResult = {
   verified?: Maybe<Scalars['Boolean']['output']>;
 };
 
-export type PaymentDetails = {
-  __typename?: 'PaymentDetails';
-  amount?: Maybe<Money>;
-  completed: Scalars['Boolean']['output'];
-  id: Scalars['String']['output'];
-  machineDetails?: Maybe<MachineDetails>;
-  timestamp: Scalars['String']['output'];
-  type: Scalars['String']['output'];
-  userId: Scalars['String']['output'];
-};
-
-export type PaymentDetailsInput = {
-  userId: Scalars['String']['input'];
-};
-
 export type PhoneNumber = {
   __typename?: 'PhoneNumber';
   countryCode: Scalars['String']['output'];
@@ -207,7 +192,7 @@ export type Query = {
   _?: Maybe<Scalars['String']['output']>;
   fetchCashfreeOrder: Scalars['Boolean']['output'];
   me: Me;
-  paymentDetails?: Maybe<Array<PaymentDetails>>;
+  transactionDetails?: Maybe<Array<TransactionDetails>>;
 };
 
 
@@ -218,13 +203,28 @@ export type QueryFetchCashfreeOrderArgs = {
 };
 
 
-export type QueryPaymentDetailsArgs = {
-  input: PaymentDetailsInput;
+export type QueryTransactionDetailsArgs = {
+  input: TransactionDetailsInput;
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
   _?: Maybe<Scalars['String']['output']>;
+};
+
+export type TransactionDetails = {
+  __typename?: 'TransactionDetails';
+  amount?: Maybe<Money>;
+  completed: Scalars['Boolean']['output'];
+  id: Scalars['String']['output'];
+  machineDetails?: Maybe<MachineDetails>;
+  timestamp: Scalars['String']['output'];
+  type: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+};
+
+export type TransactionDetailsInput = {
+  userId: Scalars['String']['input'];
 };
 
 export type UserInput = {
@@ -307,7 +307,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  AddPaymentInput: AddPaymentInput;
+  AddTransactionInput: AddTransactionInput;
   AmountInput: AmountInput;
   AuthResult: ResolverTypeWrapper<AuthResult>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -323,19 +323,19 @@ export type ResolversTypes = ResolversObject<{
   OTPInput: OtpInput;
   OTPResult: ResolverTypeWrapper<OtpResult>;
   OTPValidationResult: ResolverTypeWrapper<OtpValidationResult>;
-  PaymentDetails: ResolverTypeWrapper<PaymentDetails>;
-  PaymentDetailsInput: PaymentDetailsInput;
   PhoneNumber: ResolverTypeWrapper<PhoneNumber>;
   PhoneNumberInput: PhoneNumberInput;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
+  TransactionDetails: ResolverTypeWrapper<TransactionDetails>;
+  TransactionDetailsInput: TransactionDetailsInput;
   UserInput: UserInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  AddPaymentInput: AddPaymentInput;
+  AddTransactionInput: AddTransactionInput;
   AmountInput: AmountInput;
   AuthResult: AuthResult;
   Boolean: Scalars['Boolean']['output'];
@@ -351,13 +351,13 @@ export type ResolversParentTypes = ResolversObject<{
   OTPInput: OtpInput;
   OTPResult: OtpResult;
   OTPValidationResult: OtpValidationResult;
-  PaymentDetails: PaymentDetails;
-  PaymentDetailsInput: PaymentDetailsInput;
   PhoneNumber: PhoneNumber;
   PhoneNumberInput: PhoneNumberInput;
   Query: {};
   String: Scalars['String']['output'];
   Subscription: {};
+  TransactionDetails: TransactionDetails;
+  TransactionDetailsInput: TransactionDetailsInput;
   UserInput: UserInput;
 }>;
 
@@ -411,7 +411,7 @@ export type MoneyResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  addPayment?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAddPaymentArgs, 'input'>>;
+  addTransaction?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationAddTransactionArgs, 'input'>>;
   authenticate?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType, RequireFields<MutationAuthenticateArgs, 'credential'>>;
   createCashfreeOrder?: Resolver<ResolversTypes['CashfreeOrderResult'], ParentType, ContextType, RequireFields<MutationCreateCashfreeOrderArgs, 'amount' | 'userId'>>;
   createUserDraft?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateUserDraftArgs, 'input'>>;
@@ -440,17 +440,6 @@ export type OtpValidationResultResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PaymentDetailsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaymentDetails'] = ResolversParentTypes['PaymentDetails']> = ResolversObject<{
-  amount?: Resolver<Maybe<ResolversTypes['Money']>, ParentType, ContextType>;
-  completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  machineDetails?: Resolver<Maybe<ResolversTypes['MachineDetails']>, ParentType, ContextType>;
-  timestamp?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type PhoneNumberResolvers<ContextType = any, ParentType extends ResolversParentTypes['PhoneNumber'] = ResolversParentTypes['PhoneNumber']> = ResolversObject<{
   countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -461,11 +450,22 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   fetchCashfreeOrder?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryFetchCashfreeOrderArgs, 'cfPaymentId' | 'orderId' | 'userId'>>;
   me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
-  paymentDetails?: Resolver<Maybe<Array<ResolversTypes['PaymentDetails']>>, ParentType, ContextType, RequireFields<QueryPaymentDetailsArgs, 'input'>>;
+  transactionDetails?: Resolver<Maybe<Array<ResolversTypes['TransactionDetails']>>, ParentType, ContextType, RequireFields<QueryTransactionDetailsArgs, 'input'>>;
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['String']>, "_", ParentType, ContextType>;
+}>;
+
+export type TransactionDetailsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TransactionDetails'] = ResolversParentTypes['TransactionDetails']> = ResolversObject<{
+  amount?: Resolver<Maybe<ResolversTypes['Money']>, ParentType, ContextType>;
+  completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  machineDetails?: Resolver<Maybe<ResolversTypes['MachineDetails']>, ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
@@ -478,9 +478,9 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   OTPResult?: OtpResultResolvers<ContextType>;
   OTPValidationResult?: OtpValidationResultResolvers<ContextType>;
-  PaymentDetails?: PaymentDetailsResolvers<ContextType>;
   PhoneNumber?: PhoneNumberResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  TransactionDetails?: TransactionDetailsResolvers<ContextType>;
 }>;
 

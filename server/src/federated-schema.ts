@@ -3,8 +3,8 @@ import {
   userResolvers,
   orderTypeDefs,
   orderResolvers,
-  paymentTypeDefs,
-  paymentResolvers
+  transactionTypeDefs,
+  transactionResolvers
 } from './modules';
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 
@@ -23,6 +23,15 @@ type Subscription {
 `;
 
 export default {
-  typeDefs: mergeTypeDefs([root, userTypeDefs, orderTypeDefs, paymentTypeDefs]),
-  resolvers: mergeResolvers([userResolvers, orderResolvers, paymentResolvers])
+  typeDefs: mergeTypeDefs([
+    root,
+    userTypeDefs,
+    orderTypeDefs,
+    transactionTypeDefs
+  ]),
+  resolvers: mergeResolvers([
+    userResolvers,
+    orderResolvers,
+    transactionResolvers
+  ])
 };

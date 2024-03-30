@@ -1,9 +1,9 @@
-import { PaymentDetailsInput, PaymentDetails } from '~/generated-types';
+import { TransactionDetailsInput, TransactionDetails } from '~/generated-types';
 import { Context } from '~/types';
 
-export const mapToPaymentDetails = (
+export const mapToTransactionDetails = (
   results: { [key: string]: unknown }[]
-): PaymentDetails[] => {
+): TransactionDetails[] => {
   return results.map((result) => {
     return {
       id: result.id as string,
@@ -25,14 +25,14 @@ export const mapToPaymentDetails = (
   });
 };
 
-export const getPaymentDetails = (
+export const getTransactionDetails = (
   parent: { [key: string]: unknown } | null,
-  args: PaymentDetailsInput,
+  args: TransactionDetailsInput,
   context: Context
-): PaymentDetails[] => {
+): TransactionDetails[] => {
   const id = crypto.randomUUID();
 
-  return mapToPaymentDetails([
+  return mapToTransactionDetails([
     {
       id: id,
       userId: 'urn:user:01',

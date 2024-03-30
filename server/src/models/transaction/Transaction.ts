@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import { ModelDef } from '../types';
 
-export class Payment extends Model {
+export class Transaction extends Model {
   public get Id(): string {
     return this.getDataValue('id') as string;
   }
@@ -31,7 +31,7 @@ export class Payment extends Model {
   }
 }
 
-export const PaymentDef: ModelDef = {
+export const TransactionDef: ModelDef = {
   fields: {
     id: {
       type: DataTypes.UUID,

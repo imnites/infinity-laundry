@@ -1,13 +1,13 @@
 const typeDefs = `
   extend type Mutation {
-    addPayment(input: AddPaymentInput!): String!
+    addTransaction(input: AddTransactionInput!): String!
   }
 
   extend type Query {
-    paymentDetails(input: PaymentDetailsInput!): [PaymentDetails!]
+    transactionDetails(input: TransactionDetailsInput!): [TransactionDetails!]
   }
 
-  input AddPaymentInput {
+  input AddTransactionInput {
     userId: String!
     type: String!
     machineId: String
@@ -18,11 +18,11 @@ const typeDefs = `
     completed: Boolean!
   }
 
-  input PaymentDetailsInput {
+  input TransactionDetailsInput {
     userId: String!
   }
 
-  type PaymentDetails {
+  type TransactionDetails {
     id: String!
     userId: String!
     type: String!

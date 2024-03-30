@@ -1,4 +1,4 @@
-import { Database, Payment } from '~/models';
+import { Database, Transaction } from '~/models';
 import { AbstractDataType } from 'sequelize';
 
 export class PaymentService {
@@ -8,8 +8,8 @@ export class PaymentService {
     this._database = database;
   }
 
-  public async getPaymentDetailsById(id: string): Promise<Payment | null> {
-    return this._database.models.payment.findByPk(id);
+  public async getPaymentDetailsById(id: string): Promise<Transaction | null> {
+    return this._database.models.transaction.findByPk(id);
   }
 
   public async addPayment({
@@ -31,7 +31,7 @@ export class PaymentService {
     timestamp: string;
     completed: boolean;
   }): Promise<void> {
-    const userInfo = this._database.models.payment.build({
+    const userInfo = this._database.models.transaction.build({
       id,
       userId,
       type,

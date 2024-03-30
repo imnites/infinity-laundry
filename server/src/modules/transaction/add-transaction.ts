@@ -1,9 +1,9 @@
-import { MutationAddPaymentArgs } from '~/generated-types';
+import { MutationAddTransactionArgs } from '~/generated-types';
 import { Context } from '~/types';
 
-export const addPayment = async (
+export const addTransaction = async (
   parent: { [key: string]: unknown } | null,
-  args: MutationAddPaymentArgs,
+  args: MutationAddTransactionArgs,
   context: Context
 ): Promise<string> => {
   const id = await crypto.randomUUID();
