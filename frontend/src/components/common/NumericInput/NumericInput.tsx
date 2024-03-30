@@ -1,4 +1,4 @@
-import React, {useCallback, useState, createRef, useMemo} from 'react';
+import React, {useCallback, createRef, useMemo} from 'react';
 import {StyleProp, TextInput, TextStyle} from 'react-native';
 import {useNumberFormat} from '~/hooks/common';
 
@@ -11,12 +11,11 @@ interface NumericInputProps {
 
 export const NumericInput: React.FC<NumericInputProps> = ({
   onChangeText: onChange,
-  value: initialValue,
+  value,
   placeholder,
   style
 }) => {
   const ref = createRef<TextInput>();
-  const [value, setValue] = useState<number | null>(initialValue);
 
   const {
     formatNumberWithoutRemovingLeadingDecimalSeperator,
@@ -27,7 +26,6 @@ export const NumericInput: React.FC<NumericInputProps> = ({
   const onChangeText = useCallback(
     (newValue: string) => {
       if (newValue === '') {
-        setValue(null);
         onChange(null);
         return;
       }
@@ -45,7 +43,6 @@ export const NumericInput: React.FC<NumericInputProps> = ({
       const val = parsedVal as any as number;
 
       if (!isNaN(val)) {
-        setValue(val);
         onChange(val);
       }
     },

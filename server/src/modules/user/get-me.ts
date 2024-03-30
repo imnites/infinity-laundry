@@ -10,9 +10,9 @@ export const mapToMe = (details: { [key: string]: unknown }): Me => {
     firstName: details.given_name as string,
     lastName: details.family_name as string,
     balance: {
-      amount: 0.0,
+      amount: 150.0,
       currency: {
-        symbol: 'Rs.',
+        symbol: '₹',
         code: 'INR'
       }
     }

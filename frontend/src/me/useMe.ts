@@ -1,25 +1,13 @@
 import {useQuery} from '@apollo/client';
 import {gql} from '@apollo/client';
 import {Me} from './types';
+import {ME_FRAGMENT} from './me.fragment';
 
 export const ME = gql`
+  ${ME_FRAGMENT}
   query me {
     me {
-      id
-      email
-      phoneNumber {
-        countryCode
-        phoneNumber
-      }
-      lastName
-      firstName
-      balance {
-        amount
-        currency {
-          code
-          symbol
-        }
-      }
+      ...MeFragment
     }
   }
 `;
@@ -40,7 +28,7 @@ export const useMe = ({
   });
 
   return {
-    me: data?.me as Me,
+    me: data?.me as Me | undefined,
     loading
   };
 };

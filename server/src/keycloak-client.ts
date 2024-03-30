@@ -6,7 +6,7 @@ import {
   keycloakREALM,
   keycloakRootUrl
 } from './config';
-import { GraphQLError } from 'graphql';
+import { throwGraphQLError } from './error-mapper';
 
 const mapToTokenDetails = (data: {
   [key: string]: unknown;
@@ -56,17 +56,7 @@ export class KeycloakClient {
       .then(({ data }: { data: { [key: string]: unknown } }) => {
         return mapToTokenDetails(data);
       })
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async introspectToken(
@@ -89,17 +79,7 @@ export class KeycloakClient {
         }
       )
       .then(({ data }: { data: { [key: string]: unknown } }) => data)
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async revoke(token: string): Promise<{ [key: string]: unknown }> {
@@ -116,17 +96,7 @@ export class KeycloakClient {
         })
       )
       .then(({ data }: { data: { [key: string]: unknown } }) => data)
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async post({
@@ -149,17 +119,7 @@ export class KeycloakClient {
         }
       })
       .then(({ data }: { data: { [key: string]: unknown } }) => data)
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async put({
@@ -182,18 +142,7 @@ export class KeycloakClient {
         }
       })
       .then(({ data }: { data: { [key: string]: unknown } }) => data)
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          console.log(response.data);
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async getRequest(methodName: string): Promise<unknown> {
@@ -208,16 +157,6 @@ export class KeycloakClient {
         }
       })
       .then(({ data }: { data: { [key: string]: unknown } }) => data)
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 }

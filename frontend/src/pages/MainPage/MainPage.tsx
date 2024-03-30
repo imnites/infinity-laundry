@@ -9,23 +9,25 @@ const Drawer = createDrawerNavigator();
 
 const TabNavigator: React.FC = () => <HomePage />;
 
-const MainPage: React.FC = () => (
-  <Drawer.Navigator
-    drawerContent={() => <SidePanel />}
-    screenOptions={({navigation}) => ({
-      headerLeft: () => (
-        <DrawerToggleButton onPress={navigation.toggleDrawer} />
-      ),
-      drawerStyle: {width: 240}
-    })}>
-    <Drawer.Screen
-      name="Main"
-      component={TabNavigator}
-      options={{
-        headerTitle: ''
-      }}
-    />
-  </Drawer.Navigator>
-);
+const MainPage: React.FC = () => {
+  return (
+    <Drawer.Navigator
+      drawerContent={() => <SidePanel />}
+      screenOptions={({navigation}) => ({
+        headerLeft: () => (
+          <DrawerToggleButton onPress={navigation.toggleDrawer} />
+        ),
+        drawerStyle: {width: 240}
+      })}>
+      <Drawer.Screen
+        name="Main"
+        component={TabNavigator}
+        options={{
+          headerTitle: ''
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
 
 export default MainPage;
