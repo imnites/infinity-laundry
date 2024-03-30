@@ -74,8 +74,9 @@ const typeDefs = `
   }
 
   type Currency {
-    code: String!
-    symbol: String!
+    id: String
+    code: String
+    symbol: String
   }
 
   type Me {

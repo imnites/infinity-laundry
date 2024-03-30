@@ -2,6 +2,7 @@ type Query {
   _: String
   me: Me!
   fetchCashfreeOrder(userId: String!, orderId: String!, cfPaymentId: String!): Boolean!
+  paymentDetails(input: PaymentDetailsInput!): [PaymentDetails!]
 }
 
 type Mutation {
@@ -15,6 +16,7 @@ type Mutation {
   validatePhoneOTP(verificationToken: String!, otp: String!): OTPValidationResult!
   updatePassword(password: String!): Boolean!
   createCashfreeOrder(userId: String!, amount: AmountInput!): CashfreeOrderResult!
+  addPayment(input: AddPaymentInput!): String!
 }
 
 type Subscription {
@@ -81,8 +83,9 @@ type Money {
 }
 
 type Currency {
-  code: String!
-  symbol: String!
+  id: String
+  code: String
+  symbol: String
 }
 
 type Me {
@@ -105,4 +108,34 @@ type CashfreeOrderResult {
   orderId: String!
   cfPaymentId: String!
   paymentSessionId: String!
+}
+
+input AddPaymentInput {
+  userId: String!
+  type: String!
+  machineId: String
+  machineNumber: String
+  amount: Float!
+  currencyId: String!
+  timestamp: String!
+  completed: Boolean!
+}
+
+input PaymentDetailsInput {
+  userId: String!
+}
+
+type PaymentDetails {
+  id: String!
+  userId: String!
+  type: String!
+  machineDetails: MachineDetails
+  amount: Money
+  timestamp: String!
+  completed: Boolean!
+}
+
+type MachineDetails {
+  machineId: String!
+  machineNumber: String!
 }
