@@ -1,7 +1,6 @@
 import React, {ReactElement, useState} from 'react';
 import {MeContext} from './MeContext';
 import {useMe} from './useMe';
-import {useRefreshToken} from './useRefreshToken';
 import {LoadingScreen} from '~/components/common';
 import {Me} from './types';
 
@@ -14,7 +13,6 @@ export const MeContextProvider: React.FC<MeContextProviderProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [me, setMe] = useState<Me>();
-  const {refreshToken} = useRefreshToken();
 
   useMe({
     onCompleted: ({me: user}) => {
@@ -22,8 +20,7 @@ export const MeContextProvider: React.FC<MeContextProviderProps> = ({
       setIsLoading(false);
     },
     onError: async () => {
-      const user = await refreshToken();
-      setMe(user);
+      setMe(undefined);
       setIsLoading(false);
     }
   });

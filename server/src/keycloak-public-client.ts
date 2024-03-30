@@ -5,7 +5,11 @@ import {
   keycloakREALM,
   keycloakRootUrl
 } from './config';
-import { GraphQLError } from 'graphql';
+import {
+  throwGraphQLError,
+  errorCodes,
+  mapToGraphQLError
+} from './error-mapper';
 import { RedisClient } from './redis-client';
 
 const mapToTokenDetails = (data: {
@@ -115,17 +119,7 @@ export class KeycloakPublicClient {
       .then(({ data }: { data: { [key: string]: unknown } }) => {
         return mapToTokenDetails(data);
       })
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async getMe(): Promise<{ [key: string]: unknown }> {
@@ -140,17 +134,7 @@ export class KeycloakPublicClient {
           }
         })
         .then(({ data }: { data: { [key: string]: unknown } }) => data)
-        .catch(
-          ({
-            response
-          }: {
-            response: { data: { error: string; error_description: string } };
-          }) => {
-            throw new GraphQLError(response.data.error, {
-              extensions: { description: response.data.error_description }
-            });
-          }
-        );
+        .catch(throwGraphQLError);
     }
 
     if (this.tokenType === 'Basic') {
@@ -167,7 +151,7 @@ export class KeycloakPublicClient {
       }
     }
 
-    throw new GraphQLError('unauthorized');
+    throw mapToGraphQLError('Unauthorized', errorCodes.unauthorized);
   }
 
   public async updateUserForAccessToken(
@@ -204,17 +188,7 @@ export class KeycloakPublicClient {
         })
       )
       .then(({ data }: { data: { [key: string]: unknown } }) => data)
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async revokeRefreshToken(
@@ -232,17 +206,7 @@ export class KeycloakPublicClient {
         })
       )
       .then(({ data }: { data: { [key: string]: unknown } }) => data)
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 
   public async refreshToken(refreshToken: string): Promise<{
@@ -273,16 +237,6 @@ export class KeycloakPublicClient {
       .then(({ data }: { data: { [key: string]: unknown } }) => {
         return mapToTokenDetails(data);
       })
-      .catch(
-        ({
-          response
-        }: {
-          response: { data: { error: string; error_description: string } };
-        }) => {
-          throw new GraphQLError(response.data.error, {
-            extensions: { description: response.data.error_description }
-          });
-        }
-      );
+      .catch(throwGraphQLError);
   }
 }

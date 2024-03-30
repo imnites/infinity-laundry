@@ -1,4 +1,5 @@
 import {useCallback, useState} from 'react';
+import {useMeContext} from '~/me';
 
 interface LoginHandlerPropsType {
   authenticateUser: any;
@@ -9,6 +10,7 @@ const useLoginHandlers = ({
   authenticateUser,
   navigation
 }: LoginHandlerPropsType) => {
+  const {setMe} = useMeContext();
   const [credential, setCredential] = useState<{
     userName: string;
     password: string;
@@ -58,16 +60,12 @@ const useLoginHandlers = ({
       setInvalidCredentials(true);
       onReset();
     } else {
+      setMe && setMe(result.me);
       navigation.navigate('MainPage');
+
       setCredential({userName: '', password: ''});
     }
-  }, [
-    authenticateUser,
-    credential,
-    navigation,
-    onReset,
-    setInvalidCredentials
-  ]);
+  }, [authenticateUser, credential, navigation, onReset, setMe]);
 
   const onSignUp = useCallback(
     () => navigation.navigate('PersonalDetails'),

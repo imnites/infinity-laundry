@@ -4,11 +4,11 @@ import {Number} from '.';
 
 interface MoneyPropsType {
   amount: {
-    amount: number;
+    amount: number | null;
     currency: {
       code: string;
       symbol: string;
-    };
+    } | null;
   };
   currencyStyle?: StyleProp<TextStyle>;
   amountStyle?: StyleProp<TextStyle>;
@@ -22,7 +22,7 @@ export const Money: React.FC<MoneyPropsType> = ({
   return (
     <View style={styles.root}>
       <Text style={[styles.currency, currencyStyle]}>
-        {amount.currency.symbol}
+        {amount?.currency?.symbol}
       </Text>
       <Number value={amount.amount} textStyle={amountStyle} />
     </View>

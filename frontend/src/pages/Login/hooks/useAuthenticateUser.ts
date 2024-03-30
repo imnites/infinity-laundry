@@ -1,23 +1,16 @@
 import {gql, useMutation} from '@apollo/client';
-import {useMeContext} from '~/me';
 import {setTokenValue} from '~/utils';
+import {ME_FRAGMENT} from '~/me';
 
 const Authenticate_User = gql`
+  ${ME_FRAGMENT}
   mutation authenticateUser($credential: Credential!) {
     authenticate(credential: $credential) {
       accessToken
       refreshToken
       tokenType
       me {
-        id
-        email
-        email
-        phoneNumber {
-          countryCode
-          phoneNumber
-        }
-        lastName
-        firstName
+        ...MeFragment
       }
     }
   }
@@ -29,7 +22,6 @@ interface CredentialType {
 }
 
 const useAuthenticateUser = () => {
-  const {setMe} = useMeContext();
   const [authenticateUser, {loading, error}] = useMutation(Authenticate_User, {
     onCompleted: async ({authenticate}) => {
       await setTokenValue({
@@ -37,7 +29,6 @@ const useAuthenticateUser = () => {
         refreshToken: authenticate.refreshToken,
         tokenType: authenticate.tokenType
       });
-      setMe && setMe(authenticate.me);
     }
   });
 
@@ -48,7 +39,7 @@ const useAuthenticateUser = () => {
           variables: {credential: credential}
         });
 
-        return data;
+        return {error: false, me: data.authenticate.me};
       } catch (err) {
         return {error: true};
       }

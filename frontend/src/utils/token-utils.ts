@@ -36,8 +36,15 @@ export const getTokenValue = async (): Promise<{
   };
 };
 
-export const deleteTokenValue = async (): Promise<void> => {
+export const deleteTokenValue = async (
+  deleteRefreshToken: boolean = true
+): Promise<boolean> => {
   await SecureStorageModule.deleteValue('access-token');
-  await SecureStorageModule.deleteValue('refresh-token');
   await SecureStorageModule.deleteValue('token-type');
+
+  if (deleteRefreshToken) {
+    await SecureStorageModule.deleteValue('refresh-token');
+  }
+
+  return true;
 };

@@ -34,10 +34,11 @@ class SecureStorageModule(reactContext: ReactApplicationContext?) : ReactContext
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @ReactMethod
-    fun deleteValue(key: String) {
+    fun deleteValue(key: String, promise: Promise) {
         val preferenceName = this.currentActivity?.resources?.getString(R.string.secretKeys);
         val preferences : SharedPreferences? = this.currentActivity?.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
         preferences?.edit()?.remove(key)?.apply();
+        return promise.resolve(true);
     }
 
 }

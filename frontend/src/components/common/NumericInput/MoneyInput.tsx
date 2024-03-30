@@ -4,11 +4,11 @@ import React from 'react';
 
 interface MoneyInputProps {
   amount: {
-    amount: number;
+    amount: number | null;
     currency: {
       code: string;
       symbol: string;
-    };
+    } | null;
   };
   onAmountChange: (val: number | null) => void;
   placeholder?: string;
@@ -26,13 +26,13 @@ export const MoneyInput: React.FC<MoneyInputProps> = ({
   return (
     <View style={styles.root}>
       <Text style={[styles.currency, currencyStyle]}>
-        {amount.currency.symbol}
+        {amount.currency?.symbol}
       </Text>
       <NumericInput
         value={amount.amount}
         onChangeText={onAmountChange}
         placeholder={placeholder}
-        style={numericStyle}
+        style={[styles.numericInput, numericStyle]}
       />
     </View>
   );
@@ -47,5 +47,8 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     marginBottom: 'auto',
     paddingRight: 4
+  },
+  numericInput: {
+    fontFamily: 'Rubik-Regular'
   }
 });

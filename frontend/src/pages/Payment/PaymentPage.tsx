@@ -22,23 +22,19 @@ const predefinedAmount = [100, 200, 500, 1000];
 const PaymentPage = () => {
   const [createCashfreeOrder] = useMutation(CREATE_CASHFREE_ORDER);
   const {me} = useMeContext();
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number | null>(null);
 
   const onChangeText = useCallback((value: number | null) => {
-    if (value !== null && !isNaN(value)) {
-      setAmount(value);
-    }
+    setAmount(value);
   }, []);
 
   useEffect(() => {
     CFPaymentGatewayService.setCallback({
       onVerify(orderID, _) {
-        console.log(_);
-        console.log(orderID);
+        //
       },
       onError(error, orderID) {
-        console.log(error);
-        console.log(orderID);
+        //
       }
     });
 
@@ -52,24 +48,25 @@ const PaymentPage = () => {
       return;
     }
 
-    console.log(me);
     try {
-      const {data} = await createCashfreeOrder({
-        variables: {
-          userId: me?.id,
-          amount: {
-            amount: amount,
-            currencyId: me.balance.currency.code
+      if (!isNaN(parseFloat(amount as any as string))) {
+        const {data} = await createCashfreeOrder({
+          variables: {
+            userId: me?.id,
+            amount: {
+              amount: parseFloat(amount as any as string),
+              currencyId: me.balance.currency.code
+            }
           }
-        }
-      });
+        });
 
-      const session = new CFSession(
-        data.createCashfreeOrder.paymentSessionId,
-        data.createCashfreeOrder.orderId,
-        CFEnvironment.SANDBOX
-      );
-      CFPaymentGatewayService.doWebPayment(JSON.stringify(session));
+        const session = new CFSession(
+          data.createCashfreeOrder.paymentSessionId,
+          data.createCashfreeOrder.orderId,
+          CFEnvironment.SANDBOX
+        );
+        CFPaymentGatewayService.doWebPayment(JSON.stringify(session));
+      }
     } catch (e) {
       //
     }
@@ -87,11 +84,8 @@ const PaymentPage = () => {
             amountStyle={styles.availableBalanceAmount}
             currencyStyle={styles.availableBalanceCurrency}
             amount={{
-              amount: 100,
-              currency: {
-                code: 'INR',
-                symbol: '₹'
-              }
+              amount: me?.balance.amount ?? null,
+              currency: me?.balance.currency ?? null
             }}
           />
         </View>
@@ -103,16 +97,17 @@ const PaymentPage = () => {
           currencyStyle={styles.currencyStyle}
           amount={{
             amount: amount,
-            currency: {
-              code: 'INR',
-              symbol: '₹'
-            }
+            currency: me?.balance.currency ?? null
           }}
           placeholder="0"
         />
         <View style={styles.amountTemplateContainer}>
           {predefinedAmount.map((val: number) => (
-            <PredefinedAmountChip value={val} onPress={onChangeText} />
+            <PredefinedAmountChip
+              key={`${val}`}
+              value={val}
+              onPress={onChangeText}
+            />
           ))}
         </View>
       </View>
@@ -123,7 +118,7 @@ const PaymentPage = () => {
             buttonText: styles.continueButtonText
           }}
           name="Continue"
-          onPress={() => {}}
+          onPress={startWebCheckout}
         />
       </View>
     </>
