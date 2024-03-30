@@ -2,17 +2,26 @@ import {
   ApolloClient,
   ApolloLink,
   InMemoryCache,
-  fromPromise
+  Observable
 } from '@apollo/client';
 import {setContext} from 'apollo-link-context';
 import {createHttpLink} from 'apollo-link-http';
-import {getTokenValue, deleteTokenValue} from '~/utils/token-utils';
+import {
+  getTokenValue,
+  deleteTokenValue,
+  setTokenValue
+} from '~/utils/token-utils';
 import {onError} from '@apollo/client/link/error';
 import {RetryLink} from '@apollo/client/link/retry';
 import {NativeModules} from 'react-native';
 import {isAndroid} from '~/utils';
 
 const {AppControllerModule} = NativeModules;
+
+const refreshTokenErrorCode = {
+  EXPIRED: 'REFRESH_TOKEN_EXPIRED',
+  NOT_EXISTS: 'REFRESH_TOKEN_NOT_EXISTS'
+};
 
 const LOCAL_SYSTEM_IP_ADDRESS = '192.168.1.8';
 
@@ -22,9 +31,10 @@ const httpLink = createHttpLink({
   uri: url
 });
 
-const getNewToken = async (refreshToken: string) => {
+const getNewToken = async () => {
+  const {refreshToken} = await getTokenValue();
   if (!refreshToken) {
-    return Promise.resolve();
+    return Promise.reject({code: refreshTokenErrorCode.NOT_EXISTS});
   }
 
   return fetch(url, {
@@ -55,7 +65,7 @@ const getNewToken = async (refreshToken: string) => {
         return data;
       }
 
-      throw new Error('Refresh token expired');
+      throw {code: refreshTokenErrorCode.EXPIRED};
     });
 };
 
@@ -64,34 +74,45 @@ const errorLink = onError(({graphQLErrors, operation, forward}) => {
     for (let err of graphQLErrors) {
       switch (err.extensions.code) {
         case 'Unauthorized':
-          fromPromise(
-            getTokenValue().then(({refreshToken}) =>
-              getNewToken(refreshToken).catch(async () => {
-                const deleted = await deleteTokenValue();
-                if (deleted) {
+          return new Observable(observer => {
+            getNewToken()
+              .then(({refreshToken: token}) => {
+                setTokenValue({
+                  accessToken: token.accessToken,
+                  refreshToken: token.refreshToken,
+                  tokenType: token.tokenType
+                });
+                const oldHeaders = operation.getContext().headers;
+                operation.setContext({
+                  headers: {
+                    ...oldHeaders,
+                    authorization: `${token.tokenType} ${token.accessToken}`
+                  }
+                });
+              })
+              .then(() => {
+                const subscriber = {
+                  next: observer.next.bind(observer),
+                  error: observer.error.bind(observer),
+                  complete: observer.complete.bind(observer)
+                };
+
+                forward(operation).subscribe(subscriber);
+              })
+              .catch(({code}) => {
+                if (code === refreshTokenErrorCode.EXPIRED) {
+                  console.log('in exp');
+                  deleteTokenValue();
                   setTimeout(() => {
                     isAndroid &&
                       AppControllerModule &&
                       AppControllerModule.restart();
                   }, 5000);
-                }
-                return;
-              })
-            )
-          )
-            .filter(value => Boolean(value))
-            .flatMap(accessToken => {
-              const oldHeaders = operation.getContext().headers;
-              operation.setContext({
-                headers: {
-                  ...oldHeaders,
-                  authorization: `Bearer ${accessToken}`
+                } else {
+                  observer.error(code);
                 }
               });
-
-              // retry the request, returning the new observable
-              return forward(operation);
-            });
+          });
       }
     }
   }
