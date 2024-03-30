@@ -192,6 +192,7 @@ export type Query = {
   _?: Maybe<Scalars['String']['output']>;
   fetchCashfreeOrder: Scalars['Boolean']['output'];
   me: Me;
+  templateDetails: TemplateDetails;
   transactionDetails?: Maybe<Array<TransactionDetails>>;
 };
 
@@ -203,6 +204,11 @@ export type QueryFetchCashfreeOrderArgs = {
 };
 
 
+export type QueryTemplateDetailsArgs = {
+  input: TemplateDetailsInput;
+};
+
+
 export type QueryTransactionDetailsArgs = {
   input: TransactionDetailsInput;
 };
@@ -210,6 +216,21 @@ export type QueryTransactionDetailsArgs = {
 export type Subscription = {
   __typename?: 'Subscription';
   _?: Maybe<Scalars['String']['output']>;
+};
+
+export type TemplateDetails = {
+  __typename?: 'TemplateDetails';
+  css: Scalars['String']['output'];
+  html: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  javascript: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+  status: Scalars['Boolean']['output'];
+};
+
+export type TemplateDetailsInput = {
+  slug: Scalars['String']['input'];
 };
 
 export type TransactionDetails = {
@@ -328,6 +349,8 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
+  TemplateDetails: ResolverTypeWrapper<TemplateDetails>;
+  TemplateDetailsInput: TemplateDetailsInput;
   TransactionDetails: ResolverTypeWrapper<TransactionDetails>;
   TransactionDetailsInput: TransactionDetailsInput;
   UserInput: UserInput;
@@ -356,6 +379,8 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   String: Scalars['String']['output'];
   Subscription: {};
+  TemplateDetails: TemplateDetails;
+  TemplateDetailsInput: TemplateDetailsInput;
   TransactionDetails: TransactionDetails;
   TransactionDetailsInput: TransactionDetailsInput;
   UserInput: UserInput;
@@ -450,11 +475,23 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   _?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   fetchCashfreeOrder?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryFetchCashfreeOrderArgs, 'cfPaymentId' | 'orderId' | 'userId'>>;
   me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
+  templateDetails?: Resolver<ResolversTypes['TemplateDetails'], ParentType, ContextType, RequireFields<QueryTemplateDetailsArgs, 'input'>>;
   transactionDetails?: Resolver<Maybe<Array<ResolversTypes['TransactionDetails']>>, ParentType, ContextType, RequireFields<QueryTransactionDetailsArgs, 'input'>>;
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['String']>, "_", ParentType, ContextType>;
+}>;
+
+export type TemplateDetailsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TemplateDetails'] = ResolversParentTypes['TemplateDetails']> = ResolversObject<{
+  css?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  html?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  javascript?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type TransactionDetailsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TransactionDetails'] = ResolversParentTypes['TransactionDetails']> = ResolversObject<{
@@ -481,6 +518,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   PhoneNumber?: PhoneNumberResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  TemplateDetails?: TemplateDetailsResolvers<ContextType>;
   TransactionDetails?: TransactionDetailsResolvers<ContextType>;
 }>;
 

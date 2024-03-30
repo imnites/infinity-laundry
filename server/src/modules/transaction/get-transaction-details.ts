@@ -1,7 +1,7 @@
 import { TransactionDetailsInput, TransactionDetails } from '~/generated-types';
 import { Context } from '~/types';
 
-export const mapToTransactionDetails = (
+const mapToTransactionDetails = (
   results: { [key: string]: unknown }[]
 ): TransactionDetails[] => {
   return results.map((result) => {

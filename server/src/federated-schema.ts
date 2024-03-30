@@ -4,7 +4,9 @@ import {
   orderTypeDefs,
   orderResolvers,
   transactionTypeDefs,
-  transactionResolvers
+  transactionResolvers,
+  templateTypeDefs,
+  templateResolvers
 } from './modules';
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 
@@ -27,11 +29,13 @@ export default {
     root,
     userTypeDefs,
     orderTypeDefs,
-    transactionTypeDefs
+    transactionTypeDefs,
+    templateTypeDefs
   ]),
   resolvers: mergeResolvers([
     userResolvers,
     orderResolvers,
-    transactionResolvers
+    transactionResolvers,
+    templateResolvers
   ])
 };

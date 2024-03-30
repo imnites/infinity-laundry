@@ -1,18 +1,20 @@
 import { Database, Transaction } from '~/models';
 import { AbstractDataType } from 'sequelize';
 
-export class PaymentService {
+export class TransactionService {
   private readonly _database: Database;
 
   public constructor(database: Database) {
     this._database = database;
   }
 
-  public async getPaymentDetailsById(id: string): Promise<Transaction | null> {
+  public async getTransactionDetailsById(
+    id: string
+  ): Promise<Transaction | null> {
     return this._database.models.transaction.findByPk(id);
   }
 
-  public async addPayment({
+  public async addTransaction({
     id,
     userId,
     type,

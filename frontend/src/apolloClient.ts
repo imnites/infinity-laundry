@@ -23,7 +23,7 @@ const refreshTokenErrorCode = {
   NOT_EXISTS: 'REFRESH_TOKEN_NOT_EXISTS'
 };
 
-const LOCAL_SYSTEM_IP_ADDRESS = '192.168.1.8';
+const LOCAL_SYSTEM_IP_ADDRESS = '192.168.0.105';
 
 const url = `http://${LOCAL_SYSTEM_IP_ADDRESS}:4000/graphql`;
 

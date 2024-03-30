@@ -3,6 +3,7 @@ type Query {
   me: Me!
   fetchCashfreeOrder(userId: String!, orderId: String!, cfPaymentId: String!): Boolean!
   transactionDetails(input: TransactionDetailsInput!): [TransactionDetails!]
+  templateDetails(input: TemplateDetailsInput!): TemplateDetails!
 }
 
 type Mutation {
@@ -138,4 +139,18 @@ type TransactionDetails {
 type MachineDetails {
   machineId: String!
   machineNumber: String!
+}
+
+input TemplateDetailsInput {
+  slug: String!
+}
+
+type TemplateDetails {
+  id: String!
+  slug: String!
+  name: String!
+  status: Boolean!
+  html: String!
+  css: String!
+  javascript: String!
 }
