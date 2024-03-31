@@ -4,7 +4,9 @@ import {
   orderTypeDefs,
   orderResolvers,
   resourceTypeDefs,
-  resourceResolvers
+  resourceResolvers,
+  templateTypeDefs,
+  templateResolvers
 } from './modules';
 import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge';
 
@@ -27,7 +29,13 @@ export default {
     root,
     userTypeDefs,
     orderTypeDefs,
-    resourceTypeDefs
+    resourceTypeDefs,
+    templateTypeDefs
   ]),
-  resolvers: mergeResolvers([userResolvers, orderResolvers, resourceResolvers])
+  resolvers: mergeResolvers([
+    userResolvers,
+    orderResolvers,
+    resourceResolvers,
+    templateResolvers
+  ])
 };

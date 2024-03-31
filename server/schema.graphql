@@ -3,6 +3,7 @@ type Query {
   me: Me!
   pageOfTransactions(filter: TransactionsFilter): [Transaction!]!
   resourceDetails(code: String!): Resource!
+  templateDetails(input: TemplateDetailsInput!): TemplateDetails!
 }
 
 type Mutation {
@@ -137,4 +138,18 @@ type Resource {
   type: String!
   maxCapacity: String
   amountPerUse: Money!
+}
+
+input TemplateDetailsInput {
+  slug: String!
+}
+
+type TemplateDetails {
+  id: String!
+  slug: String!
+  name: String!
+  status: Boolean!
+  html: String!
+  css: String!
+  javascript: String!
 }

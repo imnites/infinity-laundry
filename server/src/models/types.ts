@@ -2,6 +2,7 @@ import { ModelAttributeColumnOptions, ModelOptions } from 'sequelize';
 import { UserInfo } from './user';
 import { Resource } from './resource';
 import { Transactions } from './transactions';
+import { Template } from './template';
 import { Sequelize } from 'sequelize';
 
 export type ModelDef = {
@@ -15,6 +16,7 @@ export type Models = {
   userInfo: typeof UserInfo;
   resource: typeof Resource;
   transactions: typeof Transactions;
+  template: typeof Template;
 };
 
 export type Database = {

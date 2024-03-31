@@ -11,5 +11,6 @@ export {
   TRANSACTION_STATUS,
   TRANSACTION_TYPE
 } from './transactions';
+export { Template, TemplateDef } from './template';
 export { Models, Database } from './types';
 export { initModels } from './init-models';

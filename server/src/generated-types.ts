@@ -188,6 +188,7 @@ export type Query = {
   me: Me;
   pageOfTransactions: Array<Transaction>;
   resourceDetails: Resource;
+  templateDetails: TemplateDetails;
 };
 
 
@@ -198,6 +199,11 @@ export type QueryPageOfTransactionsArgs = {
 
 export type QueryResourceDetailsArgs = {
   code: Scalars['String']['input'];
+};
+
+
+export type QueryTemplateDetailsArgs = {
+  input: TemplateDetailsInput;
 };
 
 export type Resource = {
@@ -213,6 +219,21 @@ export type Resource = {
 export type Subscription = {
   __typename?: 'Subscription';
   _?: Maybe<Scalars['String']['output']>;
+};
+
+export type TemplateDetails = {
+  __typename?: 'TemplateDetails';
+  css: Scalars['String']['output'];
+  html: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  javascript: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+  status: Scalars['Boolean']['output'];
+};
+
+export type TemplateDetailsInput = {
+  slug: Scalars['String']['input'];
 };
 
 export type Transaction = {
@@ -332,6 +353,8 @@ export type ResolversTypes = ResolversObject<{
   Resource: ResolverTypeWrapper<Resource>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
+  TemplateDetails: ResolverTypeWrapper<TemplateDetails>;
+  TemplateDetailsInput: TemplateDetailsInput;
   Transaction: ResolverTypeWrapper<Transaction>;
   TransactionsFilter: TransactionsFilter;
   UseResourceResult: ResolverTypeWrapper<UseResourceResult>;
@@ -361,6 +384,8 @@ export type ResolversParentTypes = ResolversObject<{
   Resource: Resource;
   String: Scalars['String']['output'];
   Subscription: {};
+  TemplateDetails: TemplateDetails;
+  TemplateDetailsInput: TemplateDetailsInput;
   Transaction: Transaction;
   TransactionsFilter: TransactionsFilter;
   UseResourceResult: UseResourceResult;
@@ -452,6 +477,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
   pageOfTransactions?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, Partial<QueryPageOfTransactionsArgs>>;
   resourceDetails?: Resolver<ResolversTypes['Resource'], ParentType, ContextType, RequireFields<QueryResourceDetailsArgs, 'code'>>;
+  templateDetails?: Resolver<ResolversTypes['TemplateDetails'], ParentType, ContextType, RequireFields<QueryTemplateDetailsArgs, 'input'>>;
 }>;
 
 export type ResourceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Resource'] = ResolversParentTypes['Resource']> = ResolversObject<{
@@ -466,6 +492,17 @@ export type ResourceResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['String']>, "_", ParentType, ContextType>;
+}>;
+
+export type TemplateDetailsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TemplateDetails'] = ResolversParentTypes['TemplateDetails']> = ResolversObject<{
+  css?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  html?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  javascript?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type TransactionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
@@ -492,6 +529,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Resource?: ResourceResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  TemplateDetails?: TemplateDetailsResolvers<ContextType>;
   Transaction?: TransactionResolvers<ContextType>;
   UseResourceResult?: UseResourceResultResolvers<ContextType>;
 }>;
