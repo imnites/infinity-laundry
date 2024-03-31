@@ -14,6 +14,7 @@ interface MoneyInputProps {
   placeholder?: string;
   numericStyle?: StyleProp<TextStyle>;
   currencyStyle?: StyleProp<TextStyle>;
+  autoFocus?: boolean;
 }
 
 export const MoneyInput: React.FC<MoneyInputProps> = ({
@@ -21,7 +22,8 @@ export const MoneyInput: React.FC<MoneyInputProps> = ({
   onAmountChange,
   placeholder,
   numericStyle,
-  currencyStyle
+  currencyStyle,
+  autoFocus
 }) => {
   return (
     <View style={styles.root}>
@@ -33,6 +35,7 @@ export const MoneyInput: React.FC<MoneyInputProps> = ({
         onChangeText={onAmountChange}
         placeholder={placeholder}
         style={[styles.numericInput, numericStyle]}
+        autoFocus={autoFocus}
       />
     </View>
   );

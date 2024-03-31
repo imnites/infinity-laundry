@@ -23,3 +23,4 @@ export const redisServerURL = process.env.REDIS_END_POINT ?? '';
 export const cashfreeXClientid = process.env.CASHFREE_XCLIENTID ?? '';
 export const cashfreeXClientsecret = process.env.CASHFREE_XCLIENTSECRET ?? '';
 export const cashfreeXEnvironment = process.env.CASHFREE_XENVIRONMENT ?? '';
+export const cashfreeAPIVersion = process.env.API_VERSION ?? '';

@@ -1,76 +1,25 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {CFEnvironment, CFSession} from 'cashfree-pg-api-contract';
-import {CFPaymentGatewayService} from 'react-native-cashfree-pg-sdk';
-import {gql, useMutation} from '@apollo/client';
 import {useMeContext} from '~/me';
 import {Button, Money, MoneyInput} from '~/components/common';
 import {PredefinedAmountChip} from './PredefinedAmountChip';
-
-const CREATE_CASHFREE_ORDER = gql`
-  mutation createCashfreeOrder($userId: String!, $amount: AmountInput!) {
-    createCashfreeOrder(userId: $userId, amount: $amount) {
-      cfPaymentId
-      orderId
-      paymentSessionId
-    }
-  }
-`;
+import {usePayment} from './usePayment';
 
 const predefinedAmount = [100, 200, 500, 1000];
 
 const PaymentPage = () => {
-  const [createCashfreeOrder] = useMutation(CREATE_CASHFREE_ORDER);
-  const {me} = useMeContext();
+  const {me, refresh} = useMeContext();
   const [amount, setAmount] = useState<number | null>(null);
+
+  const {startWebCheckout, checkoutLoading} = usePayment({
+    amount,
+    me,
+    refreshMe: refresh
+  });
 
   const onChangeText = useCallback((value: number | null) => {
     setAmount(value);
   }, []);
-
-  useEffect(() => {
-    CFPaymentGatewayService.setCallback({
-      onVerify(orderID, _) {
-        //
-      },
-      onError(error, orderID) {
-        //
-      }
-    });
-
-    return () => {
-      CFPaymentGatewayService.removeCallback();
-    };
-  }, []);
-
-  const startWebCheckout = useCallback(async () => {
-    if (!me) {
-      return;
-    }
-
-    try {
-      if (!isNaN(parseFloat(amount as any as string))) {
-        const {data} = await createCashfreeOrder({
-          variables: {
-            userId: me?.id,
-            amount: {
-              amount: parseFloat(amount as any as string),
-              currencyId: me.balance.currency.code
-            }
-          }
-        });
-
-        const session = new CFSession(
-          data.createCashfreeOrder.paymentSessionId,
-          data.createCashfreeOrder.orderId,
-          CFEnvironment.SANDBOX
-        );
-        CFPaymentGatewayService.doWebPayment(JSON.stringify(session));
-      }
-    } catch (e) {
-      //
-    }
-  }, [amount, createCashfreeOrder, me]);
 
   return (
     <>
@@ -100,6 +49,7 @@ const PaymentPage = () => {
             currency: me?.balance.currency ?? null
           }}
           placeholder="0"
+          autoFocus
         />
         <View style={styles.amountTemplateContainer}>
           {predefinedAmount.map((val: number) => (
@@ -117,6 +67,7 @@ const PaymentPage = () => {
             button: styles.continueButton,
             buttonText: styles.continueButtonText
           }}
+          loading={checkoutLoading}
           name="Continue"
           onPress={startWebCheckout}
         />

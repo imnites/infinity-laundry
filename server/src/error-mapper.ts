@@ -22,10 +22,12 @@ export const throwGraphQLError = ({
 
 export const mapToGraphQLError = (
   message: string,
-  code: string
+  code?: string
 ): GraphQLError =>
-  new GraphQLError(message, {
-    extensions: {
-      code: code
-    }
-  });
+  code
+    ? new GraphQLError(message, {
+        extensions: {
+          code: code
+        }
+      })
+    : new GraphQLError(message);

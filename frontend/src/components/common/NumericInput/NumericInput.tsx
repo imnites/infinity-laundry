@@ -7,13 +7,15 @@ interface NumericInputProps {
   value: number | null;
   placeholder?: string | undefined;
   style?: StyleProp<TextStyle>;
+  autoFocus?: boolean;
 }
 
 export const NumericInput: React.FC<NumericInputProps> = ({
   onChangeText: onChange,
   value,
   placeholder,
-  style
+  style,
+  autoFocus
 }) => {
   const ref = createRef<TextInput>();
 
@@ -66,6 +68,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
       placeholder={placeholder}
       ref={ref}
       style={style}
+      autoFocus={autoFocus}
     />
   );
 };

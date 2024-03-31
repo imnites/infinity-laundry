@@ -1,11 +1,10 @@
 import { createCashfreeOrder } from './create-cashfree-order';
-import { fetchCashfreeOrder } from './fetch-cashfree-order';
+import { verifyAndCompleteCashfreeOrder } from './verify-and-complete-cashfree-order';
 
 export default {
   Mutation: {
-    createCashfreeOrder: createCashfreeOrder
+    createCashfreeOrder: createCashfreeOrder,
+    verifyAndCompleteCashfreeOrder: verifyAndCompleteCashfreeOrder
   },
-  Query: {
-    fetchCashfreeOrder: fetchCashfreeOrder
-  }
+  Query: { pageOfTransactions: () => {} }
 };

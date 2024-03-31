@@ -1,8 +1,8 @@
 type Query {
   _: String
   me: Me!
-  fetchCashfreeOrder(userId: String!, orderId: String!, cfPaymentId: String!): Boolean!
-  paymentDetails(input: PaymentDetailsInput!): [PaymentDetails!]
+  pageOfTransactions(filter: TransactionsFilter): [Transaction!]!
+  resourceDetails(code: String!): Resource!
 }
 
 type Mutation {
@@ -16,7 +16,8 @@ type Mutation {
   validatePhoneOTP(verificationToken: String!, otp: String!): OTPValidationResult!
   updatePassword(password: String!): Boolean!
   createCashfreeOrder(userId: String!, amount: AmountInput!): CashfreeOrderResult!
-  addPayment(input: AddPaymentInput!): String!
+  verifyAndCompleteCashfreeOrder(userId: String!, orderId: String!): Boolean!
+  useResource(code: String!): UseResourceResult
 }
 
 type Subscription {
@@ -74,7 +75,7 @@ type AuthResult {
   refreshToken: String
   refreshExpiresInSec: Int
   tokenType: String!
-  me: Me!
+  me: Me
 }
 
 type Money {
@@ -99,9 +100,19 @@ type Me {
   balance: Money!
 }
 
+input TransactionsFilter {
+  dateRange: DateRangeInput
+  status: String
+}
+
+input DateRangeInput {
+  startDate: String!
+  endDate: String!
+}
+
 input AmountInput {
   amount: Float!
-  currencyId: String!
+  currencyCode: String!
 }
 
 type CashfreeOrderResult {
@@ -110,32 +121,20 @@ type CashfreeOrderResult {
   paymentSessionId: String!
 }
 
-input AddPaymentInput {
-  userId: String!
-  type: String!
-  machineId: String
-  machineNumber: String
-  amount: Float!
-  currencyId: String!
-  timestamp: String!
-  completed: Boolean!
-}
-
-input PaymentDetailsInput {
-  userId: String!
-}
-
-type PaymentDetails {
+type Transaction {
   id: String!
-  userId: String!
-  type: String!
-  machineDetails: MachineDetails
-  amount: Money
-  timestamp: String!
-  completed: Boolean!
 }
 
-type MachineDetails {
-  machineId: String!
-  machineNumber: String!
+type UseResourceResult {
+  transactionId: String!
+  status: String!
+}
+
+type Resource {
+  id: String!
+  code: String!
+  name: String!
+  type: String!
+  maxCapacity: String
+  amountPerUse: Money!
 }

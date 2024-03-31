@@ -10,3 +10,4 @@ export {default as LoadingScreen} from './LoadingScreen';
 export {NumericInput, MoneyInput} from './NumericInput';
 export {Money} from './Money';
 export {default as Number} from './Number';
+export {Redirect} from './Redirect';

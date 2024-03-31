@@ -4,7 +4,7 @@ import Bluebird from 'bluebird';
 import { UserInfo, UserInfoDef } from './user';
 import { Resource, ResourceDef } from './resource';
 import { addRelationship } from './model-relationship';
-import { Payment, PaymentDef } from './payment';
+import { Transactions, TransactionsDef } from './transactions';
 
 export const initModels = async (sequelize: Sequelize): Promise<Models> => {
   const defaultOptions = {
@@ -21,9 +21,9 @@ export const initModels = async (sequelize: Sequelize): Promise<Models> => {
       ...defaultOptions,
       ...ResourceDef.options
     }),
-    payment: Payment.init(PaymentDef.fields, {
+    transactions: Transactions.init(TransactionsDef.fields, {
       ...defaultOptions,
-      ...PaymentDef.options
+      ...TransactionsDef.options
     })
   });
 

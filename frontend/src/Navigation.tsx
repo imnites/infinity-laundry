@@ -16,6 +16,7 @@ import PaymentPage from './pages/Payment/PaymentPage';
 import {TermsAndConditions} from './components/sidepanel/additional-options/components';
 import {ContactUs} from './components/sidepanel/get-in-touch-section/components';
 import {Faqs} from './components/sidepanel/help-section/components';
+import {PreviewOrder} from '~/pages/PreviewOrder';
 
 interface StackScreen {
   id: number;
@@ -109,6 +110,14 @@ export const stackScreens: StackScreen[] = [
     id: 11,
     name: 'TermsAndConditions',
     component: TermsAndConditions,
+    options: {
+      headerShown: false
+    }
+  },
+  {
+    id: 12,
+    name: 'PreviewOrder',
+    component: PreviewOrder,
     options: {
       headerShown: false
     }

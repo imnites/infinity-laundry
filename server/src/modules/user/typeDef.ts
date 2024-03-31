@@ -65,7 +65,7 @@ const typeDefs = `
     refreshToken: String
     refreshExpiresInSec: Int
     tokenType: String!
-    me: Me!
+    me: Me
   }
 
   type Money {

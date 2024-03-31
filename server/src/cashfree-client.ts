@@ -5,12 +5,11 @@ import { Cashfree, OrderEntity, PaymentEntity } from 'cashfree-pg';
 import {
   cashfreeXClientid,
   cashfreeXClientsecret,
-  cashfreeXEnvironment
+  cashfreeXEnvironment,
+  cashfreeAPIVersion
 } from './config';
 import { PhoneNumber } from './types';
-import { GraphQLError } from 'graphql';
-
-const API_VERSION = '2023-08-01';
+import { mapToGraphQLError } from './error-mapper';
 
 Cashfree.XClientId = cashfreeXClientid;
 Cashfree.XClientSecret = cashfreeXClientsecret;
@@ -49,27 +48,67 @@ export const createOrder = async ({
     order_note: ''
   };
 
-  return Cashfree.PGCreateOrder(API_VERSION, request)
+  return Cashfree.PGCreateOrder(cashfreeAPIVersion, request)
     .then(({ data }) => {
       return data;
     })
     .catch((error) => {
-      throw new GraphQLError(error.response.data as string);
+      throw mapToGraphQLError(
+        error.response.data.message as string,
+        error.response.data.code as string
+      );
     });
 };
 
-export const getOrderDetails = async ({
+export const fetchOrder = async ({
+  orderId
+}: {
+  orderId: string;
+}): Promise<OrderEntity> => {
+  return Cashfree.PGFetchOrder(cashfreeAPIVersion, orderId)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw mapToGraphQLError(
+        error.response.data.message as string,
+        error.response.data.code as string
+      );
+    });
+};
+
+export const fetchPaymentDetails = async ({
   orderId,
   cfPaymentId
 }: {
   orderId: string;
   cfPaymentId: string;
 }): Promise<PaymentEntity> => {
-  return Cashfree.PGOrderFetchPayment(API_VERSION, orderId, cfPaymentId)
+  return Cashfree.PGOrderFetchPayment(cashfreeAPIVersion, orderId, cfPaymentId)
     .then((response) => {
       return response.data;
     })
     .catch((error) => {
-      throw new GraphQLError(error.response.data as string);
+      throw mapToGraphQLError(
+        error.response.data.message as string,
+        error.response.data.code as string
+      );
+    });
+};
+
+export const fetchPaymentsForOrder = async ({
+  orderId
+}: {
+  orderId: string;
+}): Promise<PaymentEntity[]> => {
+  return Cashfree.PGOrderFetchPayments(cashfreeAPIVersion, orderId)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw mapToGraphQLError(
+        error.response.data.message as string,
+        error.response.data.code as string
+      );
     });
 };

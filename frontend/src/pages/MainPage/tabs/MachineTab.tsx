@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -12,12 +13,19 @@ const {QRCodeScannerModule} = NativeModules;
 
 const MachineTab: React.FC = () => {
   const [machineCode, setMachineCode] = useState<string>('');
+  const nav = useNavigation();
 
   const handleQRScan = async () => {
-    const data = await QRCodeScannerModule.scan();
+    await QRCodeScannerModule.scan();
   };
 
-  const handleSubmitMachineCode = () => {};
+  const handleSubmitMachineCode = useCallback(async () => {
+    if (machineCode) {
+      (nav.navigate as any)('PreviewOrder', {resourceCode: machineCode});
+    } else {
+      // show toast to enter machine code
+    }
+  }, [machineCode, nav]);
 
   return (
     <View style={styles.container}>

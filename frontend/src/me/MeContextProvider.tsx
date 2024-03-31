@@ -1,4 +1,4 @@
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement, useState, useCallback} from 'react';
 import {MeContext} from './MeContext';
 import {useMe} from './useMe';
 import {LoadingScreen} from '~/components/common';
@@ -14,7 +14,7 @@ export const MeContextProvider: React.FC<MeContextProviderProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [me, setMe] = useState<Me>();
 
-  useMe({
+  const {refetch} = useMe({
     onCompleted: ({me: user}) => {
       setMe(user);
       setIsLoading(false);
@@ -25,8 +25,16 @@ export const MeContextProvider: React.FC<MeContextProviderProps> = ({
     }
   });
 
+  const refresh = useCallback(
+    () =>
+      refetch().then(({data}) => {
+        setMe(data.me);
+      }),
+    [refetch]
+  );
+
   return (
-    <MeContext.Provider value={{me, setMe}}>
+    <MeContext.Provider value={{me, setMe, refresh}}>
       {isLoading ? <LoadingScreen /> : children}
     </MeContext.Provider>
   );

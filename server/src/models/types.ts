@@ -1,7 +1,7 @@
 import { ModelAttributeColumnOptions, ModelOptions } from 'sequelize';
 import { UserInfo } from './user';
 import { Resource } from './resource';
-import { Payment } from './payment';
+import { Transactions } from './transactions';
 import { Sequelize } from 'sequelize';
 
 export type ModelDef = {
@@ -11,20 +11,20 @@ export type ModelDef = {
   options: ModelOptions;
 };
 
-// export enum ModelKeys {
-//   userInfo = 'userInfo',
-//   resource = 'resource'
-// }
-
-// export type ModelRef = typeof Resource | typeof UserInfo;
-
 export type Models = {
   userInfo: typeof UserInfo;
   resource: typeof Resource;
-  payment: typeof Payment;
+  transactions: typeof Transactions;
 };
 
 export type Database = {
   sequelize: Sequelize;
   models: Models;
+};
+
+export type CurrencyType = {
+  id: string;
+  name: string;
+  code: string;
+  symbol: string;
 };

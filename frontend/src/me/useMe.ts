@@ -19,7 +19,7 @@ export const useMe = ({
   onError?: () => void;
   onCompleted?: ({me}: {me: Me}) => void;
 }) => {
-  const {data, loading} = useQuery(ME, {
+  const {data, loading, refetch} = useQuery(ME, {
     variables: {},
     fetchPolicy: 'cache-and-network',
     nextFetchPolicy: 'cache-first',
@@ -29,6 +29,7 @@ export const useMe = ({
 
   return {
     me: data?.me as Me | undefined,
-    loading
+    loading,
+    refetch
   };
 };

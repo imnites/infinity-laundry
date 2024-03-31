@@ -49,14 +49,20 @@ export const authenticate = async (
 
       const me = await context.keyCloakPublicClient.getMe();
 
-      return {
-        accessToken: response.accessToken,
-        expiresInSec: response.expiresInSec,
-        refreshExpiresInSec: response.refreshTokenExpiresInSec,
-        refreshToken: response.refreshToken,
-        tokenType: response.tokenType,
-        me: mapToMe(me)
-      };
+      const user = await context.serviceClients.userService.getUserDetailsById(
+        me?.sub as string
+      );
+
+      if (user) {
+        return {
+          accessToken: response.accessToken,
+          expiresInSec: response.expiresInSec,
+          refreshExpiresInSec: response.refreshTokenExpiresInSec,
+          refreshToken: response.refreshToken,
+          tokenType: response.tokenType,
+          me: mapToMe(user)
+        };
+      }
     } catch (ex) {
       throw new GraphQLError('Invalid Credentials!');
     }

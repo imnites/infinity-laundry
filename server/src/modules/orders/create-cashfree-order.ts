@@ -21,7 +21,7 @@ export const createCashfreeOrder = async (
     const order = await createOrder({
       amount: {
         amount: args.amount.amount,
-        currencyCode: args.amount.currencyId
+        currencyCode: args.amount.currencyCode
       },
       customer: {
         id: user.Id,

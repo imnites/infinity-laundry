@@ -1,7 +1,13 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const StatusTab: React.FC = () => {
+interface StatusTabProps {
+  route: any;
+}
+
+const StatusTab: React.FC<StatusTabProps> = ({route}) => {
+  console.log(route);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>No status available yet.</Text>

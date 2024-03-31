@@ -9,7 +9,7 @@ import {Tabs} from '~/components/common';
 interface TabsReturnType {
   id: number;
   name: string;
-  component: React.ComponentType;
+  component: React.FC<any>;
   options: any;
 }
 

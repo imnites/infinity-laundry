@@ -1,21 +1,16 @@
 import { Me } from '~/generated-types';
+import { UserInfo } from '~/models';
 import { Context } from '~/types';
 
-export const mapToMe = (details: { [key: string]: unknown }): Me => {
+export const mapToMe = (user: UserInfo): Me => {
   return {
-    id: details.sub as string,
-    name: details.name as string,
-    email: details.email as string,
-    enabled: true,
-    firstName: details.given_name as string,
-    lastName: details.family_name as string,
-    balance: {
-      amount: 150.0,
-      currency: {
-        symbol: '₹',
-        code: 'INR'
-      }
-    }
+    id: user.Id,
+    name: user.Name,
+    email: user.Email,
+    enabled: user.Enabled,
+    firstName: user.FirstName,
+    lastName: user.LastName,
+    balance: user.Balance
   };
 };
 
@@ -23,8 +18,15 @@ export const getMe = async (
   parent: { [key: string]: unknown } | null,
   _: unknown,
   context: Context
-): Promise<Me> => {
-  const details = await context.keyCloakPublicClient.getMe();
+): Promise<Me | null> => {
+  const me = await context.keyCloakPublicClient.getMe();
+  const user = await context.serviceClients.userService.getUserDetailsById(
+    me.sub as string
+  );
 
-  return mapToMe(details);
+  if (user) {
+    return mapToMe(user);
+  }
+
+  return null;
 };

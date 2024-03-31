@@ -4,12 +4,20 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {HomePage} from './tabs';
 import {SidePanel} from '~/components/sidepanel';
 import DrawerToggleButton from './DrawerToggleButton';
+import {useMeContext} from '~/me';
+import {Redirect} from '~/components/common';
 
 const Drawer = createDrawerNavigator();
 
 const TabNavigator: React.FC = () => <HomePage />;
 
 const MainPage: React.FC = () => {
+  const {me} = useMeContext();
+
+  if (!me) {
+    <Redirect to="LoginPage" />;
+  }
+
   return (
     <Drawer.Navigator
       drawerContent={() => <SidePanel />}

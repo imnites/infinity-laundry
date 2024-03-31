@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {Button} from '~/components/common';
+import {Button, Money, Redirect} from '~/components/common';
 import {useNavigation} from '@react-navigation/native';
 import {useMeContext} from '~/me';
 
@@ -20,13 +20,19 @@ export const BalanceCard: React.FC = () => {
     []
   );
 
+  if (!me) {
+    return <Redirect to="LoginPage" />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.content}>
-          <Text style={styles.title}>{`${
-            me?.balance?.currency?.symbol
-          } ${me?.balance?.amount?.toFixed(2)}`}</Text>
+          <Money
+            amountStyle={styles.title}
+            currencyStyle={styles.title}
+            amount={me.balance}
+          />
           <Text style={styles.subtitle}>Current Balance</Text>
           <Button
             classes={buttonClasses}
