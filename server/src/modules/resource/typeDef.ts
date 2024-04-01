@@ -12,6 +12,12 @@ const typeDefs = `
     status: String!
   }
 
+  type ResourceReference {
+    id: String!
+    code: String!
+    name: String!
+  }
+
   type Resource {
     id: String!
     code: String!

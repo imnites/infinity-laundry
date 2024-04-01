@@ -30,20 +30,28 @@ export class Transactions extends Model {
     return this.getDataValue('type') as string;
   }
 
-  public get MachineDetails(): string {
-    return this.getDataValue('machineDetails') as string;
-  }
-
   public get Amount(): number {
     return this.getDataValue('amount') as number;
   }
 
-  public get CurrencyId(): string {
-    return this.getDataValue('currencyId') as string;
+  public get CurrencyCode(): string {
+    return this.getDataValue('currencyCode') as string;
   }
 
-  public get Completed(): boolean {
-    return this.getDataValue('status') as boolean;
+  public get TransactionTime(): string {
+    return this.getDataValue('transactionTime') as string;
+  }
+
+  public get TransactionCompletionTime(): string {
+    return this.getDataValue('transactionCompletionTime') as string;
+  }
+
+  public get Status(): string {
+    return this.getDataValue('status') as string;
+  }
+
+  public get KeyValue(): { [key: string]: unknown } | null {
+    return this.getDataValue('keyValue') as { [key: string]: unknown } | null;
   }
 }
 

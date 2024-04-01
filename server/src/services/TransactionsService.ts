@@ -4,7 +4,7 @@ import {
   TRANSACTION_STATUS,
   TRANSACTION_TYPE
 } from '~/models';
-import { AbstractDataType, Sequelize, Transaction } from 'sequelize';
+import { AbstractDataType, Op, Sequelize, Transaction } from 'sequelize';
 
 export class TransactionsService {
   private readonly _database: Database;
@@ -13,8 +13,29 @@ export class TransactionsService {
     this._database = database;
   }
 
-  public async getPageTransactionsFilteredByTransactionsSearch() {
-    return null;
+  public async getPageTransactionsFilteredByTransactionsSearch({
+    dateRange: { startDate, endDate },
+    statuses
+  }: {
+    dateRange: {
+      startDate: string;
+      endDate: string;
+    };
+    statuses: TRANSACTION_STATUS[];
+  }) {
+    const response = await this._database.models.transactions.findAll({
+      where: {
+        transactionCompletionTime: {
+          [Op.gte]: startDate,
+          [Op.lte]: endDate
+        },
+        status: {
+          [Op.in]: statuses
+        }
+      }
+    });
+
+    return response;
   }
 
   public async getTransactionById(id: string): Promise<Transactions | null> {
