@@ -14,8 +14,8 @@ const useCreateUserDraft = () => {
       try {
         const {data} = await createUserDraft({variables: input});
         return data.createUserDraft;
-      } catch (err) {
-        console.error('Error creating user draft:', err);
+      } catch (err: any) {
+        throw new Error(err.message);
       }
     },
     loading
