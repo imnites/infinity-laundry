@@ -2,6 +2,7 @@ import {useState, useCallback} from 'react';
 import {formattedSignUpInput} from '~/utils';
 import {useGeneratePhoneOTP, useSaveUserDraft} from '~/hooks';
 import {useNavigation} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 interface ValidateFormPropTypes {
   values: any;
@@ -77,9 +78,21 @@ const usePersonalDetailsHandlers = (createUserDraft: any) => {
       return;
     }
 
-    const token = await createUserDraft({
-      input: formattedSignUpInput(values)
-    });
+    let token = '';
+    try {
+      token = await createUserDraft({
+        input: formattedSignUpInput(values)
+      });
+    } catch (err) {
+      console.log('err', err);
+      Toast.show({
+        type: 'error',
+        text1: err.message,
+        position: 'bottom'
+      });
+
+      return;
+    }
 
     const {success, verificationToken} = await generatePhoneOTP({
       otpInput: {

@@ -1,6 +1,7 @@
 import { Context } from '~/types';
 import { MutationCreateUserDraftArgs } from '~/generated-types';
 import { GraphQLError } from 'graphql';
+import { mapToGraphQLError } from '~/error-mapper';
 
 export const createUserDraft = async (
   parent: { [key: string]: unknown } | null,
@@ -17,18 +18,12 @@ export const createUserDraft = async (
     )
   ]);
 
-  if (userDetailsByEmail) {
-    throw new GraphQLError('Email already exists', {
-      extensions: {
-        code: 'EMAIL_ALREADY_EXISTS'
-      }
-    });
+  if (userDetailsByEmail && userDetailsByPhoneNumber) {
+    throw mapToGraphQLError('Email and Phone number already exists', '200');
+  } else if (userDetailsByEmail) {
+    throw mapToGraphQLError('Email already exists', '201');
   } else if (userDetailsByPhoneNumber) {
-    throw new GraphQLError('Phone number already exists', {
-      extensions: {
-        code: 'PHONE_NUMBER_ALREADY_EXISTS'
-      }
-    });
+    throw mapToGraphQLError('Phone number already exists', '202');
   } else {
     await context.redisClient.saveData(id, { ...args.input, id });
     return id;
