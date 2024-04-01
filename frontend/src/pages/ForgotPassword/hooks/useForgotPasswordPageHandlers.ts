@@ -1,5 +1,5 @@
 import {useState, useCallback} from 'react';
-import {Alert} from 'react-native';
+import Toast from 'react-native-toast-message';
 import {useGeneratePhoneOTP} from '~/hooks';
 import {isValidEmail, isValidPhoneNumber, getOTPInput} from '~/utils';
 
@@ -29,10 +29,11 @@ const useForgotPasswordPageHandlers = ({
       !isValidEmail(values.userName) &&
       !isValidPhoneNumber(values.userName)
     ) {
-      Alert.alert(
-        'Invalid Input',
-        'Please enter a valid email address or phone number.'
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter a valid email address or phone number',
+        position: 'bottom'
+      });
       return;
     }
 
@@ -50,10 +51,11 @@ const useForgotPasswordPageHandlers = ({
         });
       }
     } catch (error) {
-      Alert.alert(
-        'Account Not Found',
-        'This account does not exist. Please sign up.'
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'This account does not exist. Please sign up',
+        position: 'bottom'
+      });
     }
   };
 

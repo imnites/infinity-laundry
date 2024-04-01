@@ -8,6 +8,7 @@ import {
   StyleSheet
 } from 'react-native';
 import {NativeModules} from 'react-native';
+import Toast from 'react-native-toast-message';
 
 const {QRCodeScannerModule} = NativeModules;
 
@@ -23,7 +24,11 @@ const MachineTab: React.FC = () => {
     if (machineCode) {
       (nav.navigate as any)('PreviewOrder', {resourceCode: machineCode});
     } else {
-      // show toast to enter machine code
+      Toast.show({
+        type: 'error',
+        text1: 'Enter machine code',
+        position: 'bottom'
+      });
     }
   }, [machineCode, nav]);
 
@@ -54,7 +59,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20
+    padding: 20,
+    backgroundColor: '#fff'
   },
   title: {
     fontSize: 18,

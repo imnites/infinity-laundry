@@ -1,13 +1,11 @@
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
+import Toast from 'react-native-toast-message';
 import {useUpdatePassword} from '~/hooks';
-import {Alert} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-interface ResetPasswordPropsType {
-  navigation: any;
-  route: any;
-}
+const useResetPassword = (route: any) => {
+  const navigation = useNavigation();
 
-const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
   const {updatePassword} = useUpdatePassword();
 
   const [formValues, setFormValues] = useState({
@@ -38,13 +36,21 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
   };
 
   const handleSubmit = async () => {
-    if (formValues.password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters long');
+    if (formValues.password.length < 8) {
+      Toast.show({
+        type: 'error',
+        text1: 'Password must be atleast 8 characters',
+        position: 'bottom'
+      });
       return;
     }
 
     if (formValues.password !== formValues.confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Toast.show({
+        type: 'error',
+        text1: 'Password do not match',
+        position: 'bottom'
+      });
       return;
     }
 
@@ -57,27 +63,41 @@ const useResetPassword = ({navigation, route}: ResetPasswordPropsType) => {
       setFormValues(prevDetails => ({...prevDetails, isSubmitting: false}));
       if (isPasswordUpdated) {
         if (route.params.parent === 'SignUp') {
-          Alert.alert(
-            'Account Created',
-            'Your account has been successfully created.',
-            [{text: 'OK', onPress: () => navigation.navigate('LoginPage')}]
-          );
+          Toast.show({
+            type: 'success',
+            text1: 'Your account has been successfully created',
+            position: 'bottom'
+          });
+          (navigation.navigate as any)('LoginPage');
         } else {
-          Alert.alert('Success!', 'Your Password Reset Successful.', [
-            {text: 'OK', onPress: () => navigation.navigate('LoginPage')}
-          ]);
+          Toast.show({
+            type: 'success',
+            text1: 'Your Password Reset Successful',
+            position: 'bottom'
+          });
+          (navigation.navigate as any)('LoginPage');
         }
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to create account. Please try again.');
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        position: 'bottom'
+      });
     }
   };
+
+  const handleBackButton = useCallback(
+    () => (navigation.navigate as any)('LoginPage'),
+    [navigation.navigate]
+  );
 
   return {
     formValues,
     handlePasswordChange,
     handleConfirmPasswordChange,
-    handleSubmit
+    handleSubmit,
+    handleBackButton
   };
 };
 

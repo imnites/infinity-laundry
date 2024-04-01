@@ -16,7 +16,7 @@ const SettingSection: React.FC = () => {
       <Text style={styles.sectionTitle}>Setting</Text>
       <TouchableOpacity style={styles.item} onPress={onChangePasswordPress}>
         <Icon name="lock-closed-outline" size={24} color="black" />
-        <Text style={styles.itemText}>Change Password</Text>
+        <Text style={styles.itemText}>Reset Password</Text>
       </TouchableOpacity>
     </>
   );

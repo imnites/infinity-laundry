@@ -1,30 +1,24 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {ModalPopUp, TextWithLine} from '~/components/common';
+import {TextWithLine, Button} from '~/components/common';
 import {useAuthenticateUser, useLoginHandlers} from './hooks';
-import {Title, Button, TextInput} from 'react-native-paper';
+import {Title, TextInput} from 'react-native-paper';
 
-interface LoginPageProps {
-  navigation: any;
-}
-
-const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
+const LoginPage = () => {
   const styles = useStyles();
   const {authenticateUser, loading} = useAuthenticateUser();
 
   const {
     credential,
     showPassword,
-    isInvalidCredentials,
-    setInvalidCredentials,
     toggleShowPassword,
     onUserNameChange,
     onPasswordChange,
     onSubmit,
-    onSignUp
+    onSignUp,
+    handleForgotPassword
   } = useLoginHandlers({
-    authenticateUser,
-    navigation
+    authenticateUser
   });
 
   return (
@@ -40,41 +34,40 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
           colors: {primary: '#3930d8'}
         }}
       />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Password"
-          secureTextEntry={!showPassword}
-          value={credential.password}
-          onChangeText={onPasswordChange}
-          maxLength={25}
-          theme={{
-            colors: {primary: '#3930d8'}
-          }}
-          right={
-            <TextInput.Icon
-              icon={showPassword ? 'eye-off' : 'eye'}
-              onPress={toggleShowPassword}
-              color="#999"
-            />
-          }
-        />
-      </View>
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry={!showPassword}
+        value={credential.password}
+        onChangeText={onPasswordChange}
+        maxLength={25}
+        theme={{
+          colors: {primary: '#3930d8'}
+        }}
+        right={
+          <TextInput.Icon
+            icon={showPassword ? 'eye-off' : 'eye'}
+            onPress={toggleShowPassword}
+            color="#999"
+          />
+        }
+      />
       <Button
-        mode="contained"
         onPress={onSubmit}
         loading={loading}
         disabled={loading}
-        style={styles.continueButton}
-        labelStyle={styles.continueButtonText}>
-        {loading ? '' : 'Login'}
+        classes={{
+          button: styles.loginButton,
+          buttonText: styles.loginButtonText
+        }}>
+        Login
       </Button>
       <Button
-        onPress={() => {
-          navigation.navigate('ForgotPasswordPage');
-        }}
-        style={styles.forgotButton}
-        labelStyle={styles.forgotButtonText}>
+        onPress={handleForgotPassword}
+        classes={{
+          button: styles.forgotButton,
+          buttonText: styles.forgotButtonText
+        }}>
         Forgot Password?
       </Button>
       <TextWithLine text="or" />
@@ -82,16 +75,13 @@ const LoginPage: React.FC<LoginPageProps> = ({navigation}) => {
         <Text style={styles.noAccount}>Don't have an account? </Text>
         <Button
           onPress={onSignUp}
-          style={styles.signUpButton}
-          labelStyle={styles.signUpButtonText}>
-          Sign up
+          classes={{
+            button: styles.signUpButton,
+            buttonText: styles.signUpButtonText
+          }}>
+          Sign Up
         </Button>
       </View>
-      <ModalPopUp
-        message="Invalid Credentials."
-        isInvalidCredentials={isInvalidCredentials}
-        setInvalidCredentials={setInvalidCredentials}
-      />
     </View>
   );
 };
@@ -110,8 +100,7 @@ const useStyles = () => {
     },
     titleText: {
       color: '#3930d8',
-      marginTop: 20,
-      marginBottom: 10,
+      marginBottom: 30,
       fontSize: 24
     },
     noAccount: {
@@ -123,10 +112,14 @@ const useStyles = () => {
       width: '80%',
       backgroundColor: 'transparent',
       height: 40,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5,
-      marginBottom: 10
+      borderBottomWidth: 1,
+      borderBottomColor: '#3930d8',
+      margin: 0,
+      marginBottom: 10,
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      paddingHorizontal: 0
     },
     or: {
       marginVertical: 10
@@ -149,24 +142,6 @@ const useStyles = () => {
       color: 'black',
       fontWeight: 'bold'
     },
-    inputContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      width: '80%',
-      height: 40,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5,
-      marginBottom: 10
-    },
-    inputText: {
-      flex: 1,
-      height: 40,
-      backgroundColor: 'transparent',
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5
-    },
     loginButton: {
       width: '80%',
       backgroundColor: '#3930d8',
@@ -184,9 +159,7 @@ const useStyles = () => {
     forgotButtonText: {
       color: 'red'
     },
-    signUpButton: {
-      marginTop: -10
-    },
+    signUpButton: {},
     signUpButtonText: {
       color: '#3930d8',
       textDecorationLine: 'underline'

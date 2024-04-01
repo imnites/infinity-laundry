@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -9,8 +9,6 @@ const LoadingScreen = () => {
       <View style={styles.content}>
         <Icon name="local-laundry-service" size={64} color="#000000" />
         <Text style={styles.title}>Infinity Laundry</Text>
-        <ActivityIndicator size="large" color="#000000" />
-        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     </View>
   );

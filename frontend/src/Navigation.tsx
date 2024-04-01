@@ -17,6 +17,7 @@ import {TermsAndConditions} from './components/sidepanel/additional-options/comp
 import {ContactUs} from './components/sidepanel/get-in-touch-section/components';
 import {Faqs} from './components/sidepanel/help-section/components';
 import {PreviewOrder} from '~/pages/PreviewOrder';
+import Toast from 'react-native-toast-message';
 
 interface StackScreen {
   id: number;
@@ -143,6 +144,7 @@ export const Navigation: React.FC = () => {
           />
         ))}
       </Stack.Navigator>
+      <Toast />
     </NavigationContainer>
   );
 };

@@ -1,28 +1,20 @@
 import {useState, useCallback} from 'react';
-import {Alert} from 'react-native';
 import {useGeneratePhoneOTP, useValidatePhoneOTP} from '~/hooks';
-import {getOTPInput, isValidEmail, setTokenValue} from '~/utils';
+import {getOTPInput, setTokenValue} from '~/utils';
+import Toast from 'react-native-toast-message';
+import {useNavigation} from '@react-navigation/native';
 
 const DEFAULT_RESEND_TIME_IN_SEC = 30;
 
-const getOTPSentAlertMessage = (contact: any) => {
-  if (isValidEmail(contact)) {
-    return 'Verification code has been sent to linked mobile number.';
-  }
-
-  return `An OTP has been sent to ********${contact.toString().slice(-2)}`;
-};
-
 interface PhoneVerificationHandlersType {
-  navigation: any;
   route: any;
 }
 
 const usePhoneVerificationHandlers = ({
-  route,
-  navigation
+  route
 }: PhoneVerificationHandlersType) => {
-  const {link, contact, otpInput, verificationToken} = route.params;
+  const navigation = useNavigation();
+  const {link, otpInput, verificationToken} = route.params;
   const {generatePhoneOTP, loading: isGeneratingOTP} = useGeneratePhoneOTP();
   const {validatePhoneOTP, loading: isOTPValidating} = useValidatePhoneOTP();
 
@@ -41,7 +33,7 @@ const usePhoneVerificationHandlers = ({
       const {success: isOTPSent, verificationToken: newVerificationToken} =
         await generatePhoneOTP({
           otpInput:
-            route.params.link === 'SignUp'
+            route.params.parent === 'SignUp'
               ? {
                   id: otpInput
                 }
@@ -54,13 +46,18 @@ const usePhoneVerificationHandlers = ({
           resendTimeOutInSec: DEFAULT_RESEND_TIME_IN_SEC,
           verificationToken: newVerificationToken
         }));
-        Alert.alert('OTP Sent', getOTPSentAlertMessage(contact));
+        Toast.show({
+          type: 'info',
+          text1: 'OTP Sent',
+          position: 'bottom'
+        });
       }
     } catch (error) {
-      Alert.alert(
-        'Number Not Found',
-        'Invalid phone number. Please check and try again.'
-      );
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid phone number. Please check and try again',
+        position: 'bottom'
+      });
     }
   };
 
@@ -75,7 +72,11 @@ const usePhoneVerificationHandlers = ({
           ...prevDetails,
           resendTimeOutInSec: 0
         }));
-        Alert.alert('Success', 'OTP Verified Successfully.');
+        Toast.show({
+          type: 'success',
+          text1: 'OTP Verified',
+          position: 'bottom'
+        });
         if (route.params.parent === 'SignUp') {
           await route.params.onSaveUserDraft({
             userId: userId,
@@ -87,17 +88,31 @@ const usePhoneVerificationHandlers = ({
           refreshToken: undefined,
           tokenType: 'Basic'
         });
-        navigation.navigate(link, {
+        (navigation.navigate as any)(link, {
           ...route.params,
           userId
         });
       } else {
-        Alert.alert('Invalid OTP', 'Please enter a valid OTP.');
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid OTP',
+          position: 'bottom'
+        });
       }
     } catch (error) {
-      Alert.alert('Invalid OTP', 'Please enter a valid OTP.');
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid OTP',
+        position: 'bottom'
+      });
     }
   };
+
+  const handleBackButton = useCallback(
+    () => (navigation.navigate as any)('LoginPage'),
+    [navigation.navigate]
+  );
+
   return {
     isGeneratingOTP,
     isOTPValidating,
@@ -105,7 +120,8 @@ const usePhoneVerificationHandlers = ({
     setFormDetails,
     onOTPChange,
     handleGetOTP,
-    handlePhoneVerification
+    handlePhoneVerification,
+    handleBackButton
   };
 };
 

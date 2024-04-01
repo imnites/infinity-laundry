@@ -4,36 +4,48 @@ import {
   Text,
   ActivityIndicator,
   StyleProp,
-  TextStyle
+  TextStyle,
+  ViewStyle,
+  View
 } from 'react-native';
 
 interface ButtonPropsType {
-  name: string;
-  onPress: any;
+  onPress: () => void;
   loading?: boolean;
   classes?: {
-    button?: StyleProp<TextStyle>;
+    button?: StyleProp<ViewStyle>;
     buttonText?: StyleProp<TextStyle>;
   };
   disabled?: boolean;
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Button = ({
-  name,
   onPress,
   loading,
   classes,
-  disabled
+  disabled,
+  icon,
+  children
 }: ButtonPropsType) => {
   return (
     <TouchableOpacity
-      style={classes?.button}
+      style={[classes?.button]}
       onPress={onPress}
       disabled={disabled}>
       {loading ? (
-        <ActivityIndicator color="#fff" size="large" />
+        <ActivityIndicator color="#fff" size="small" />
       ) : (
-        <Text style={classes?.buttonText}>{name}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+          {icon && <View style={{marginRight: 5}}>{icon}</View>}
+          <Text style={classes?.buttonText}>{children}</Text>
+        </View>
       )}
     </TouchableOpacity>
   );

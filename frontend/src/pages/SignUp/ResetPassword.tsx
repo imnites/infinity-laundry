@@ -1,37 +1,35 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {TextInput, Button, DefaultTheme, Title} from 'react-native-paper';
+import {View, StyleSheet, Text} from 'react-native';
+import {Button} from '~/components/common';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {
+  TextInput,
+  DefaultTheme,
+  Title,
+  Button as ReactNativePaperButton
+} from 'react-native-paper';
 import useResetPassword from './hooks/useResetPassword';
-import {useNavigation} from '@react-navigation/native';
-import BackButton from '~/components/common/BackButton';
+
 interface ResetPasswordPropsType {
-  navigation: any;
   route: any;
 }
 
 const ResetPassword: React.FC<ResetPasswordPropsType> = ({
   route
 }: ResetPasswordPropsType) => {
-  const navigation = useNavigation();
-
   const {
     formValues,
     handlePasswordChange,
     handleConfirmPasswordChange,
-    handleSubmit
-  } = useResetPassword({navigation, route});
-
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
+    handleSubmit,
+    handleBackButton
+  } = useResetPassword(route);
 
   return (
     <>
-      <View style={styles.backButton}>
-        <BackButton size={35} handleBackPress={handleBackPress} />
-      </View>
       <View style={styles.content}>
-        <Title style={styles.titleText}>Reset Password</Title>
+        <Title style={styles.titleText}>Set new password?</Title>
+        <Text style={styles.description}>Must be at least 8 characters.</Text>
         <TextInput
           style={styles.input}
           placeholder="Password"
@@ -39,9 +37,6 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
           onChangeText={handlePasswordChange}
           value={formValues.password}
           maxLength={15}
-          theme={{
-            colors: {primary: '#3930d8'}
-          }}
         />
         <TextInput
           style={styles.input}
@@ -50,12 +45,9 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
           onChangeText={handleConfirmPasswordChange}
           value={formValues.confirmPassword}
           maxLength={15}
-          theme={{
-            colors: {primary: '#3930d8'}
-          }}
         />
         <View style={styles.tabsContainer}>
-          <Button
+          <ReactNativePaperButton
             style={[
               styles.tab,
               formValues.strength === 'Weak' && {
@@ -64,8 +56,8 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
             ]}
             labelStyle={styles.tabLabel}>
             Weak
-          </Button>
-          <Button
+          </ReactNativePaperButton>
+          <ReactNativePaperButton
             style={[
               styles.tab,
               formValues.strength === 'Medium' && {
@@ -74,8 +66,8 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
             ]}
             labelStyle={styles.tabLabel}>
             Medium
-          </Button>
-          <Button
+          </ReactNativePaperButton>
+          <ReactNativePaperButton
             style={[
               styles.tab,
               formValues.strength === 'Strong' && {
@@ -84,15 +76,26 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
             ]}
             labelStyle={styles.tabLabel}>
             Strong
-          </Button>
+          </ReactNativePaperButton>
         </View>
         <Button
-          style={styles.submitButton}
-          labelStyle={styles.submitButtonText}
-          mode="contained"
           onPress={handleSubmit}
-          loading={formValues.isSubmitting}>
-          Next
+          loading={formValues.isSubmitting}
+          disabled={formValues.isSubmitting}
+          classes={{
+            button: styles.submitButton,
+            buttonText: styles.submitButtonText
+          }}>
+          Reset Password
+        </Button>
+        <Button
+          onPress={handleBackButton}
+          classes={{
+            button: styles.backToLoginButton,
+            buttonText: styles.backToLoginButtonText
+          }}
+          icon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
+          Back to Login
         </Button>
       </View>
     </>
@@ -114,18 +117,26 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: '#3930d8',
-    marginTop: 20,
-    marginBottom: 10,
-    fontSize: 24
+    marginLeft: -70,
+    fontSize: 24,
+    marginBottom: 10
+  },
+  description: {
+    marginLeft: -95,
+    marginBottom: 20
   },
   input: {
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 10
+    borderBottomWidth: 1,
+    borderBottomColor: '#3930d8',
+    margin: 0,
+    marginBottom: 10,
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    paddingHorizontal: 0
   },
   tabsContainer: {
     flexDirection: 'row',
@@ -145,10 +156,19 @@ const styles = StyleSheet.create({
   submitButton: {
     width: '80%',
     backgroundColor: '#3930d8',
+    padding: 10,
     borderRadius: 5
   },
   submitButtonText: {
     color: 'white',
+    textAlign: 'center'
+  },
+  backToLoginButton: {
+    width: '100%',
+    padding: 10
+  },
+  backToLoginButtonText: {
+    color: '#3930d8',
     textAlign: 'center'
   }
 });

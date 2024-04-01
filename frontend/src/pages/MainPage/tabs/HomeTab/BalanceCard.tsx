@@ -34,11 +34,9 @@ export const BalanceCard: React.FC = () => {
             amount={me.balance}
           />
           <Text style={styles.subtitle}>Current Balance</Text>
-          <Button
-            classes={buttonClasses}
-            onPress={onAddFundsClick}
-            name="Add Money"
-          />
+          <Button classes={buttonClasses} onPress={onAddFundsClick}>
+            Add Money
+          </Button>
         </View>
       </View>
     </View>

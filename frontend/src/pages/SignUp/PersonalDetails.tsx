@@ -1,42 +1,27 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {Title, TextInput, Button} from 'react-native-paper';
-import {usePersonalDetailsStyles, usePersonalDetailsHandlers} from './hooks';
+import {View, Text, StyleSheet} from 'react-native';
+import {Title, TextInput} from 'react-native-paper';
+import {usePersonalDetailsHandlers} from './hooks';
 import {useCreateUserDraft} from '~/hooks';
-import {useNavigation} from '@react-navigation/native';
-import BackButton from '~/components/common/BackButton';
+import {Button} from '~/components/common';
 
 const PersonalDetails: React.FC = () => {
-  const navigation = useNavigation();
-  const styles = usePersonalDetailsStyles();
+  const styles = useStyles();
 
   const {createUserDraft, loading} = useCreateUserDraft();
-  const {values, errors, handleChange, handleSubmit} =
-    usePersonalDetailsHandlers({
-      navigation,
-      createUserDraft
-    });
-
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
+  const {values, errors, handleChange, handleSubmit, handleBackButton} =
+    usePersonalDetailsHandlers(createUserDraft);
 
   return (
     <>
-      <View style={styles.backButton}>
-        <BackButton size={35} handleBackPress={handleBackPress} />
-      </View>
       <View style={styles.content}>
-        <Title style={styles.title}>Personal Details</Title>
+        <Title style={styles.titleText}>New Account</Title>
         <TextInput
           placeholder="First Name"
           value={values.firstName}
           onChangeText={text => handleChange('firstName', text)}
           style={styles.input}
           maxLength={15}
-          theme={{
-            colors: {primary: '#3930d8'}
-          }}
         />
         {errors.firstName && (
           <Text style={styles.error}>{errors.firstName}</Text>
@@ -47,9 +32,6 @@ const PersonalDetails: React.FC = () => {
           onChangeText={text => handleChange('lastName', text)}
           style={styles.input}
           maxLength={15}
-          theme={{
-            colors: {primary: '#3930d8'}
-          }}
         />
         {errors.lastName && <Text style={styles.error}>{errors.lastName}</Text>}
         <TextInput
@@ -59,9 +41,6 @@ const PersonalDetails: React.FC = () => {
           onChangeText={text => handleChange('email', text)}
           style={styles.input}
           maxLength={30}
-          theme={{
-            colors: {primary: '#3930d8'}
-          }}
         />
         {errors.email && <Text style={styles.error}>{errors.email}</Text>}
         <TextInput
@@ -71,25 +50,96 @@ const PersonalDetails: React.FC = () => {
           onChangeText={text => handleChange('phoneNumber', text)}
           style={styles.input}
           maxLength={10}
-          theme={{
-            colors: {primary: '#3930d8'}
-          }}
         />
         {errors.phoneNumber && (
           <Text style={styles.error}>{errors.phoneNumber}</Text>
         )}
         <Button
-          mode="contained"
           onPress={handleSubmit}
           loading={loading}
           disabled={loading}
-          style={styles.continueButton}
-          labelStyle={styles.continueButtonText}>
-          {loading ? '' : 'Continue'}
+          classes={{
+            button: styles.continueButton,
+            buttonText: styles.continueButtonText
+          }}>
+          Continue
         </Button>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.description}>Already have an account?</Text>
+          <Button
+            onPress={handleBackButton}
+            classes={{
+              button: styles.signUpButton,
+              buttonText: styles.signUpButtonText
+            }}>
+            Sign in
+          </Button>
+        </View>
       </View>
     </>
   );
+};
+
+const useStyles = () => {
+  return StyleSheet.create({
+    content: {
+      flex: 1,
+      paddingHorizontal: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white'
+    },
+    titleText: {
+      color: '#3930d8',
+      marginLeft: -140,
+      fontSize: 24,
+      marginBottom: 10
+    },
+    descriptionContainer: {
+      flexDirection: 'row',
+      marginTop: 20
+    },
+    description: {
+      textAlign: 'center'
+    },
+    input: {
+      width: '80%',
+      backgroundColor: 'transparent',
+      height: 40,
+      borderBottomWidth: 1,
+      borderBottomColor: '#3930d8',
+      margin: 0,
+      marginBottom: 10,
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      paddingHorizontal: 0
+    },
+    error: {
+      color: 'red',
+      marginBottom: 10,
+      marginTop: -10,
+      alignSelf: 'flex-start',
+      marginLeft: 35
+    },
+    continueButton: {
+      width: '80%',
+      backgroundColor: '#3930d8',
+      padding: 10,
+      borderRadius: 5
+    },
+    continueButtonText: {
+      color: 'white',
+      textAlign: 'center'
+    },
+    signUpButton: {
+      marginLeft: 5
+    },
+    signUpButtonText: {
+      color: '#3930d8',
+      textDecorationLine: 'underline'
+    }
+  });
 };
 
 export default PersonalDetails;

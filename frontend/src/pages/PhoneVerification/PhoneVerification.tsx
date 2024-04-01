@@ -1,18 +1,16 @@
 import React, {useEffect} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {OtpInput} from '~/components/common';
+import {OtpInput, Button} from '~/components/common';
 import {usePhoneVerificationHandlers} from '../SignUp/hooks';
 import {getVerificationMessage} from '~/utils';
-import {Button, Title} from 'react-native-paper';
-import BackButton from '~/components/common/BackButton';
-import {useNavigation} from '@react-navigation/native';
+import {Title} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface PhoneVerificationProps {
   route: any;
 }
 
 const PhoneVerification: React.FC<PhoneVerificationProps> = ({route}) => {
-  const navigation = useNavigation();
   const {
     isGeneratingOTP,
     isOTPValidating,
@@ -20,10 +18,10 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({route}) => {
     setFormDetails,
     onOTPChange,
     handleGetOTP,
-    handlePhoneVerification
+    handlePhoneVerification,
+    handleBackButton
   } = usePhoneVerificationHandlers({
-    route,
-    navigation
+    route
   });
 
   useEffect(() => {
@@ -39,15 +37,8 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({route}) => {
 
   const styles = useStyles();
 
-  const handleBackPress = () => {
-    navigation.goBack();
-  };
-
   return (
     <>
-      <View style={styles.backButton}>
-        <BackButton size={35} handleBackPress={handleBackPress} />
-      </View>
       <View style={styles.phoneVerification}>
         <Title style={styles.titleText}>Phone Verification</Title>
         <View style={styles.content}>
@@ -64,27 +55,37 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({route}) => {
           </Text>
           <View style={styles.resendContainer}>
             <Button
-              style={styles.resendButton}
-              labelStyle={styles.resendButtonText}
+              onPress={handleGetOTP}
               loading={isGeneratingOTP}
               disabled={formDetails.resendTimeOutInSec > 0}
-              onPress={handleGetOTP}>
-              {isGeneratingOTP ? '' : 'Resend'}
+              classes={{
+                button: styles.resendButton,
+                buttonText: styles.resendButtonText
+              }}>
+              Resend
             </Button>
             {formDetails.resendTimeOutInSec > 0 && (
-              <Text style={styles.sec}>
-                {` in ${formDetails.resendTimeOutInSec} Sec`}
-              </Text>
+              <Text>{` in ${formDetails.resendTimeOutInSec} Sec`}</Text>
             )}
           </View>
           <Button
-            style={styles.verifyButton}
-            labelStyle={styles.verifyButtonText}
-            mode="contained"
+            onPress={handlePhoneVerification}
             loading={isOTPValidating}
             disabled={isOTPValidating}
-            onPress={handlePhoneVerification}>
-            {isOTPValidating ? '' : 'Verify'}
+            classes={{
+              button: styles.verifyButton,
+              buttonText: styles.verifyButtonText
+            }}>
+            Verify
+          </Button>
+          <Button
+            onPress={handleBackButton}
+            classes={{
+              button: styles.backToLoginButton,
+              buttonText: styles.backToLoginButtonText
+            }}
+            icon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
+            Back to Login
           </Button>
         </View>
       </View>
@@ -96,10 +97,6 @@ export default PhoneVerification;
 
 const useStyles = () => {
   return StyleSheet.create({
-    backButton: {
-      padding: 20,
-      backgroundColor: '#fff'
-    },
     phoneVerification: {
       width: '100%',
       flex: 1,
@@ -142,22 +139,20 @@ const useStyles = () => {
     verifyButton: {
       width: '100%',
       backgroundColor: '#3930d8',
-      height: 45,
-      justifyContent: 'center',
-      borderRadius: 5,
-      paddingVertical: 10
+      padding: 10,
+      borderRadius: 5
     },
     verifyButtonText: {
       color: 'white',
-      textAlign: 'center',
-      marginTop: 'auto',
-      marginBottom: 'auto',
-      fontSize: 20
+      textAlign: 'center'
     },
-    sec: {
-      marginTop: 9.5,
-      marginLeft: -12,
-      color: 'black'
+    backToLoginButton: {
+      width: '100%',
+      padding: 10
+    },
+    backToLoginButtonText: {
+      color: '#3930d8',
+      textAlign: 'center'
     }
   });
 };

@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   box: {
     borderWidth: 1,
-    borderColor: '#3930d8',
+    borderColor: 'black',
     width: 40,
     height: 40,
     margin: 10,

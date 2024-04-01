@@ -1,12 +1,7 @@
 import {useState, useCallback} from 'react';
-import {Alert} from 'react-native';
 import {formattedSignUpInput} from '~/utils';
 import {useGeneratePhoneOTP, useSaveUserDraft} from '~/hooks';
-
-interface FormStatePropsType {
-  navigation: any;
-  createUserDraft: any;
-}
+import {useNavigation} from '@react-navigation/native';
 
 interface ValidateFormPropTypes {
   values: any;
@@ -47,10 +42,8 @@ const validateForm = ({values, setErrors}: ValidateFormPropTypes) => {
   return hasErrors;
 };
 
-const usePersonalDetailsHandlers = ({
-  navigation,
-  createUserDraft
-}: FormStatePropsType) => {
+const usePersonalDetailsHandlers = (createUserDraft: any) => {
+  const navigation = useNavigation();
   const {generatePhoneOTP} = useGeneratePhoneOTP();
   const {saveUserDraft} = useSaveUserDraft();
   const [values, setValues] = useState({
@@ -88,30 +81,29 @@ const usePersonalDetailsHandlers = ({
       input: formattedSignUpInput(values)
     });
 
-    try {
-      const {success, verificationToken} = await generatePhoneOTP({
-        otpInput: {
-          id: token
-        }
-      });
-      if (success) {
-        navigation.navigate('PhoneVerification', {
-          parent: 'SignUp',
-          link: 'ResetPassword',
-          contact: values.phoneNumber,
-          verificationToken: verificationToken,
-          otpInput: token,
-          onSaveUserDraft
-        });
+    const {success, verificationToken} = await generatePhoneOTP({
+      otpInput: {
+        id: token
       }
-    } catch (error) {
-      Alert.alert(
-        'Account Not Found',
-        'This account does not exist. Please sign up.'
-      );
+    });
+    if (success) {
+      (navigation.navigate as any)('PhoneVerification', {
+        parent: 'SignUp',
+        link: 'ResetPassword',
+        contact: values.phoneNumber,
+        verificationToken: verificationToken,
+        otpInput: token,
+        onSaveUserDraft: onSaveUserDraft
+      });
     }
   };
-  return {values, errors, handleChange, handleSubmit};
+
+  const handleBackButton = useCallback(
+    () => (navigation.navigate as any)('LoginPage'),
+    [navigation.navigate]
+  );
+
+  return {values, errors, handleChange, handleSubmit, handleBackButton};
 };
 
 export default usePersonalDetailsHandlers;
