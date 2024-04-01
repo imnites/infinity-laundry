@@ -68,9 +68,9 @@ const PaymentPage = () => {
             buttonText: styles.continueButtonText
           }}
           loading={checkoutLoading}
-          name="Continue"
-          onPress={startWebCheckout}
-        />
+          onPress={startWebCheckout}>
+          Continue
+        </Button>
       </View>
     </>
   );
@@ -138,12 +138,12 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     width: '80%',
     backgroundColor: '#3930d8',
-    borderRadius: 16
+    borderRadius: 16,
+    padding: 10
   },
   continueButtonText: {
     textAlign: 'center',
     color: 'white',
-    padding: 8,
     fontSize: 16
   },
   continueButtonContainer: {

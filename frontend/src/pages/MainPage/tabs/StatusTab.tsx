@@ -6,8 +6,9 @@ interface StatusTabProps {
   route?: any;
 }
 
-const StatusTab: React.FC<StatusTabProps> = ({}) => {
-  const [loading] = useState(true);
+export const StatusTab: React.FC<StatusTabProps> = ({}) => {
+  const [loading, setLoading] = useState(true);
+  const [elapsedTime, setElapsedTime] = useState(10);
   const rotation = useRef(new Animated.Value(0)).current; // Animated value for rotation
   const [stage, setStage] = useState(0);
 
@@ -28,12 +29,25 @@ const StatusTab: React.FC<StatusTabProps> = ({}) => {
         setStage(prevStage => (prevStage + 1) % 4); // Cycle through stages
       }, 2000); // Change stage every 2 seconds
 
-      return () => clearInterval(stageInterval); // Cleanup interval
-    } else {
-      // Stop rotation animation
-      rotation.stopAnimation();
+      // Start time counting
+      const timerInterval = setInterval(() => {
+        setElapsedTime(prevTime => prevTime - 1);
+        setLoading(!!elapsedTime);
+      }, 1000); // Increment elapsed time every second
+
+      // Set timeout for completion message
+      setTimeout(() => {
+        setLoading(false);
+        clearInterval(timerInterval); // Stop timer
+      }, 10000); // Show completion message after 10 seconds
+
+      return () => {
+        clearInterval(stageInterval); // Cleanup stage interval
+        clearInterval(timerInterval); // Cleanup timer interval
+        rotation.stopAnimation(); // Stop rotation animation
+      };
     }
-  }, [loading, rotation]);
+  }, [elapsedTime, loading, rotation]);
 
   const stageLabels = ['Washing', 'Drying', 'Folding', 'Completed'];
 
@@ -72,11 +86,18 @@ const StatusTab: React.FC<StatusTabProps> = ({}) => {
         />
       </Svg>
       <Text style={styles.stageLabel}>{stageLabels[stage]}</Text>
+      <Text style={styles.timerText}>{formatTime(elapsedTime)}</Text>
     </View>
   );
 };
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
+const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -94,7 +115,12 @@ const styles = StyleSheet.create({
   completionText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#3930d8s'
+    color: '#3930d8'
+  },
+  timerText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#555'
   }
 });
 

@@ -23,19 +23,17 @@ export const PreviewOrder: React.FC<PreviewOrderProps> = ({route}) => {
     navigation.goBack();
   };
 
-  const handleUseResource = useCallback(
-    async (code: string) => {
-      const d = await proceedToUse(code);
-      if (d && d.transactionId && d.status === 'SUCCESS') {
-        await (refresh && refresh());
+  const onAddFundsClick = useCallback(() => {
+    (navigation.navigate as any)('PaymentPage');
+  }, [navigation]);
 
-        (navigation.navigate as any)('Status', {
-          transactionId: d.transactionId
-        });
-      }
-    },
-    [navigation.navigate, proceedToUse, refresh]
-  );
+  const handleUseResource = useCallback(async () => {
+    const d = await proceedToUse(resourceDetails?.code);
+    if (d && d.transactionId && d.status === 'SUCCESS') {
+      await (refresh && refresh());
+      (navigation.navigate as any)('Status', {transactionId: d.transactionId});
+    }
+  }, [navigation, proceedToUse, refresh, resourceDetails?.code]);
 
   if (!loading && !resourceDetails) {
     return <Redirect to="MainPage" />;
@@ -53,70 +51,94 @@ export const PreviewOrder: React.FC<PreviewOrderProps> = ({route}) => {
     );
   }
 
+  const canUseResource =
+    me.balance.amount >= resourceDetails.amountPerUse.amount;
+
   return (
     <View style={styles.container}>
       <BackButton size={35} handleBackPress={handleBackPress} />
-
       <View style={styles.content}>
-        <Text style={styles.title}>Current Balance</Text>
         <Money
-          amountStyle={styles.balanceAmount}
-          currencyStyle={styles.balanceCurrency}
+          amountStyle={styles.balance}
+          currencyStyle={styles.balance}
           amount={me.balance}
         />
+        <Text style={styles.title}>Current Balance</Text>
       </View>
-
       <View style={styles.detailsContainer}>
         <Text style={styles.sectionTitle}>Charge Details</Text>
         <View style={styles.details}>
-          <Text style={styles.detailText}>Name: {resourceDetails.name}</Text>
-          <Text style={styles.detailText}>Code: {resourceDetails.code}</Text>
-          <Text style={styles.detailText}>
-            Max Capacity: {resourceDetails.maxCapacity}
-          </Text>
-          <Text style={styles.detailText}>Charge Per Use:</Text>
-          <Money amount={resourceDetails.amountPerUse} />
-          <Text style={styles.detailText}>Total Price:</Text>
-          <Money amount={resourceDetails.amountPerUse} />
+          <DetailRow label="Name" value={resourceDetails.name} />
+          <DetailRow label="Code" value={resourceDetails.code} />
+          <DetailRow label="Max Capacity" value={resourceDetails.maxCapacity} />
+          <DetailRow label="Charge Per Use">
+            <Money
+              amount={resourceDetails.amountPerUse}
+              amountStyle={styles.balanceAmount}
+              currencyStyle={styles.balanceCurrency}
+            />
+          </DetailRow>
+          <DetailRow label="Total Price">
+            <Money
+              amount={resourceDetails.amountPerUse}
+              amountStyle={styles.balanceAmount}
+              currencyStyle={styles.balanceCurrency}
+            />
+          </DetailRow>
         </View>
       </View>
-
-      <Button
-        classes={{button: styles.button}}
-        onPress={() => handleUseResource(resourceDetails.code)}>
-        Pay and Use
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button
+          classes={{
+            button: styles.button,
+            buttonText: styles.buttonText
+          }}
+          onPress={canUseResource ? handleUseResource : onAddFundsClick}>
+          {canUseResource ? 'Pay and Use' : 'Add Money'}
+        </Button>
+      </View>
+      {!canUseResource && (
+        <Text style={styles.warningText}>
+          You're short on balance. Please add funds to proceed.
+        </Text>
+      )}
     </View>
   );
 };
 
+const DetailRow: React.FC<{
+  label: string;
+  value?: string | number;
+  children?: React.ReactNode;
+}> = ({label, value, children}) => (
+  <View style={styles.detailRow}>
+    <Text style={styles.detailLabel}>{label}:</Text>
+    {value ? <Text style={styles.detailValue}>{value}</Text> : children}
+  </View>
+);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    padding: 20
-  },
-  backButton: {
-    marginBottom: 20
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    width: '100%'
   },
   content: {
     alignItems: 'center',
     marginBottom: 20
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10
+    fontSize: 16
   },
-  balanceAmount: {
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
-  balanceCurrency: {
-    fontSize: 14
+  balance: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: 'black'
   },
   detailsContainer: {
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
     marginBottom: 20
@@ -124,31 +146,60 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10
+    marginBottom: 10,
+    color: '#333'
   },
   details: {
     marginBottom: 10
   },
-  detailText: {
-    fontSize: 16,
+  buttonContainer: {
+    alignSelf: 'center'
+  },
+  detailRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 5
   },
+  detailLabel: {
+    fontSize: 16,
+    color: '#333',
+    marginRight: 10
+  },
+  detailValue: {
+    fontSize: 16,
+    color: '#333'
+  },
   button: {
-    backgroundColor: '#00BFFF',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center'
+    width: 240,
+    backgroundColor: '#3930d8',
+    borderRadius: 16,
+    marginTop: 24
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF'
+    color: 'white',
+    textAlign: 'center',
+    paddingTop: 8,
+    paddingBottom: 8,
+    fontSize: 20
   },
   loadingContainer: {
     flex: 1,
-    backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  balanceAmount: {
+    fontSize: 16,
+    color: '#333'
+  },
+  balanceCurrency: {
+    fontSize: 16,
+    color: '#333'
+  },
+  warningText: {
+    marginTop: 10,
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center'
   }
 });
 

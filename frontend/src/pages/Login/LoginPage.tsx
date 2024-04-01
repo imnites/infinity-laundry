@@ -164,15 +164,6 @@ const useStyles = () => {
       color: '#3930d8',
       textDecorationLine: 'underline'
     },
-    continueButton: {
-      width: '80%',
-      backgroundColor: '#3930d8',
-      borderRadius: 5
-    },
-    continueButtonText: {
-      color: 'white',
-      textAlign: 'center'
-    },
     noAccountContainer: {
       flexDirection: 'row'
     }
