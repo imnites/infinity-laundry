@@ -103,7 +103,7 @@ type Me {
 
 input TransactionsFilter {
   dateRange: DateRangeInput
-  status: String
+  statuses: [String!]!
 }
 
 input DateRangeInput {
@@ -124,11 +124,23 @@ type CashfreeOrderResult {
 
 type Transaction {
   id: String!
+  amount: Money!
+  type: String!
+  status: String!
+  transactionTime: String
+  transactionCompletionTime: String
+  resource: ResourceReference
 }
 
 type UseResourceResult {
   transactionId: String!
   status: String!
+}
+
+type ResourceReference {
+  id: String!
+  code: String!
+  name: String!
 }
 
 type Resource {

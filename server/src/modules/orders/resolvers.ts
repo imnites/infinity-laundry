@@ -1,4 +1,5 @@
 import { createCashfreeOrder } from './create-cashfree-order';
+import { pageOfTransactions } from './page-of-transactions';
 import { verifyAndCompleteCashfreeOrder } from './verify-and-complete-cashfree-order';
 
 export default {
@@ -6,5 +7,5 @@ export default {
     createCashfreeOrder: createCashfreeOrder,
     verifyAndCompleteCashfreeOrder: verifyAndCompleteCashfreeOrder
   },
-  Query: { pageOfTransactions: () => {} }
+  Query: { pageOfTransactions }
 };

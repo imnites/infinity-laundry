@@ -1,8 +1,15 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/AntDesign';
 import FilterDialog from './components/FilterDialog';
+import {usePageOfTransactions} from './usePageOfTransactions';
 
 interface Transaction {
   id: string;
@@ -16,6 +23,17 @@ interface Transaction {
 }
 
 const HistoryTab: React.FC = () => {
+  const [now] = useState(new Date());
+  const {pageOfTransactions, loading} = usePageOfTransactions({
+    dateRange: {
+      startDate: moment(now)
+        .subtract(1, 'months')
+        .format('YYYY-MM-DDTHH:mm:ssZ'),
+      endDate: moment(now).format('YYYY-MM-DDTHH:mm:ssZ')
+    },
+    statuses: ['SUCCESS', 'FAILED', 'CANCELLED', 'PENDING']
+  });
+
   const [visible, setVisible] = useState(false);
 
   const showDialog = () => {
@@ -65,6 +83,14 @@ const HistoryTab: React.FC = () => {
     );
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#000000" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.filterIcon}>
@@ -72,19 +98,29 @@ const HistoryTab: React.FC = () => {
       </View>
       <FilterDialog visible={visible} setVisible={setVisible} />
       <View>
-        <FlatList
-          data={transactions}
-          renderItem={renderTransactionItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.list}
-          onEndReachedThreshold={0.1}
-        />
+        {pageOfTransactions && pageOfTransactions.length > 0 ? (
+          <FlatList
+            data={transactions}
+            renderItem={renderTransactionItem}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.list}
+            onEndReachedThreshold={0.1}
+          />
+        ) : (
+          <Text>No transactions</Text>
+        )}
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   container: {
     backgroundColor: '#fff'
   },

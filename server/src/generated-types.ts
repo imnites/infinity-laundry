@@ -216,6 +216,13 @@ export type Resource = {
   type: Scalars['String']['output'];
 };
 
+export type ResourceReference = {
+  __typename?: 'ResourceReference';
+  code: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   _?: Maybe<Scalars['String']['output']>;
@@ -238,12 +245,18 @@ export type TemplateDetailsInput = {
 
 export type Transaction = {
   __typename?: 'Transaction';
+  amount: Money;
   id: Scalars['String']['output'];
+  resource?: Maybe<ResourceReference>;
+  status: Scalars['String']['output'];
+  transactionCompletionTime?: Maybe<Scalars['String']['output']>;
+  transactionTime?: Maybe<Scalars['String']['output']>;
+  type: Scalars['String']['output'];
 };
 
 export type TransactionsFilter = {
   dateRange?: InputMaybe<DateRangeInput>;
-  status?: InputMaybe<Scalars['String']['input']>;
+  statuses: Array<Scalars['String']['input']>;
 };
 
 export type UseResourceResult = {
@@ -351,6 +364,7 @@ export type ResolversTypes = ResolversObject<{
   PhoneNumberInput: PhoneNumberInput;
   Query: ResolverTypeWrapper<{}>;
   Resource: ResolverTypeWrapper<Resource>;
+  ResourceReference: ResolverTypeWrapper<ResourceReference>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
   TemplateDetails: ResolverTypeWrapper<TemplateDetails>;
@@ -382,6 +396,7 @@ export type ResolversParentTypes = ResolversObject<{
   PhoneNumberInput: PhoneNumberInput;
   Query: {};
   Resource: Resource;
+  ResourceReference: ResourceReference;
   String: Scalars['String']['output'];
   Subscription: {};
   TemplateDetails: TemplateDetails;
@@ -490,6 +505,13 @@ export type ResourceResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ResourceReferenceResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResourceReference'] = ResolversParentTypes['ResourceReference']> = ResolversObject<{
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   _?: SubscriptionResolver<Maybe<ResolversTypes['String']>, "_", ParentType, ContextType>;
 }>;
@@ -506,7 +528,13 @@ export type TemplateDetailsResolvers<ContextType = any, ParentType extends Resol
 }>;
 
 export type TransactionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
+  amount?: Resolver<ResolversTypes['Money'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  resource?: Resolver<Maybe<ResolversTypes['ResourceReference']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  transactionCompletionTime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  transactionTime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -528,6 +556,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   PhoneNumber?: PhoneNumberResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Resource?: ResourceResolvers<ContextType>;
+  ResourceReference?: ResourceReferenceResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   TemplateDetails?: TemplateDetailsResolvers<ContextType>;
   Transaction?: TransactionResolvers<ContextType>;

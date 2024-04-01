@@ -10,7 +10,7 @@ const typeDefs = `
 
   input TransactionsFilter {
     dateRange: DateRangeInput
-    status: String
+    statuses: [String!]!
   }
 
   input DateRangeInput {
@@ -31,6 +31,12 @@ const typeDefs = `
 
   type Transaction {
     id: String!
+    amount: Money!
+    type: String!
+    status: String!
+    transactionTime: String
+    transactionCompletionTime: String
+    resource: ResourceReference
   }
 `;
 
