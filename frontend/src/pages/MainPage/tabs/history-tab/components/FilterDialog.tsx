@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Dialog from 'react-native-dialog';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -7,11 +7,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 interface FilterDialogPropsType {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setDate: React.Dispatch<
+    React.SetStateAction<{startDate: Date | null; endDate: Date | null}>
+  >;
 }
 
 const FilterDialog: React.FC<FilterDialogPropsType> = ({
   visible,
-  setVisible
+  setVisible,
+  setDate
 }) => {
   const [datePickerVisibility, setDatePickerVisibility] = useState({
     isStartDatePickerVisible: false,
@@ -66,6 +70,20 @@ const FilterDialog: React.FC<FilterDialogPropsType> = ({
       [pickerType]: date
     }));
   };
+
+  const handleSave = useCallback(() => {
+    setDate(prevDetails => ({
+      ...prevDetails,
+      startDate: selectedDate.selectedStartDate,
+      endDate: selectedDate.selectedEndDate
+    }));
+    setVisible(false);
+  }, [
+    selectedDate.selectedEndDate,
+    selectedDate.selectedStartDate,
+    setDate,
+    setVisible
+  ]);
 
   const formattedDate = (date: Date | null, type: String) => {
     return date
@@ -132,7 +150,7 @@ const FilterDialog: React.FC<FilterDialogPropsType> = ({
         />
         <Dialog.Button
           label="SAVE"
-          onPress={() => setVisible(false)}
+          onPress={handleSave}
           style={disabled ? {color: 'grey'} : styles.actionButton}
           disabled={disabled}
         />

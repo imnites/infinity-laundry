@@ -10,26 +10,22 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/AntDesign';
 import FilterDialog from './components/FilterDialog';
 import {usePageOfTransactions} from './usePageOfTransactions';
-
-interface Transaction {
-  id: string;
-  type: string;
-  amount: number;
-  machineNumber?: string;
-  machineId?: string;
-  currency: string;
-  timestamp: string;
-  status: string;
-}
+import {Money} from '~/components/common';
 
 const HistoryTab: React.FC = () => {
-  const [now] = useState(new Date());
+  const [date, setDate] = useState<{
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startDate: new Date(),
+    endDate: new Date()
+  });
   const {pageOfTransactions, loading} = usePageOfTransactions({
     dateRange: {
-      startDate: moment(now)
+      startDate: moment(date.startDate)
         .subtract(1, 'months')
         .format('YYYY-MM-DDTHH:mm:ssZ'),
-      endDate: moment(now).format('YYYY-MM-DDTHH:mm:ssZ')
+      endDate: moment(date.endDate).format('YYYY-MM-DDTHH:mm:ssZ')
     },
     statuses: ['SUCCESS', 'FAILED', 'CANCELLED', 'PENDING']
   });
@@ -40,40 +36,54 @@ const HistoryTab: React.FC = () => {
     setVisible(true);
   };
 
-  const renderTransactionItem = ({item}: {item: Transaction}) => {
-    const inrSymbol = '\u20B9';
+  const renderTransactionItem = ({item}: {item: any}) => {
     const amountColor =
-      item.status === 'Failed'
+      item.status === 'FAILED'
         ? 'grey'
-        : item.type === 'Add funds'
+        : item.type === 'CREDIT'
         ? 'green'
         : 'red';
+
+    const amountPrefix = item.type === 'CREDIT' ? '+' : '-';
+
     return (
       <View style={styles.transaction}>
         <View style={styles.transactionDetails}>
           <Text style={styles.transactionType}>{item.type}</Text>
-          {item.machineId && (
+          {item.resource?.code && (
             <Text style={styles.transactionText}>
-              Machine ID: {item.machineId}
+              Machine ID: {item.resource.code}
             </Text>
           )}
-          {item.machineNumber && (
+          {item.resource?.name && (
             <Text style={styles.transactionText}>
-              Machine Number: {item.machineNumber}
+              Machine Name: {item.resource.name}
             </Text>
           )}
           <Text style={styles.transactionText}>
-            {moment(item.timestamp).format('MMMM D, YYYY [at] hh:mm A')}
+            {moment(item.transactionCompletionTime).format(
+              'MMMM D, YYYY [at] hh:mm A'
+            )}
           </Text>
         </View>
         <View style={styles.amountContainer}>
-          <View style={styles.amount}>
-            <Text style={[styles.amountText, {color: amountColor}]}>
-              {item.type === 'Add funds' ? '+' : '-'} {inrSymbol}
-              {item.amount}
-            </Text>
-          </View>
-          {item.status === 'Failed' && (
+          <Money
+            amount={item.amount}
+            prefix={amountPrefix}
+            currencyStyle={{
+              color: amountColor,
+              fontSize: 16,
+              fontWeight: 'bold',
+              marginRight: -3
+            }}
+            amountStyle={{
+              color: amountColor,
+              fontSize: 16,
+              fontWeight: 'bold',
+              marginRight: 10
+            }}
+          />
+          {item.status === 'FAILED' && (
             <View style={styles.failedContainer}>
               <Text style={styles.failedText}>Failed</Text>
             </View>
@@ -96,11 +106,15 @@ const HistoryTab: React.FC = () => {
       <View style={styles.filterIcon}>
         <Icon name="filter" color="#000" size={24} onPress={showDialog} />
       </View>
-      <FilterDialog visible={visible} setVisible={setVisible} />
+      <FilterDialog
+        visible={visible}
+        setVisible={setVisible}
+        setDate={setDate}
+      />
       <View>
         {pageOfTransactions && pageOfTransactions.length > 0 ? (
           <FlatList
-            data={transactions}
+            data={pageOfTransactions}
             renderItem={renderTransactionItem}
             keyExtractor={item => item.id}
             contentContainerStyle={styles.list}
@@ -157,14 +171,8 @@ const styles = StyleSheet.create({
   },
   amountContainer: {
     flexDirection: 'column',
-    alignItems: 'center'
-  },
-  amount: {
-    marginRight: 8
-  },
-  amountText: {
-    fontSize: 16,
-    fontWeight: 'bold'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   failedContainer: {
     justifyContent: 'center',
@@ -178,78 +186,3 @@ const styles = StyleSheet.create({
 });
 
 export default HistoryTab;
-
-const transactions: Transaction[] = [
-  {
-    id: '1',
-    type: 'Add funds',
-    amount: 500.0,
-    currency: 'INR',
-    timestamp: '2024-03-20T10:00:00Z',
-    status: 'Complete'
-  },
-  {
-    id: '2',
-    type: 'Usage',
-    machineNumber: 'Machine A',
-    machineId: '123456',
-    amount: 500.0,
-    currency: 'INR',
-    timestamp: '2024-03-20T10:30:00Z',
-    status: 'Failed'
-  },
-  {
-    id: '3',
-    type: 'Add funds',
-    amount: -500.0,
-    currency: 'INR',
-    timestamp: '2024-03-20T10:00:00Z',
-    status: 'Failed'
-  },
-  {
-    id: '4',
-    type: 'Usage',
-    amount: 500.0,
-    machineNumber: 'Machine A',
-    machineId: '123456',
-    currency: 'INR',
-    timestamp: '2024-03-20T10:30:00Z',
-    status: 'Complete'
-  },
-  {
-    id: '5',
-    type: 'Add funds',
-    amount: 500.0,
-    currency: 'INR',
-    timestamp: '2024-03-20T10:00:00Z',
-    status: 'Failed'
-  },
-  {
-    id: '6',
-    type: 'Usage',
-    amount: 500.0,
-    machineNumber: 'Machine A',
-    machineId: '123456',
-    currency: 'INR',
-    timestamp: '2024-03-20T10:30:00Z',
-    status: 'Complete'
-  },
-  {
-    id: '7',
-    type: 'Add funds',
-    amount: 500.0,
-    currency: 'INR',
-    timestamp: '2024-03-20T10:00:00Z',
-    status: 'Failed'
-  },
-  {
-    id: '8',
-    type: 'Usage',
-    amount: 500.0,
-    machineNumber: 'Machine A',
-    machineId: '123456',
-    currency: 'INR',
-    timestamp: '2024-03-20T10:30:00Z',
-    status: 'Complete'
-  }
-];
