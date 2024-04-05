@@ -6,7 +6,8 @@ import {
   StyleProp,
   TextStyle,
   ViewStyle,
-  View
+  View,
+  StyleSheet
 } from 'react-native';
 
 interface ButtonPropsType {
@@ -17,8 +18,9 @@ interface ButtonPropsType {
     buttonText?: StyleProp<TextStyle>;
   };
   disabled?: boolean;
-  icon?: React.ReactNode;
+  leftIcon?: React.ReactNode;
   children?: React.ReactNode;
+  fullWidth?: boolean;
 }
 
 const Button = ({
@@ -26,29 +28,40 @@ const Button = ({
   loading,
   classes,
   disabled,
-  icon,
-  children
+  leftIcon,
+  children,
+  fullWidth = false
 }: ButtonPropsType) => {
   return (
     <TouchableOpacity
-      style={[classes?.button]}
+      style={[
+        fullWidth && styles.fullWidth,
+        styles.buttonRoot,
+        classes?.button
+      ]}
       onPress={onPress}
       disabled={disabled}>
       {loading ? (
         <ActivityIndicator color="#fff" size="small" />
       ) : (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-          {icon && <View style={{marginRight: 5}}>{icon}</View>}
+        <View style={styles.buttonContentRoot}>
+          {leftIcon && <View style={styles.leftIconContainer}>{leftIcon}</View>}
           <Text style={classes?.buttonText}>{children}</Text>
         </View>
       )}
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonRoot: {},
+  fullWidth: {width: '100%'},
+  buttonContentRoot: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  leftIconContainer: {marginRight: 5}
+});
 
 export default Button;

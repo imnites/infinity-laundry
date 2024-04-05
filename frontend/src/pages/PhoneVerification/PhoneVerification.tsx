@@ -84,7 +84,7 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({route}) => {
               button: styles.backToLoginButton,
               buttonText: styles.backToLoginButtonText
             }}
-            icon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
+            leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
             Back to Login
           </Button>
         </View>

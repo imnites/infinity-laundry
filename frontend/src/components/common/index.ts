@@ -11,3 +11,5 @@ export {NumericInput, MoneyInput} from './NumericInput';
 export {Money} from './Money';
 export {default as Number} from './Number';
 export {Redirect} from './Redirect';
+export {TextField} from './TextField';
+export {IconButton} from './IconButton';

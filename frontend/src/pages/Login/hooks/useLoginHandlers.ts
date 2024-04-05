@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
 import Toast from 'react-native-toast-message';
 import {useMeContext} from '~/me';
+import {string} from 'yup';
 
 interface LoginHandlerPropsType {
   authenticateUser: any;
@@ -12,10 +13,9 @@ interface LoginType {
   password: string;
 }
 
-export const isValidPhoneNumber = (value: any) => {
-  const phoneRegex = /^[+]?[0-9]{10,}$/;
-  return phoneRegex.test(value);
-};
+const phoneRegex = /^[+]?[0-9]{10,}$/;
+
+export const isValidPhoneNumber = (value: string) => phoneRegex.test(value);
 
 export const getLoginInput = ({userName, password}: LoginType) => {
   if (isValidPhoneNumber(userName)) {
@@ -40,7 +40,6 @@ const useLoginHandlers = ({authenticateUser}: LoginHandlerPropsType) => {
     userName: '',
     password: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
 
   const onUserNameChange = useCallback(
     (text: string) =>
@@ -65,15 +64,22 @@ const useLoginHandlers = ({authenticateUser}: LoginHandlerPropsType) => {
     [setCredential]
   );
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
   const onSubmit = useCallback(async () => {
     if (!credential.userName || !credential.password) {
       Toast.show({
         type: 'error',
-        text1: 'Invalid Credential',
+        text1: 'Please enter credentials!',
+        position: 'bottom'
+      });
+      return;
+    }
+
+    const isValidEmail = await string().email().isValid(credential.userName);
+
+    if (!isValidEmail && !isValidPhoneNumber(credential.userName)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter a valid email or phone number',
         position: 'bottom'
       });
       return;
@@ -107,8 +113,6 @@ const useLoginHandlers = ({authenticateUser}: LoginHandlerPropsType) => {
 
   return {
     credential,
-    showPassword,
-    toggleShowPassword,
     onUserNameChange,
     onPasswordChange,
     onSubmit,

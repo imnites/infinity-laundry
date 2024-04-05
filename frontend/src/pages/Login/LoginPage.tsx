@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {TextWithLine, Button} from '~/components/common';
+import {Button, TextField, TextWithLine} from '~/components/common';
 import {useAuthenticateUser, useLoginHandlers} from './hooks';
-import {Title, TextInput} from 'react-native-paper';
+import {Title} from 'react-native-paper';
 
 const LoginPage = () => {
   const styles = useStyles();
@@ -10,8 +10,6 @@ const LoginPage = () => {
 
   const {
     credential,
-    showPassword,
-    toggleShowPassword,
     onUserNameChange,
     onPasswordChange,
     onSubmit,
@@ -24,52 +22,49 @@ const LoginPage = () => {
   return (
     <View style={styles.container}>
       <Title style={styles.titleText}>Infinity Laundry</Title>
-      <TextInput
-        style={styles.input}
-        placeholder="Email or Phone"
-        value={credential.userName}
-        onChangeText={onUserNameChange}
-        maxLength={255}
-        theme={{
-          colors: {primary: '#3930d8'}
-        }}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={!showPassword}
-        value={credential.password}
-        onChangeText={onPasswordChange}
-        maxLength={25}
-        theme={{
-          colors: {primary: '#3930d8'}
-        }}
-        right={
-          <TextInput.Icon
-            icon={showPassword ? 'eye-off' : 'eye'}
-            onPress={toggleShowPassword}
-            color="#999"
-          />
-        }
-      />
-      <Button
-        onPress={onSubmit}
-        loading={loading}
-        disabled={loading}
-        classes={{
-          button: styles.loginButton,
-          buttonText: styles.loginButtonText
-        }}>
-        Login
-      </Button>
-      <Button
-        onPress={handleForgotPassword}
-        classes={{
-          button: styles.forgotButton,
-          buttonText: styles.forgotButtonText
-        }}>
-        Forgot Password?
-      </Button>
+      <View style={styles.fieldContainer}>
+        <TextField
+          inputStyle={styles.input}
+          placeholder="Email or Phone"
+          value={credential.userName}
+          onChangeText={onUserNameChange}
+          fullWidth
+          variant="underline"
+        />
+      </View>
+      <View style={styles.fieldContainer}>
+        <TextField
+          inputStyle={styles.input}
+          placeholder="Password"
+          value={credential.password}
+          onChangeText={onPasswordChange}
+          secureTextEntry
+          fullWidth
+        />
+      </View>
+      <View style={styles.forgotPasswordContainer}>
+        <Button
+          onPress={handleForgotPassword}
+          classes={{
+            button: styles.forgotButton,
+            buttonText: styles.forgotButtonText
+          }}>
+          Forgot Password?
+        </Button>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Button
+          fullWidth
+          onPress={onSubmit}
+          loading={loading}
+          disabled={loading}
+          classes={{
+            button: styles.loginButton,
+            buttonText: styles.loginButtonText
+          }}>
+          Login
+        </Button>
+      </View>
       <TextWithLine text="or" />
       <View style={styles.noAccountContainer}>
         <Text style={styles.noAccount}>Don't have an account? </Text>
@@ -109,17 +104,17 @@ const useStyles = () => {
       textAlign: 'center'
     },
     input: {
-      width: '80%',
-      backgroundColor: 'transparent',
-      height: 40,
-      borderBottomWidth: 1,
-      borderBottomColor: '#3930d8',
-      margin: 0,
-      marginBottom: 10,
-      borderTopWidth: 0,
-      borderLeftWidth: 0,
-      borderRightWidth: 0,
-      paddingHorizontal: 0
+      // width: '80%',
+      // backgroundColor: 'transparent',
+      // height: 40,
+      // borderBottomWidth: 1,
+      // borderBottomColor: '#3930d8',
+      // margin: 0,
+      // marginBottom: 10,
+      // borderTopWidth: 0,
+      // borderLeftWidth: 0,
+      // borderRightWidth: 0,
+      // paddingHorizontal: 0
     },
     or: {
       marginVertical: 10
@@ -143,21 +138,20 @@ const useStyles = () => {
       fontWeight: 'bold'
     },
     loginButton: {
-      width: '80%',
       backgroundColor: '#3930d8',
       padding: 10,
-      borderRadius: 5
+      borderRadius: 16,
+      marginTop: 16
     },
     loginButtonText: {
       color: 'white',
       textAlign: 'center'
     },
     forgotButton: {
-      alignSelf: 'flex-end',
-      paddingRight: 38
+      alignSelf: 'flex-end'
     },
     forgotButtonText: {
-      color: 'red'
+      color: '#3930d8'
     },
     signUpButton: {},
     signUpButtonText: {
@@ -165,7 +159,16 @@ const useStyles = () => {
       textDecorationLine: 'underline'
     },
     noAccountContainer: {
+      display: 'flex',
       flexDirection: 'row'
+    },
+    fieldContainer: {
+      width: '85%',
+      marginTop: 8,
+      marginBottom: 8
+    },
+    forgotPasswordContainer: {
+      width: '85%'
     }
   });
 };
