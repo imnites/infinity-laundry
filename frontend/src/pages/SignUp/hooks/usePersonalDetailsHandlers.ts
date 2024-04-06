@@ -2,7 +2,6 @@ import {useState, useCallback} from 'react';
 import {isValidEmail, isValidPhoneNumber, mapToSignUpInput} from '~/utils';
 import {useGeneratePhoneOTP, useSaveUserDraft} from '~/hooks';
 import {useNavigation} from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
 
 interface ValidateFormPropTypes {
   values: any;
@@ -53,7 +52,12 @@ const usePersonalDetailsHandlers = (createUserDraft: any) => {
     email: '',
     phoneNumber: ''
   });
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<{
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phoneNumber?: string;
+  }>({
     firstName: '',
     lastName: '',
     email: '',
@@ -99,11 +103,25 @@ const usePersonalDetailsHandlers = (createUserDraft: any) => {
         });
       }
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: err?.message,
-        position: 'bottom'
-      });
+      const errorCode =
+        err?.graphQLErrors && err?.graphQLErrors[0]?.extensions?.code;
+
+      switch (errorCode as string) {
+        case 'EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS':
+          setErrors({
+            email: 'Email already exists.',
+            phoneNumber: 'Phone number already exists.'
+          });
+          break;
+
+        case 'EMAIL_ALREADY_EXISTS':
+          setErrors({email: 'Email already exists.'});
+          break;
+
+        case 'PHONE_NUMBER_ALREADY_EXISTS':
+          setErrors({phoneNumber: 'Phone number already exists.'});
+          break;
+      }
 
       return;
     }

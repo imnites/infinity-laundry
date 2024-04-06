@@ -11,24 +11,11 @@ const useResetPassword = (route: any) => {
   const [formValues, setFormValues] = useState({
     password: '',
     confirmPassword: '',
-    strength: '',
     isSubmitting: false
   });
 
-  const calculateStrength = (text: string) => {
-    const length = text.length;
-    if (length < 8) {
-      setFormValues(prevDetails => ({...prevDetails, strength: 'Weak'}));
-    } else if (length < 12) {
-      setFormValues(prevDetails => ({...prevDetails, strength: 'Medium'}));
-    } else {
-      setFormValues(prevDetails => ({...prevDetails, strength: 'Strong'}));
-    }
-  };
-
   const handlePasswordChange = (text: string) => {
     setFormValues(prevDetails => ({...prevDetails, password: text}));
-    calculateStrength(text);
   };
 
   const handleConfirmPasswordChange = (text: string) => {
@@ -36,15 +23,6 @@ const useResetPassword = (route: any) => {
   };
 
   const handleSubmit = async () => {
-    if (formValues.password.length < 8) {
-      Toast.show({
-        type: 'error',
-        text1: 'Password must be atleast 8 characters',
-        position: 'bottom'
-      });
-      return;
-    }
-
     if (formValues.password !== formValues.confirmPassword) {
       Toast.show({
         type: 'error',
@@ -72,7 +50,7 @@ const useResetPassword = (route: any) => {
         } else {
           Toast.show({
             type: 'success',
-            text1: 'Your Password Reset Successful',
+            text1: 'Password successful updated',
             position: 'bottom'
           });
           (navigation.navigate as any)('LoginPage');

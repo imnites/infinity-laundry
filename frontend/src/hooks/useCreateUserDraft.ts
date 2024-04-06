@@ -11,12 +11,8 @@ const useCreateUserDraft = () => {
 
   return {
     createUserDraft: async (input: any) => {
-      try {
-        const {data} = await createUserDraft({variables: input});
-        return data.createUserDraft;
-      } catch (err: any) {
-        throw new Error(err.message);
-      }
+      const {data} = await createUserDraft({variables: input});
+      return data.createUserDraft;
     },
     loading
   };

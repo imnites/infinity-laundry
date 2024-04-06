@@ -110,10 +110,8 @@ const useStyles = () => {
     },
     error: {
       color: 'red',
-      marginBottom: 10,
-      marginTop: -10,
       alignSelf: 'flex-start',
-      marginLeft: 35
+      marginTop: 4
     }
   });
 };

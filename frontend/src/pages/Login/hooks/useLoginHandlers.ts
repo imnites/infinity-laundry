@@ -15,8 +15,14 @@ interface LoginType {
 
 export const mapToLoginInput = ({userName, password}: LoginType) => {
   const phoneNumber = mapToPhoneNumber(userName);
+  if (phoneNumber) {
+    return {
+      phoneNumber,
+      password
+    };
+  }
 
-  return {userName: phoneNumber || userName, password: password};
+  return {userName: userName, password: password};
 };
 
 const useLoginHandlers = ({authenticateUser}: LoginHandlerPropsType) => {
