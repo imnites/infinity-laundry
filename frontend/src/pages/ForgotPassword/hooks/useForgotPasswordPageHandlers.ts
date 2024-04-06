@@ -1,7 +1,25 @@
 import {useState, useCallback} from 'react';
 import Toast from 'react-native-toast-message';
 import {useGeneratePhoneOTP} from '~/hooks';
-import {isValidEmail, isValidPhoneNumber, getOTPInput} from '~/utils';
+import {isValidEmail, isValidPhoneNumber, mapToPhoneNumber} from '~/utils';
+
+const mapToOTPInput = (value: string) => {
+  if (isValidEmail(value)) {
+    return {email: value};
+  }
+
+  const phoneNumber = mapToPhoneNumber(value);
+
+  if (phoneNumber) {
+    return {
+      phoneNumber: phoneNumber
+    };
+  }
+
+  return {
+    id: value
+  };
+};
 
 interface ForgotPasswordHandlersPropsType {
   navigation: any;
@@ -39,7 +57,7 @@ const useForgotPasswordPageHandlers = ({
 
     try {
       const {success, verificationToken, phoneNumber} = await generatePhoneOTP({
-        otpInput: getOTPInput(values.userName)
+        otpInput: mapToOTPInput(values.userName)
       });
 
       if (success) {

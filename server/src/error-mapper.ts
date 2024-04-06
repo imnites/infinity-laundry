@@ -1,7 +1,11 @@
 import { GraphQLError } from 'graphql';
 
 export const errorCodes = {
-  unauthorized: 'Unauthorized'
+  unauthorized: 'Unauthorized',
+  EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS:
+    'EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS',
+  EMAIL_ALREADY_EXISTS: 'EMAIL_ALREADY_EXISTS',
+  PHONE_NUMBER_ALREADY_EXISTS: 'PHONE_NUMBER_ALREADY_EXISTS'
 };
 
 export const throwGraphQLError = ({

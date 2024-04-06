@@ -1,6 +1,6 @@
 import { Database, UserInfo } from '~/models';
 import { PhoneNumber } from '~/types';
-import { AbstractDataType } from 'sequelize';
+import { AbstractDataType, Op } from 'sequelize';
 
 export class UserService {
   private readonly _database: Database;
@@ -31,6 +31,42 @@ export class UserService {
 
   public async getUserDetailsById(id: string): Promise<UserInfo | null> {
     return this._database.models.userInfo.findByPk(id);
+  }
+
+  public async getUserDetailsByEmailOrPhoneNumber({
+    email,
+    phoneNumber
+  }: {
+    email?: string;
+    phoneNumber?: PhoneNumber;
+  }): Promise<UserInfo | null> {
+    if (!email && !phoneNumber) {
+      throw new Error('please pass email or phone number or both');
+    }
+
+    if (email && phoneNumber) {
+      return this._database.models.userInfo.findOne({
+        where: {
+          [Op.or]: [
+            { email },
+            {
+              phoneNumber: `${phoneNumber.countryCode} ${phoneNumber.phoneNumber}`
+            }
+          ]
+        },
+        order: [['createdAt', 'DESC']]
+      });
+    }
+
+    if (email) {
+      return this.getUserDetailsByEmail(email);
+    }
+
+    if (phoneNumber) {
+      return this.getUserDetailsByPhoneNumber(phoneNumber);
+    }
+
+    return null;
   }
 
   public async createNewUser({

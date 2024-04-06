@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
 import Toast from 'react-native-toast-message';
 import {useMeContext} from '~/me';
-import {isValidEmail, isValidPhoneNumber} from '~/utils';
+import {isValidEmail, isValidPhoneNumber, mapToPhoneNumber} from '~/utils';
 
 interface LoginHandlerPropsType {
   authenticateUser: any;
@@ -14,20 +14,9 @@ interface LoginType {
 }
 
 export const mapToLoginInput = ({userName, password}: LoginType) => {
-  if (isValidPhoneNumber(userName)) {
-    const phone = userName.replace(/\s/g, '');
+  const phoneNumber = mapToPhoneNumber(userName);
 
-    const len = phone.length;
-
-    return {
-      phoneNumber: {
-        countryCode: phone.substring(0, len - 10) || '+91',
-        phoneNumber: phone.substring(len - 10)
-      },
-      password: password
-    };
-  }
-  return {userName: userName, password: password};
+  return {userName: phoneNumber || userName, password: password};
 };
 
 const useLoginHandlers = ({authenticateUser}: LoginHandlerPropsType) => {

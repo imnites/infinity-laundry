@@ -1,5 +1,5 @@
 import {useState, useCallback} from 'react';
-import {formattedSignUpInput} from '~/utils';
+import {isValidEmail, isValidPhoneNumber, mapToSignUpInput} from '~/utils';
 import {useGeneratePhoneOTP, useSaveUserDraft} from '~/hooks';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
@@ -13,28 +13,28 @@ const validateForm = ({values, setErrors}: ValidateFormPropTypes) => {
   const newErrors: any = {};
   let hasErrors = false;
 
-  if (!values.firstName.trim()) {
+  if (!values.firstName) {
     newErrors.firstName = 'First Name is required';
     hasErrors = true;
   }
 
-  if (!values.lastName.trim()) {
+  if (!values.lastName) {
     newErrors.lastName = 'Last Name is required';
     hasErrors = true;
   }
 
-  if (!values.email.trim()) {
+  if (!values.email) {
     newErrors.email = 'Email is required';
     hasErrors = true;
-  } else if (!/\S+@\S+\.\S+/.test(values.email.trim())) {
+  } else if (!isValidEmail(values.email)) {
     newErrors.email = 'Invalid email';
     hasErrors = true;
   }
 
-  if (!values.phoneNumber.trim()) {
+  if (!values.phoneNumber) {
     newErrors.phoneNumber = 'Phone Number is required';
     hasErrors = true;
-  } else if (!/^\d{10}$/.test(values.phoneNumber.trim())) {
+  } else if (!isValidPhoneNumber(values.phoneNumber)) {
     newErrors.phoneNumber = 'Invalid phone number';
     hasErrors = true;
   }
@@ -78,36 +78,34 @@ const usePersonalDetailsHandlers = (createUserDraft: any) => {
       return;
     }
 
-    let token = '';
     try {
-      token = await createUserDraft({
-        input: formattedSignUpInput(values)
+      const token = await createUserDraft({
+        input: mapToSignUpInput(values)
       });
-    } catch (err) {
-      console.log('err', err);
+
+      const {success, verificationToken} = await generatePhoneOTP({
+        otpInput: {
+          id: token
+        }
+      });
+      if (success) {
+        (navigation.navigate as any)('PhoneVerification', {
+          parent: 'SignUp',
+          link: 'ResetPassword',
+          contact: values.phoneNumber,
+          verificationToken: verificationToken,
+          otpInput: token,
+          onSaveUserDraft: onSaveUserDraft
+        });
+      }
+    } catch (err: any) {
       Toast.show({
         type: 'error',
-        text1: err.message,
+        text1: err?.message,
         position: 'bottom'
       });
 
       return;
-    }
-
-    const {success, verificationToken} = await generatePhoneOTP({
-      otpInput: {
-        id: token
-      }
-    });
-    if (success) {
-      (navigation.navigate as any)('PhoneVerification', {
-        parent: 'SignUp',
-        link: 'ResetPassword',
-        contact: values.phoneNumber,
-        verificationToken: verificationToken,
-        otpInput: token,
-        onSaveUserDraft: onSaveUserDraft
-      });
     }
   };
 

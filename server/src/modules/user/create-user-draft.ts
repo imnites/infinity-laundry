@@ -1,31 +1,62 @@
 import { Context } from '~/types';
-import { MutationCreateUserDraftArgs } from '~/generated-types';
-import { GraphQLError } from 'graphql';
-import { mapToGraphQLError } from '~/error-mapper';
+import {
+  MutationCreateUserDraftArgs,
+  PhoneNumberInput
+} from '~/generated-types';
+import { mapToGraphQLError, errorCodes } from '~/error-mapper';
+import { UserInfo } from '~/models';
+
+const getErrorMessageAndCode = (
+  user: UserInfo,
+  email: string,
+  phoneNumber: PhoneNumberInput
+) => {
+  if (
+    user.Email === email &&
+    user.PhoneNumber.countryCode === phoneNumber.countryCode &&
+    user.PhoneNumber.phoneNumber === phoneNumber.phoneNumber
+  ) {
+    return {
+      message: 'Email and Phone number already exists',
+      code: errorCodes.EMAIL_AND_PHONE_NUMBER_ALREADY_EXISTS
+    };
+  }
+
+  if (user.Email === email) {
+    return {
+      message: 'Email already exists',
+      code: errorCodes.EMAIL_ALREADY_EXISTS
+    };
+  }
+
+  return {
+    message: 'Phone number already exists',
+    code: errorCodes.PHONE_NUMBER_ALREADY_EXISTS
+  };
+};
 
 export const createUserDraft = async (
   parent: { [key: string]: unknown } | null,
   args: MutationCreateUserDraftArgs,
   context: Context
 ): Promise<string> => {
+  const user =
+    await context.serviceClients.userService.getUserDetailsByEmailOrPhoneNumber(
+      { email: args.input.email, phoneNumber: args.input.phoneNumber }
+    );
+
+  if (user) {
+    const { message, code } = getErrorMessageAndCode(
+      user,
+      args.input.email,
+      args.input.phoneNumber
+    );
+
+    throw mapToGraphQLError(message, code);
+  }
+
   const id = crypto.randomUUID();
   await context.redisClient.saveData(id, { ...args.input, id });
 
-  const [userDetailsByEmail, userDetailsByPhoneNumber] = await Promise.all([
-    context.serviceClients.userService.getUserDetailsByEmail(args.input.email),
-    context.serviceClients.userService.getUserDetailsByPhoneNumber(
-      args.input.phoneNumber
-    )
-  ]);
-
-  if (userDetailsByEmail && userDetailsByPhoneNumber) {
-    throw mapToGraphQLError('Email and Phone number already exists', '200');
-  } else if (userDetailsByEmail) {
-    throw mapToGraphQLError('Email already exists', '201');
-  } else if (userDetailsByPhoneNumber) {
-    throw mapToGraphQLError('Phone number already exists', '202');
-  } else {
-    await context.redisClient.saveData(id, { ...args.input, id });
-    return id;
-  }
+  return id;
 };

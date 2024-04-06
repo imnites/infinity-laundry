@@ -103,8 +103,8 @@ const useStyles = () => {
       flexDirection: 'row'
     },
     fieldContainer: {
-      marginTop: 8,
-      marginBottom: 8,
+      marginTop: 4,
+      marginBottom: 4,
       width: '100%'
     },
     loginButtonContainer: {

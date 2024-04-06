@@ -1,6 +1,3 @@
-import {isValidEmail} from './email-validator';
-import {isValidPhoneNumber} from './phone-number-validator';
-
 interface FormattedSignUpInputType {
   firstName: string;
   lastName: string;
@@ -8,7 +5,7 @@ interface FormattedSignUpInputType {
   phoneNumber: string;
 }
 
-export const formattedSignUpInput = (userDetails: FormattedSignUpInputType) => {
+export const mapToSignUpInput = (userDetails: FormattedSignUpInputType) => {
   return {
     firstName: userDetails.firstName,
     lastName: userDetails.lastName,
@@ -18,23 +15,6 @@ export const formattedSignUpInput = (userDetails: FormattedSignUpInputType) => {
       countryCode: '+91',
       phoneNumber: userDetails.phoneNumber
     }
-  };
-};
-
-export const getOTPInput = (value: string) => {
-  if (isValidEmail(value)) {
-    return {email: value};
-  }
-  if (isValidPhoneNumber(value)) {
-    return {
-      phoneNumber: {
-        countryCode: '+91',
-        phoneNumber: value
-      }
-    };
-  }
-  return {
-    id: value
   };
 };
 
