@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Button, Money, Redirect} from '~/components/common';
 import {useNavigation} from '@react-navigation/native';
@@ -11,14 +11,6 @@ export const BalanceCard: React.FC = () => {
   const onAddFundsClick = useCallback(() => {
     (navigate as any)('PaymentPage');
   }, [navigate]);
-
-  const buttonClasses = useMemo(
-    () => ({
-      button: styles.addFundButton,
-      buttonText: styles.addFundButtonText
-    }),
-    []
-  );
 
   if (!me) {
     return <Redirect to="LoginPage" />;
@@ -34,7 +26,14 @@ export const BalanceCard: React.FC = () => {
             amount={me.balance}
           />
           <Text style={styles.subtitle}>Current Balance</Text>
-          <Button classes={buttonClasses} onPress={onAddFundsClick}>
+          <Button
+            fullWidth
+            classes={{
+              button: styles.addFundButton,
+              buttonText: styles.addFundButtonText
+            }}
+            variant="contained"
+            onPress={onAddFundsClick}>
             Add Money
           </Button>
         </View>
@@ -79,16 +78,11 @@ const styles = StyleSheet.create({
   },
   addFundButton: {
     width: 240,
-    backgroundColor: '#3930d8',
-    borderRadius: 16,
     marginTop: 24
   },
   addFundButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    paddingTop: 8,
-    paddingBottom: 8,
-    fontSize: 20
+    fontSize: 16,
+    paddingBottom: 2
   }
 });
 
