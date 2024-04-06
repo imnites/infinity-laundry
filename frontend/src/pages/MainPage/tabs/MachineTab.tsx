@@ -1,14 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet
-} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {NativeModules} from 'react-native';
 import Toast from 'react-native-toast-message';
+import {TextField, Button} from '~/components/common';
 
 const {QRCodeScannerModule} = NativeModules;
 
@@ -35,37 +30,48 @@ const MachineTab: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Scan the QR-code of the machine to begin</Text>
-      <TouchableOpacity style={styles.button} onPress={handleQRScan}>
-        <Text style={styles.buttonText}>USE QR SCANNER</Text>
-      </TouchableOpacity>
-      <Text style={styles.subTitle}>
-        Alternatively, enter the machine code below
-      </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter machine code"
-        value={machineCode}
-        onChangeText={text => setMachineCode(text)}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSubmitMachineCode}>
-        <Text style={styles.buttonText}>SUBMIT MACHINE CODE</Text>
-      </TouchableOpacity>
+      <Button variant="contained" fullWidth onPress={handleQRScan}>
+        USE QR SCANNER
+      </Button>
+
+      <View style={styles.enterMachineCodeText}>
+        <Text style={styles.subTitle}>
+          Alternatively, enter the machine code below
+        </Text>
+        <TextField
+          fullWidth
+          variant="underline"
+          placeholder="Enter machine code"
+          value={machineCode}
+          onChangeText={text => setMachineCode(text)}
+        />
+      </View>
+      <View style={styles.fieldContainer}>
+        <Button variant="contained" fullWidth onPress={handleSubmitMachineCode}>
+          SUBMIT MACHINE CODE
+        </Button>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 32,
     backgroundColor: '#fff'
+  },
+  fieldContainer: {
+    marginTop: 16,
+    marginBottom: 8,
+    width: '100%'
   },
   title: {
     fontSize: 18,
-    marginBottom: 10,
-    textAlign: 'center'
+    marginBottom: 10
   },
   subTitle: {
     fontSize: 16,
@@ -73,27 +79,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center'
   },
-  icon: {
-    marginBottom: 20
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 20,
-    paddingHorizontal: 10
-  },
-  button: {
-    backgroundColor: '#007bff',
-    borderRadius: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 20
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold'
+  enterMachineCodeText: {
+    marginTop: 40,
+    width: '100%'
   }
 });
 
