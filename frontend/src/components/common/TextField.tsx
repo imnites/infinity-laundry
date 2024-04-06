@@ -20,7 +20,7 @@ interface TextFieldProps {
   secureTextEntry?: boolean;
   showPassword?: boolean;
   fullWidth?: boolean;
-  variant?: 'shadow' | 'underline' | 'outline';
+  variant?: 'shadow' | 'underline' | 'outlined';
   showEyeIcon?: boolean;
   maxLength?: number;
   keyboardType?: KeyboardTypeOptions;
@@ -67,12 +67,17 @@ export const TextField: React.FC<TextFieldProps> = ({
       style={[
         variant === 'shadow' && styles.card,
         variant === 'underline' && styles.underline,
-        variant === 'outline' && styles.outline,
+        variant === 'outlined' && styles.outlined,
         fullWidth && styles.fullWidth,
         rootStyle
       ]}>
       <TextInput
-        style={[styles.input, showEyeIcon && styles.rightPadding, inputStyle]}
+        style={[
+          styles.input,
+          variant === 'underline' && styles.textVerticalAlign,
+          showEyeIcon && styles.rightPadding,
+          inputStyle
+        ]}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
@@ -100,7 +105,7 @@ export const TextField: React.FC<TextFieldProps> = ({
 };
 
 const styles = StyleSheet.create({
-  outline: {
+  outlined: {
     borderWidth: 1,
     borderColor: '#3930d8',
     borderRadius: 16
@@ -138,6 +143,9 @@ const styles = StyleSheet.create({
   },
   rightPadding: {
     paddingRight: 40
+  },
+  textVerticalAlign: {
+    textAlignVertical: 'bottom'
   },
   iconButton: {
     position: 'absolute',

@@ -1,3 +1,6 @@
+import {isValidEmail} from './email-validator';
+import {isValidPhoneNumber} from './phone-number-validator';
+
 interface FormattedSignUpInputType {
   firstName: string;
   lastName: string;
@@ -18,17 +21,7 @@ export const formattedSignUpInput = (userDetails: FormattedSignUpInputType) => {
   };
 };
 
-export const isValidEmail = (value: any) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(value);
-};
-
-export const isValidPhoneNumber = (value: any) => {
-  const phoneRegex = /^[+]?[0-9]{10,}$/;
-  return phoneRegex.test(value);
-};
-
-export const getOTPInput = (value: any) => {
+export const getOTPInput = (value: string) => {
   if (isValidEmail(value)) {
     return {email: value};
   }

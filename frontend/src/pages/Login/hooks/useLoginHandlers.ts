@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useCallback, useState} from 'react';
 import Toast from 'react-native-toast-message';
 import {useMeContext} from '~/me';
-import {string} from 'yup';
+import {isValidEmail, isValidPhoneNumber} from '~/utils';
 
 interface LoginHandlerPropsType {
   authenticateUser: any;
@@ -13,16 +13,16 @@ interface LoginType {
   password: string;
 }
 
-const phoneRegex = /^[+]?[0-9]{10,}$/;
-
-export const isValidPhoneNumber = (value: string) => phoneRegex.test(value);
-
-export const getLoginInput = ({userName, password}: LoginType) => {
+export const mapToLoginInput = ({userName, password}: LoginType) => {
   if (isValidPhoneNumber(userName)) {
+    const phone = userName.replace(/\s/g, '');
+
+    const len = phone.length;
+
     return {
       phoneNumber: {
-        countryCode: '+91',
-        phoneNumber: userName
+        countryCode: phone.substring(0, len - 10) || '+91',
+        phoneNumber: phone.substring(len - 10)
       },
       password: password
     };
@@ -74,8 +74,6 @@ const useLoginHandlers = ({authenticateUser}: LoginHandlerPropsType) => {
       return;
     }
 
-    const isValidEmail = await string().email().isValid(credential.userName);
-
     if (!isValidEmail && !isValidPhoneNumber(credential.userName)) {
       Toast.show({
         type: 'error',
@@ -85,7 +83,7 @@ const useLoginHandlers = ({authenticateUser}: LoginHandlerPropsType) => {
       return;
     }
 
-    const result = await authenticateUser(getLoginInput(credential));
+    const result = await authenticateUser(mapToLoginInput(credential));
 
     if (result.error) {
       Toast.show({

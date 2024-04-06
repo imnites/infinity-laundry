@@ -24,59 +24,45 @@ const LoginPage = () => {
       <Title style={styles.titleText}>Infinity Laundry</Title>
       <View style={styles.fieldContainer}>
         <TextField
-          inputStyle={styles.input}
           placeholder="Email or Phone"
           value={credential.userName}
           onChangeText={onUserNameChange}
           fullWidth
-          variant="underline"
+          maxLength={255}
         />
       </View>
       <View style={styles.fieldContainer}>
         <TextField
-          inputStyle={styles.input}
           placeholder="Password"
           value={credential.password}
           onChangeText={onPasswordChange}
           secureTextEntry
           fullWidth
           showEyeIcon
+          maxLength={16}
         />
       </View>
       <View style={styles.forgotPasswordContainer}>
         <Button
-          onPress={handleForgotPassword}
-          classes={{
-            button: styles.forgotButton,
-            buttonText: styles.forgotButtonText
-          }}>
+          classes={{button: styles.forgotPasswordButton}}
+          onPress={handleForgotPassword}>
           Forgot Password?
         </Button>
       </View>
-      <View style={styles.fieldContainer}>
+      <View style={styles.loginButtonContainer}>
         <Button
+          variant="contained"
           fullWidth
           onPress={onSubmit}
           loading={loading}
-          disabled={loading}
-          classes={{
-            button: styles.loginButton,
-            buttonText: styles.loginButtonText
-          }}>
+          disabled={loading}>
           Login
         </Button>
       </View>
       <TextWithLine text="or" />
       <View style={styles.noAccountContainer}>
         <Text style={styles.noAccount}>Don't have an account? </Text>
-        <Button
-          onPress={onSignUp}
-          classes={{
-            button: styles.signUpButton,
-            buttonText: styles.signUpButtonText
-          }}>
-          Sign Up
-        </Button>
+        <Button onPress={onSignUp}>Sign Up</Button>
       </View>
     </View>
   );
@@ -91,7 +77,7 @@ const useStyles = () => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 20,
+      padding: 32,
       backgroundColor: '#fff'
     },
     titleText: {
@@ -104,72 +90,33 @@ const useStyles = () => {
       fontWeight: 'bold',
       textAlign: 'center'
     },
-    input: {
-      // width: '80%',
-      // backgroundColor: 'transparent',
-      // height: 40,
-      // borderBottomWidth: 1,
-      // borderBottomColor: '#3930d8',
-      // margin: 0,
-      // marginBottom: 10,
-      // borderTopWidth: 0,
-      // borderLeftWidth: 0,
-      // borderRightWidth: 0,
-      // paddingHorizontal: 0
-    },
     or: {
       marginVertical: 10
-    },
-    button: {
-      width: '80%'
-    },
-    container1: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginVertical: 10
-    },
-    line: {
-      flex: 1,
-      height: 1,
-      backgroundColor: 'black'
     },
     text: {
       marginHorizontal: 10,
       color: 'black',
       fontWeight: 'bold'
     },
-    loginButton: {
-      backgroundColor: '#3930d8',
-      padding: 10,
-      borderRadius: 16,
-      marginTop: 16
-    },
-    loginButtonText: {
-      color: 'white',
-      textAlign: 'center'
-    },
-    forgotButton: {
-      alignSelf: 'flex-end'
-    },
-    forgotButtonText: {
-      color: '#3930d8'
-    },
-    signUpButton: {},
-    signUpButtonText: {
-      color: '#3930d8',
-      textDecorationLine: 'underline'
-    },
     noAccountContainer: {
       display: 'flex',
       flexDirection: 'row'
     },
     fieldContainer: {
-      width: '85%',
       marginTop: 8,
-      marginBottom: 8
+      marginBottom: 8,
+      width: '100%'
+    },
+    loginButtonContainer: {
+      marginTop: 32,
+      marginBottom: 16,
+      width: '100%'
     },
     forgotPasswordContainer: {
-      width: '85%'
+      width: '100%'
+    },
+    forgotPasswordButton: {
+      marginLeft: 'auto'
     }
   });
 };

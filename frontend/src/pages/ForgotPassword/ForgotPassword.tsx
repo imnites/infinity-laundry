@@ -2,9 +2,10 @@ import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {Button} from '~/components/common';
 import {useForgotPasswordPageHandlers} from './hooks';
-import {Title, TextInput} from 'react-native-paper';
+import {Title} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {TextField} from '~/components/common';
 
 const ForgotPasswordPage: React.FC = () => {
   const navigation = useNavigation();
@@ -13,94 +14,58 @@ const ForgotPasswordPage: React.FC = () => {
       navigation
     });
 
-  const styles = useStyles();
   return (
     <View style={styles.container}>
       <Title style={styles.titleText}>Forgot Password</Title>
       <Text style={styles.description}>
         Enter the email address or phone number associated with your account.
       </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email or Phone"
-        onChangeText={onUserNameChange}
-        value={values.userName}
-      />
-      <Button
-        onPress={handleSubmit}
-        classes={{
-          button: styles.submitButton,
-          buttonText: styles.submitButtonText
-        }}>
-        Continue
-      </Button>
-      <Button
-        onPress={() => {
-          (navigation.navigate as any)('LoginPage');
-        }}
-        classes={{
-          button: styles.backToLoginButton,
-          buttonText: styles.backToLoginButtonText
-        }}
-        leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
-        Back to Login
-      </Button>
+      <View style={styles.fieldContainer}>
+        <TextField
+          fullWidth
+          variant="underline"
+          placeholder="Email or Phone"
+          onChangeText={onUserNameChange}
+          value={values.userName}
+        />
+      </View>
+      <View style={styles.fieldContainer}>
+        <Button fullWidth onPress={handleSubmit} variant="contained">
+          Continue
+        </Button>
+      </View>
+      <View style={styles.fieldContainer}>
+        <Button
+          onPress={() => {
+            (navigation.navigate as any)('LoginPage');
+          }}
+          leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
+          Back to Login
+        </Button>
+      </View>
     </View>
   );
 };
 
 export default ForgotPasswordPage;
 
-const useStyles = () => {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 24,
-      backgroundColor: 'white'
-    },
-    titleText: {
-      color: '#3930d8',
-      fontSize: 24,
-      marginBottom: 10,
-      textAlign: 'left'
-    },
-    description: {
-      textAlign: 'center',
-      marginBottom: 20,
-      marginLeft: -10
-    },
-    input: {
-      width: '80%',
-      backgroundColor: 'transparent',
-      height: 40,
-      borderBottomWidth: 1,
-      borderBottomColor: '#3930d8',
-      margin: 0,
-      marginBottom: 10,
-      borderTopWidth: 0,
-      borderLeftWidth: 0,
-      borderRightWidth: 0,
-      paddingHorizontal: 0
-    },
-    submitButton: {
-      width: '80%',
-      backgroundColor: '#3930d8',
-      padding: 10,
-      borderRadius: 5
-    },
-    submitButtonText: {
-      color: 'white',
-      textAlign: 'center'
-    },
-    backToLoginButton: {
-      width: '80%',
-      padding: 10
-    },
-    backToLoginButtonText: {
-      color: '#3930d8',
-      textAlign: 'center'
-    }
-  });
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+    backgroundColor: '#ffffff'
+  },
+  titleText: {
+    color: '#3930d8',
+    fontSize: 24,
+    marginBottom: 10,
+    textAlign: 'left'
+  },
+  fieldContainer: {width: '100%', marginTop: 16, marginBottom: 16},
+  description: {
+    textAlign: 'center',
+    marginBottom: 8
+  }
+});

@@ -21,6 +21,7 @@ interface ButtonPropsType {
   leftIcon?: React.ReactNode;
   children?: React.ReactNode;
   fullWidth?: boolean;
+  variant?: 'text' | 'contained' | 'outlined';
 }
 
 const Button = ({
@@ -30,13 +31,17 @@ const Button = ({
   disabled,
   leftIcon,
   children,
-  fullWidth = false
+  fullWidth = false,
+  variant = 'text'
 }: ButtonPropsType) => {
   return (
     <TouchableOpacity
       style={[
-        fullWidth && styles.fullWidth,
         styles.buttonRoot,
+        variant === 'contained' && styles.contained,
+        variant === 'outlined' && styles.outlined,
+        variant === 'text' && styles.text,
+        fullWidth && styles.fullWidth,
         classes?.button
       ]}
       onPress={onPress}
@@ -46,7 +51,15 @@ const Button = ({
       ) : (
         <View style={styles.buttonContentRoot}>
           {leftIcon && <View style={styles.leftIconContainer}>{leftIcon}</View>}
-          <Text style={classes?.buttonText}>{children}</Text>
+          <Text
+            style={[
+              variant === 'contained' && styles.containedText,
+              variant === 'outlined' && styles.outlinedText,
+              variant === 'text' && styles.textContent,
+              classes?.buttonText
+            ]}>
+            {children}
+          </Text>
         </View>
       )}
     </TouchableOpacity>
@@ -54,6 +67,21 @@ const Button = ({
 };
 
 const styles = StyleSheet.create({
+  containedText: {
+    color: '#ffffff'
+  },
+  contained: {backgroundColor: '#3930d8', padding: 8, borderRadius: 16},
+  outlinedText: {
+    color: '#3930d8'
+  },
+  outlined: {
+    borderWidth: 1,
+    padding: 8,
+    borderColor: '#3930d8',
+    borderRadius: 16
+  },
+  text: {},
+  textContent: {color: '#3930d8'},
   buttonRoot: {},
   fullWidth: {width: '100%'},
   buttonContentRoot: {

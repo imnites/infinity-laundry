@@ -33,7 +33,7 @@ const OtpInputField: React.FC<TextFieldProps> = ({
       value={value}
       inputRef={ref}
       editable={editable}
-      variant="outline"
+      variant="outlined"
       selectTextOnFocus
     />
   );
