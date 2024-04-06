@@ -38,7 +38,7 @@ const useForgotPasswordPageHandlers = ({
     }
 
     try {
-      const {success, verificationToken} = await generatePhoneOTP({
+      const {success, verificationToken, phoneNumber} = await generatePhoneOTP({
         otpInput: getOTPInput(values.userName)
       });
 
@@ -46,7 +46,9 @@ const useForgotPasswordPageHandlers = ({
         navigation.navigate('PhoneVerification', {
           parent: 'ForgetPassword',
           link: 'ResetPassword',
-          contact: values.userName,
+          contact: phoneNumber
+            ? `${phoneNumber.countryCode} ${phoneNumber.phoneNumber}`
+            : null,
           verificationToken: verificationToken
         });
       }

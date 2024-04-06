@@ -45,12 +45,7 @@ export const getOTPInput = (value: any) => {
   };
 };
 
-export const getVerificationMessage = (otpInput: string) => {
-  if (isValidEmail(otpInput)) {
-    return 'Verification code has been sent to linked mobile number.';
-  } else {
-    return `Verification code has been sent to ********${otpInput
-      .toString()
-      .slice(-2)}`;
-  }
-};
+export const getVerificationMessage = (contact?: string) =>
+  contact
+    ? `Verification code has been sent to ${contact}`
+    : 'Verification code has been sent to linked mobile number.';

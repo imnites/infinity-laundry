@@ -1,9 +1,18 @@
 import React, {useCallback, useState} from 'react';
-import {StyleProp, StyleSheet, TextInput, TextStyle, View} from 'react-native';
+import {
+  KeyboardTypeOptions,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  TextStyle,
+  View,
+  ViewStyle
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {IconButton} from './IconButton';
 
 interface TextFieldProps {
+  rootStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
   placeholder?: string;
   value?: string;
@@ -11,17 +20,36 @@ interface TextFieldProps {
   secureTextEntry?: boolean;
   showPassword?: boolean;
   fullWidth?: boolean;
-  variant?: 'shadow' | 'underline';
+  variant?: 'shadow' | 'underline' | 'outline';
+  showEyeIcon?: boolean;
+  maxLength?: number;
+  keyboardType?: KeyboardTypeOptions;
+  inputRef?: React.LegacyRef<TextInput>;
+  readOnly?: boolean;
+  editable?: boolean;
+  autoFocus?: boolean;
+  onFocus?: () => void;
+  selectTextOnFocus?: boolean;
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
+  rootStyle,
   inputStyle,
   placeholder,
   value,
   secureTextEntry,
   onChangeText,
   fullWidth = false,
-  variant = 'underline'
+  variant = 'underline',
+  showEyeIcon,
+  maxLength,
+  keyboardType,
+  inputRef,
+  readOnly,
+  editable,
+  autoFocus,
+  onFocus: onFocusCallback,
+  selectTextOnFocus
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -29,21 +57,36 @@ export const TextField: React.FC<TextFieldProps> = ({
     setShowPassword(!showPassword);
   }, [showPassword]);
 
+  const onFocus = useCallback(() => {
+    setShowPassword(false);
+    onFocusCallback && onFocusCallback();
+  }, [onFocusCallback]);
+
   return (
     <View
       style={[
-        fullWidth && styles.fullWidth,
         variant === 'shadow' && styles.card,
-        variant === 'underline' && styles.underline
+        variant === 'underline' && styles.underline,
+        variant === 'outline' && styles.outline,
+        fullWidth && styles.fullWidth,
+        rootStyle
       ]}>
       <TextInput
-        style={[styles.input, inputStyle]}
+        style={[styles.input, showEyeIcon && styles.rightPadding, inputStyle]}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={showPassword ? false : secureTextEntry}
+        onFocus={onFocus}
+        maxLength={maxLength}
+        keyboardType={keyboardType}
+        ref={inputRef}
+        readOnly={readOnly}
+        editable={editable}
+        autoFocus={autoFocus}
+        selectTextOnFocus={selectTextOnFocus}
       />
-      {secureTextEntry ? (
+      {showEyeIcon && secureTextEntry ? (
         <IconButton buttonStyle={styles.iconButton}>
           <Icon
             onPress={onEyeIconClick}
@@ -57,9 +100,14 @@ export const TextField: React.FC<TextFieldProps> = ({
 };
 
 const styles = StyleSheet.create({
+  outline: {
+    borderWidth: 1,
+    borderColor: '#3930d8',
+    borderRadius: 16
+  },
   card: {
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 16,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -86,6 +134,9 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     fontSize: 16,
+    fontFamily: 'lucida grande'
+  },
+  rightPadding: {
     paddingRight: 40
   },
   iconButton: {

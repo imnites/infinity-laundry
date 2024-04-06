@@ -1,5 +1,6 @@
 import React, {useState, useCallback} from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import {View, StyleSheet, TextInput} from 'react-native';
+import {TextField} from '.';
 
 const digitRegex = new RegExp('^[0-9]$|^$');
 
@@ -10,7 +11,7 @@ interface TextFieldProps {
   editable: boolean;
 }
 
-const TextField: React.FC<TextFieldProps> = ({
+const OtpInputField: React.FC<TextFieldProps> = ({
   value,
   onChangeText,
   focus,
@@ -23,14 +24,17 @@ const TextField: React.FC<TextFieldProps> = ({
   }, [focus, ref]);
 
   return (
-    <TextInput
-      style={styles.box}
+    <TextField
+      inputStyle={styles.input}
+      rootStyle={styles.inputRoot}
       maxLength={1}
       keyboardType="number-pad"
       onChangeText={onChangeText}
       value={value}
-      ref={ref}
+      inputRef={ref}
       editable={editable}
+      variant="outline"
+      selectTextOnFocus
     />
   );
 };
@@ -73,7 +77,7 @@ const OtpInput: React.FC<OTPInputProps> = ({
   return (
     <View style={styles.container}>
       {otp.map(({val, focus}, index) => (
-        <TextField
+        <OtpInputField
           key={index}
           value={val}
           onChangeText={onChangeText(index)}
@@ -91,15 +95,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  box: {
-    borderWidth: 1,
-    borderColor: 'black',
-    width: 40,
-    height: 40,
-    margin: 10,
-    textAlign: 'center',
+  input: {
     fontSize: 20,
-    borderRadius: 12
+    textAlign: 'center'
+  },
+  inputRoot: {
+    width: 48,
+    height: 48,
+    marginRight: 10,
+    marginLeft: 10,
+    borderRadius: 20
   }
 });
 export default OtpInput;

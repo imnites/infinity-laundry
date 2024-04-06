@@ -16,9 +16,9 @@ const ForgotPasswordPage: React.FC = () => {
   const styles = useStyles();
   return (
     <View style={styles.container}>
-      <Title style={styles.titleText}>Forgot Password?</Title>
+      <Title style={styles.titleText}>Forgot Password</Title>
       <Text style={styles.description}>
-        No worries, we'll send you reset instructions
+        Enter the email address or phone number associated with your account.
       </Text>
       <TextInput
         style={styles.input}
@@ -57,14 +57,14 @@ const useStyles = () => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 20,
+      padding: 24,
       backgroundColor: 'white'
     },
     titleText: {
       color: '#3930d8',
-      marginLeft: -85,
       fontSize: 24,
-      marginBottom: 10
+      marginBottom: 10,
+      textAlign: 'left'
     },
     description: {
       textAlign: 'center',

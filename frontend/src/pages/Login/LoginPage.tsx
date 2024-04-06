@@ -40,6 +40,7 @@ const LoginPage = () => {
           onChangeText={onPasswordChange}
           secureTextEntry
           fullWidth
+          showEyeIcon
         />
       </View>
       <View style={styles.forgotPasswordContainer}>
