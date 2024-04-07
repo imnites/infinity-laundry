@@ -18,6 +18,7 @@ const MachineTab: React.FC = () => {
 
   const handleSubmitMachineCode = useCallback(async () => {
     if (machineCode) {
+      setMachineCode('');
       (nav.navigate as any)('PreviewOrder', {resourceCode: machineCode});
     } else {
       Toast.show({

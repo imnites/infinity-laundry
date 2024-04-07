@@ -66,13 +66,14 @@ export const PreviewOrder: React.FC<PreviewOrderProps> = ({route}) => {
         <Text style={styles.title}>Current Balance</Text>
       </View>
       <View style={styles.detailsContainer}>
-        <Text style={styles.sectionTitle}>Charge Details</Text>
+        <Text style={styles.sectionTitle}>Usage Details</Text>
         <View style={styles.details}>
-          <DetailRow label="Name" value={resourceDetails.name} />
+          <DetailRow label="Machine Name" value={resourceDetails.name} />
           <DetailRow label="Code" value={resourceDetails.code} />
           <DetailRow label="Max Capacity" value={resourceDetails.maxCapacity} />
           <DetailRow label="Charge Per Use">
             <Money
+              rootStyle={styles.balanceAmountRoot}
               amount={resourceDetails.amountPerUse}
               amountStyle={styles.balanceAmount}
               currencyStyle={styles.balanceCurrency}
@@ -80,6 +81,7 @@ export const PreviewOrder: React.FC<PreviewOrderProps> = ({route}) => {
           </DetailRow>
           <DetailRow label="Total Price">
             <Money
+              rootStyle={styles.balanceAmountRoot}
               amount={resourceDetails.amountPerUse}
               amountStyle={styles.balanceAmount}
               currencyStyle={styles.balanceCurrency}
@@ -89,17 +91,15 @@ export const PreviewOrder: React.FC<PreviewOrderProps> = ({route}) => {
       </View>
       <View style={styles.buttonContainer}>
         <Button
-          classes={{
-            button: styles.button,
-            buttonText: styles.buttonText
-          }}
+          variant="shadow"
+          fullWidth
           onPress={canUseResource ? handleUseResource : onAddFundsClick}>
           {canUseResource ? 'Pay and Use' : 'Add Money'}
         </Button>
       </View>
       {!canUseResource && (
         <Text style={styles.warningText}>
-          You're short on balance. Please add funds to proceed.
+          You're short on balance. Please add Money to proceed.
         </Text>
       )}
     </View>
@@ -130,7 +130,8 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   title: {
-    fontSize: 16
+    fontSize: 16,
+    color: '#0009'
   },
   balance: {
     fontSize: 30,
@@ -146,18 +147,23 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 24,
+    textAlign: 'center',
     color: '#333'
   },
   details: {
     marginBottom: 10
   },
   buttonContainer: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    width: '80%',
+    maxWidth: 280
   },
   detailRow: {
+    display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
     marginBottom: 5
   },
   detailLabel: {
@@ -167,7 +173,8 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     fontSize: 16,
-    color: '#333'
+    color: '#333',
+    textAlign: 'left'
   },
   button: {
     width: 240,
@@ -190,6 +197,12 @@ const styles = StyleSheet.create({
   balanceAmount: {
     fontSize: 16,
     color: '#333'
+  },
+  balanceAmountRoot: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: 0,
+    marginRight: 0
   },
   balanceCurrency: {
     fontSize: 16,
