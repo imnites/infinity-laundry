@@ -9,13 +9,15 @@ interface TextFieldProps {
   value: string | undefined;
   focus: boolean;
   editable: boolean;
+  onFocus: () => void;
 }
 
 const OtpInputField: React.FC<TextFieldProps> = ({
   value,
   onChangeText,
   focus,
-  editable
+  editable,
+  onFocus
 }) => {
   const ref = React.createRef<TextInput>();
 
@@ -35,6 +37,7 @@ const OtpInputField: React.FC<TextFieldProps> = ({
       editable={editable}
       variant="shadow"
       selectTextOnFocus
+      onFocus={onFocus}
     />
   );
 };
@@ -54,6 +57,18 @@ const OtpInput: React.FC<OTPInputProps> = ({
     Array(otpLength)
       .fill('')
       .map((_, i) => ({val: '', focus: i === 0}))
+  );
+
+  const onFocus = useCallback(
+    (index: number) => () => {
+      const newOTPVal = otp.map((val, i) => ({
+        ...val,
+        focus: i === index
+      }));
+
+      setOtp(newOTPVal);
+    },
+    [otp]
   );
 
   const onChangeText = useCallback(
@@ -83,6 +98,7 @@ const OtpInput: React.FC<OTPInputProps> = ({
           onChangeText={onChangeText(index)}
           focus={focus}
           editable={editable}
+          onFocus={onFocus(index)}
         />
       ))}
     </View>
