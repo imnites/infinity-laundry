@@ -41,8 +41,16 @@ export const usePageOfTransactions = ({
     }
   });
 
+  const sortedPageOfTransactions = data?.pageOfTransactions
+    ? [...data.pageOfTransactions].sort((transaction1, transaction2) => {
+        const date1 = new Date(transaction1.transactionCompletionTime);
+        const date2 = new Date(transaction2.transactionCompletionTime);
+        return date2.getTime() - date1.getTime();
+      })
+    : [];
+
   return {
-    pageOfTransactions: data?.pageOfTransactions,
+    pageOfTransactions: sortedPageOfTransactions,
     loading
   };
 };

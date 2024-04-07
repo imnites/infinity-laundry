@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 interface FilterDialogPropsType {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setDate: React.Dispatch<
+  setFilter: React.Dispatch<
     React.SetStateAction<{startDate: Date | null; endDate: Date | null}>
   >;
 }
@@ -15,87 +15,84 @@ interface FilterDialogPropsType {
 const FilterDialog: React.FC<FilterDialogPropsType> = ({
   visible,
   setVisible,
-  setDate
+  setFilter
 }) => {
   const [datePickerVisibility, setDatePickerVisibility] = useState({
     isStartDatePickerVisible: false,
     isEndDatePickerVisible: false
   });
+
   const [selectedDate, setSelectedDate] = useState({
     selectedStartDate: null as Date | null,
     selectedEndDate: null as Date | null
   });
 
-  const showDatePicker = (
-    pickerType: 'isStartDatePickerVisible' | 'isEndDatePickerVisible'
-  ) => {
-    setDatePickerVisibility(prevState => ({
-      ...prevState,
-      [pickerType]: true
-    }));
-  };
+  const showDatePicker = useCallback(
+    (pickerType: 'isStartDatePickerVisible' | 'isEndDatePickerVisible') => {
+      setDatePickerVisibility(prevState => ({
+        ...prevState,
+        [pickerType]: true
+      }));
+    },
+    []
+  );
 
-  const hideDatePicker = (
-    pickerType: 'isStartDatePickerVisible' | 'isEndDatePickerVisible'
-  ) => {
-    setDatePickerVisibility(prevState => ({
-      ...prevState,
-      [pickerType]: false
-    }));
-  };
+  const hideDatePicker = useCallback(
+    (pickerType: 'isStartDatePickerVisible' | 'isEndDatePickerVisible') => {
+      setDatePickerVisibility(prevState => ({
+        ...prevState,
+        [pickerType]: false
+      }));
+    },
+    []
+  );
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setVisible(false);
     setDatePickerVisibility({
       isStartDatePickerVisible: false,
       isEndDatePickerVisible: false
     });
     setSelectedDate({
-      selectedStartDate: null as Date | null,
-      selectedEndDate: null as Date | null
+      selectedStartDate: null,
+      selectedEndDate: null
     });
-  };
+  }, [setVisible]);
 
-  const handleConfirm = (
-    date: Date,
-    pickerType: 'selectedStartDate' | 'selectedEndDate'
-  ) => {
-    hideDatePicker(
-      pickerType === 'selectedStartDate'
-        ? 'isStartDatePickerVisible'
-        : 'isEndDatePickerVisible'
-    );
-    setSelectedDate(prevState => ({
-      ...prevState,
-      [pickerType]: date
-    }));
-  };
+  const handleConfirm = useCallback(
+    (date: Date, pickerType: 'selectedStartDate' | 'selectedEndDate') => {
+      hideDatePicker(
+        pickerType === 'selectedStartDate'
+          ? 'isStartDatePickerVisible'
+          : 'isEndDatePickerVisible'
+      );
+      setSelectedDate(prevState => ({
+        ...prevState,
+        [pickerType]: date
+      }));
+    },
+    [hideDatePicker]
+  );
 
   const handleSave = useCallback(() => {
-    setDate(prevDetails => ({
+    setFilter(prevDetails => ({
       ...prevDetails,
       startDate: selectedDate.selectedStartDate,
       endDate: selectedDate.selectedEndDate
     }));
     setVisible(false);
-  }, [
-    selectedDate.selectedEndDate,
-    selectedDate.selectedStartDate,
-    setDate,
-    setVisible
-  ]);
+  }, [selectedDate, setFilter, setVisible]);
 
-  const formattedDate = (date: Date | null, type: String) => {
+  const formattedDate = useCallback((date: Date | null, type: string) => {
     return date
       ? `${date.getDate()} ${date.toLocaleString('default', {
           month: 'short'
         })} ${date.getFullYear()}`
       : type;
-  };
+  }, []);
 
-  const disabled = !(
-    selectedDate.selectedStartDate && selectedDate.selectedEndDate
-  );
+  const disabled =
+    !selectedDate.selectedStartDate || !selectedDate.selectedEndDate;
 
   return (
     <View style={styles.container}>
