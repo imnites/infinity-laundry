@@ -32,7 +32,7 @@ export const usePageOfTransactions = ({
   dateRange: {startDate: string; endDate: string};
   statuses: string[];
 }) => {
-  const {data, loading, error} = useQuery(PAGE_OF_TRANSACTIONS, {
+  const {data, loading} = useQuery(PAGE_OF_TRANSACTIONS, {
     variables: {
       filter: {
         dateRange: dateRange,
@@ -40,8 +40,6 @@ export const usePageOfTransactions = ({
       }
     }
   });
-
-  console.log(error);
 
   return {
     pageOfTransactions: data?.pageOfTransactions,

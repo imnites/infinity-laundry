@@ -15,33 +15,35 @@ const ForgotPasswordPage: React.FC = () => {
     });
 
   return (
-    <View style={styles.container}>
-      <Title style={styles.titleText}>Forgot Password</Title>
-      <Text style={styles.description}>
-        Enter the email address or phone number associated with your account.
-      </Text>
-      <View style={styles.fieldContainer}>
-        <TextField
-          fullWidth
-          variant="underline"
-          placeholder="Email or Phone"
-          onChangeText={onUserNameChange}
-          value={values.userName}
-        />
-      </View>
-      <View style={styles.fieldContainer}>
-        <Button fullWidth onPress={handleSubmit} variant="contained">
-          Continue
-        </Button>
-      </View>
-      <View style={styles.fieldContainer}>
-        <Button
-          onPress={() => {
-            (navigation.navigate as any)('LoginPage');
-          }}
-          leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
-          Back to Login
-        </Button>
+    <View style={styles.root}>
+      <View style={styles.container}>
+        <Title style={styles.titleText}>Forgot Password</Title>
+        <Text style={styles.description}>
+          Enter the email address or phone number associated with your account.
+        </Text>
+        <View style={styles.fieldContainer}>
+          <TextField
+            fullWidth
+            variant="shadow"
+            placeholder="Email or Phone"
+            onChangeText={onUserNameChange}
+            value={values.userName}
+          />
+        </View>
+        <View style={styles.fieldContainer}>
+          <Button fullWidth onPress={handleSubmit} variant="shadow">
+            Continue
+          </Button>
+        </View>
+        <View style={styles.fieldContainer}>
+          <Button
+            onPress={() => {
+              (navigation.navigate as any)('LoginPage');
+            }}
+            leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
+            Back to Login
+          </Button>
+        </View>
       </View>
     </View>
   );
@@ -50,12 +52,20 @@ const ForgotPasswordPage: React.FC = () => {
 export default ForgotPasswordPage;
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
+    width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 32,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#fff'
+  },
+  container: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    maxWidth: 400
   },
   titleText: {
     color: '#3930d8',

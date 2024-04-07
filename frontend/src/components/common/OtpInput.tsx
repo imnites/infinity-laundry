@@ -33,7 +33,7 @@ const OtpInputField: React.FC<TextFieldProps> = ({
       value={value}
       inputRef={ref}
       editable={editable}
-      variant="outlined"
+      variant="shadow"
       selectTextOnFocus
     />
   );
@@ -96,14 +96,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   input: {
-    fontSize: 20,
+    fontSize: 16,
     textAlign: 'center'
   },
   inputRoot: {
     width: 48,
     height: 48,
-    marginRight: 10,
-    marginLeft: 10,
+    marginRight: 4,
+    marginLeft: 4,
     borderRadius: 20
   }
 });

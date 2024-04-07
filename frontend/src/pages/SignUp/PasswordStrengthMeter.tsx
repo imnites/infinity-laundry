@@ -54,7 +54,9 @@ export const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({
   return (
     <>
       <View style={styles.labelContainer}>
-        <Text style={styles.strengthLabel}>{label}</Text>
+        <Text style={[styles.strengthLabel, {color: style?.backgroundColor}]}>
+          {label}
+        </Text>
       </View>
       <View style={styles.root}>
         <View

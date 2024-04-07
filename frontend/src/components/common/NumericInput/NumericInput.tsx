@@ -66,6 +66,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
       onChangeText={onChangeText}
       keyboardType="number-pad"
       placeholder={placeholder}
+      placeholderTextColor="#0009"
       ref={ref}
       style={style}
       autoFocus={autoFocus}

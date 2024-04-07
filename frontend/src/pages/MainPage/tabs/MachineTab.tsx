@@ -35,7 +35,7 @@ const MachineTab: React.FC = () => {
         leftIcon={
           <Icon name="qr-code-scanner" style={styles.scannerIcon} size={20} />
         }
-        variant="contained"
+        variant="shadow"
         fullWidth
         onPress={handleQRScan}>
         QR SCANNER
@@ -47,14 +47,14 @@ const MachineTab: React.FC = () => {
         </Text>
         <TextField
           fullWidth
-          variant="underline"
+          variant="shadow"
           placeholder="Enter machine code"
           value={machineCode}
           onChangeText={text => setMachineCode(text)}
         />
       </View>
       <View style={styles.fieldContainer}>
-        <Button variant="contained" fullWidth onPress={handleSubmitMachineCode}>
+        <Button variant="shadow" fullWidth onPress={handleSubmitMachineCode}>
           SUBMIT MACHINE CODE
         </Button>
       </View>
@@ -78,13 +78,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    marginBottom: 10
+    marginBottom: 10,
+    color: '#000000de',
+    textAlign: 'center'
   },
   subTitle: {
     fontSize: 16,
     marginTop: 20,
     marginBottom: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#000000de'
   },
   enterMachineCodeText: {
     marginTop: 40,

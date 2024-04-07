@@ -23,64 +23,75 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
   } = useResetPassword(route);
 
   return (
-    <View style={styles.content}>
-      <Title style={styles.titleText}>New password</Title>
-      <View style={styles.fieldContainer}>
-        <TextField
-          fullWidth
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={handlePasswordChange}
-          value={formValues.password}
-          maxLength={16}
-          showEyeIcon
-        />
-      </View>
-      <View style={styles.fieldContainer}>
-        <TextField
-          fullWidth
-          placeholder="Confirm Password"
-          secureTextEntry={true}
-          onChangeText={handleConfirmPasswordChange}
-          value={formValues.confirmPassword}
-          maxLength={16}
-          showEyeIcon
-        />
-      </View>
-      {formValues.password ? (
+    <View style={styles.root}>
+      <View style={styles.container}>
+        <Title style={styles.titleText}>New password</Title>
         <View style={styles.fieldContainer}>
-          <PasswordStrengthMeter password={formValues.password} />
+          <TextField
+            fullWidth
+            variant="shadow"
+            placeholder="Password"
+            secureTextEntry={true}
+            onChangeText={handlePasswordChange}
+            value={formValues.password}
+            maxLength={16}
+            showEyeIcon
+          />
         </View>
-      ) : null}
-      <View style={styles.updatePasswordContainer}>
-        <Button
-          variant="contained"
-          fullWidth
-          onPress={handleSubmit}
-          loading={formValues.isSubmitting}
-          disabled={formValues.isSubmitting}>
-          Update Password
-        </Button>
-      </View>
-      <View>
-        <Button
-          onPress={handleBackButton}
-          leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
-          Back to Login
-        </Button>
+        <View style={styles.fieldContainer}>
+          <TextField
+            fullWidth
+            variant="shadow"
+            placeholder="Confirm Password"
+            secureTextEntry={true}
+            onChangeText={handleConfirmPasswordChange}
+            value={formValues.confirmPassword}
+            maxLength={16}
+            showEyeIcon
+          />
+        </View>
+        {formValues.password ? (
+          <View style={styles.fieldContainer}>
+            <PasswordStrengthMeter password={formValues.password} />
+          </View>
+        ) : null}
+        <View style={styles.updatePasswordContainer}>
+          <Button
+            variant="shadow"
+            fullWidth
+            onPress={handleSubmit}
+            loading={formValues.isSubmitting}
+            disabled={formValues.isSubmitting}>
+            Update Password
+          </Button>
+        </View>
+        <View style={styles.backToLoginContainer}>
+          <Button
+            onPress={handleBackButton}
+            leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
+            Back to Login
+          </Button>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  content: {
+  root: {
     width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 32,
     backgroundColor: '#fff'
+  },
+  container: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    maxWidth: 400
   },
   fieldContainer: {
     width: '100%',
@@ -95,6 +106,9 @@ const styles = StyleSheet.create({
   titleText: {
     color: '#3930d8',
     fontSize: 24
+  },
+  backToLoginContainer: {
+    marginTop: 16
   }
 });
 

@@ -24,7 +24,9 @@ export const Money: React.FC<MoneyPropsType> = ({
   return (
     <View style={styles.root}>
       <Text style={[styles.currency, currencyStyle]}>
-        {prefix} {amount?.currency?.symbol}
+        {prefix
+          ? `${prefix} ${amount?.currency?.symbol}`
+          : amount?.currency?.symbol}
       </Text>
       <Number value={amount.amount} textStyle={amountStyle} />
     </View>
@@ -34,12 +36,15 @@ export const Money: React.FC<MoneyPropsType> = ({
 const styles = StyleSheet.create({
   root: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   currency: {
     marginTop: 'auto',
     marginBottom: 'auto',
-    paddingRight: 4
+    paddingRight: 4,
+    color: '#000000de'
   }
 });
 

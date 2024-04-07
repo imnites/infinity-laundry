@@ -22,61 +22,76 @@ const PaymentPage = () => {
   }, []);
 
   return (
-    <>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Add Money</Text>
-      </View>
-      <View style={styles.availableBalanceContainer}>
-        <Text style={styles.availableBalanceText}>Available Balance</Text>
-        <View style={styles.availableBalance}>
-          <Money
-            amountStyle={styles.availableBalanceAmount}
-            currencyStyle={styles.availableBalanceCurrency}
+    <View style={styles.root}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Add Money</Text>
+        </View>
+        <View style={styles.availableBalanceContainer}>
+          <Text style={styles.availableBalanceText}>Available Balance</Text>
+          <View style={styles.availableBalance}>
+            <Money
+              amountStyle={styles.availableBalanceAmount}
+              currencyStyle={styles.availableBalanceCurrency}
+              amount={{
+                amount: me?.balance.amount ?? null,
+                currency: me?.balance.currency ?? null
+              }}
+            />
+          </View>
+        </View>
+        <View style={styles.amountContainer}>
+          <MoneyInput
+            onAmountChange={onChangeText}
+            numericStyle={styles.numericStyle}
+            currencyStyle={styles.currencyStyle}
             amount={{
-              amount: me?.balance.amount ?? null,
+              amount: amount,
               currency: me?.balance.currency ?? null
             }}
+            placeholder="0"
+            autoFocus
           />
+          <View style={styles.amountTemplateContainer}>
+            {predefinedAmount.map((val: number) => (
+              <PredefinedAmountChip
+                key={`${val}`}
+                value={val}
+                onPress={onChangeText}
+              />
+            ))}
+          </View>
+        </View>
+        <View style={styles.continueButtonContainer}>
+          <Button
+            fullWidth
+            variant="shadow"
+            loading={checkoutLoading}
+            onPress={startWebCheckout}>
+            Continue
+          </Button>
         </View>
       </View>
-      <View style={styles.amountContainer}>
-        <MoneyInput
-          onAmountChange={onChangeText}
-          numericStyle={styles.numericStyle}
-          currencyStyle={styles.currencyStyle}
-          amount={{
-            amount: amount,
-            currency: me?.balance.currency ?? null
-          }}
-          placeholder="0"
-          autoFocus
-        />
-        <View style={styles.amountTemplateContainer}>
-          {predefinedAmount.map((val: number) => (
-            <PredefinedAmountChip
-              key={`${val}`}
-              value={val}
-              onPress={onChangeText}
-            />
-          ))}
-        </View>
-      </View>
-      <View style={styles.continueButtonContainer}>
-        <Button
-          classes={{
-            button: styles.continueButton,
-            buttonText: styles.continueButtonText
-          }}
-          loading={checkoutLoading}
-          onPress={startWebCheckout}>
-          Continue
-        </Button>
-      </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  root: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 32,
+    backgroundColor: '#fff'
+  },
+  container: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    maxWidth: 400
+  },
   headerContainer: {
     display: 'flex',
     flexDirection: 'column'
@@ -101,7 +116,8 @@ const styles = StyleSheet.create({
   },
   availableBalanceText: {
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
+    color: '#0009'
   },
   availableBalanceAmount: {
     color: '#1c2025',

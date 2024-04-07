@@ -30,6 +30,7 @@ interface TextFieldProps {
   autoFocus?: boolean;
   onFocus?: () => void;
   selectTextOnFocus?: boolean;
+  selection?: {start: number; end?: number};
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
@@ -49,7 +50,8 @@ export const TextField: React.FC<TextFieldProps> = ({
   editable,
   autoFocus,
   onFocus: onFocusCallback,
-  selectTextOnFocus
+  selectTextOnFocus,
+  selection
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -79,6 +81,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           inputStyle
         ]}
         placeholder={placeholder}
+        placeholderTextColor="#0009"
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={showPassword ? false : secureTextEntry}
@@ -90,6 +93,7 @@ export const TextField: React.FC<TextFieldProps> = ({
         editable={editable}
         autoFocus={autoFocus}
         selectTextOnFocus={selectTextOnFocus}
+        selection={selection}
       />
       {showEyeIcon && secureTextEntry ? (
         <IconButton buttonStyle={styles.iconButton}>
@@ -97,6 +101,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             onPress={onEyeIconClick}
             size={20}
             name={showPassword ? 'eye-off' : 'eye'}
+            style={styles.icon}
           />
         </IconButton>
       ) : null}
@@ -111,9 +116,9 @@ const styles = StyleSheet.create({
     borderRadius: 16
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     borderRadius: 16,
-    shadowColor: 'black',
+    shadowColor: '#000000de',
     shadowOffset: {
       width: 0,
       height: 4
@@ -139,7 +144,8 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     fontSize: 16,
-    fontFamily: 'lucida grande'
+    fontFamily: 'lucida grande',
+    color: '#000000de'
   },
   rightPadding: {
     paddingRight: 40
@@ -154,5 +160,8 @@ const styles = StyleSheet.create({
   },
   fullWidth: {
     width: '100%'
+  },
+  icon: {
+    color: '#0009'
   }
 });

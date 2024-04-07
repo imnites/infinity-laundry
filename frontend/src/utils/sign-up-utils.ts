@@ -20,5 +20,5 @@ export const mapToSignUpInput = (userDetails: FormattedSignUpInputType) => {
 
 export const getVerificationMessage = (contact?: string) =>
   contact
-    ? `Verification code has been sent to ${contact}`
+    ? `Verification code has been sent to \n${contact}`
     : 'Verification code has been sent to linked mobile number.';

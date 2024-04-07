@@ -29,10 +29,10 @@ export const BalanceCard: React.FC = () => {
           <Button
             fullWidth
             classes={{
-              button: styles.addFundButton,
-              buttonText: styles.addFundButtonText
+              button: styles.addMoneyButton,
+              buttonText: styles.addMoneyButtonText
             }}
-            variant="contained"
+            variant="shadow"
             onPress={onAddFundsClick}>
             Add Money
           </Button>
@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5'
   },
   card: {
-    backgroundColor: 'white',
-    borderRadius: 15,
+    backgroundColor: '#fff',
+    borderRadius: 16,
     padding: 16,
-    shadowColor: 'black',
+    shadowColor: '#000000de',
     shadowOffset: {
       width: 0,
       height: 4
@@ -68,19 +68,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '700',
-    color: 'black'
+    color: '#000000de'
   },
   subtitle: {
-    fontSize: 16
+    fontSize: 16,
+    color: '#000',
+    textAlign: 'center'
   },
   content: {
     alignItems: 'center'
   },
-  addFundButton: {
+  addMoneyButton: {
     width: 240,
     marginTop: 24
   },
-  addFundButtonText: {
+  addMoneyButtonText: {
     fontSize: 16,
     paddingBottom: 2
   }

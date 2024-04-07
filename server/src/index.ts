@@ -33,7 +33,7 @@ const server = new ApolloServer<Context>(schema);
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
-  context: async ({ req, res }): Promise<Context> => {
+  context: async ({ req }): Promise<Context> => {
     const sequelize = await connectDatabase();
     const models = await initModels(sequelize);
 
