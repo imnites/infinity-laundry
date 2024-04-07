@@ -1,5 +1,6 @@
 import {gql, useMutation} from '@apollo/client';
 import {deleteTokenValue, getTokenValue} from '~/utils';
+import {useMeContext} from '~/me';
 
 const LOGOUT = gql`
   mutation logout($refreshToken: String) {
@@ -8,6 +9,7 @@ const LOGOUT = gql`
 `;
 
 const useLogout = () => {
+  const {setMe} = useMeContext();
   const [logout, {loading}] = useMutation(LOGOUT);
 
   return {
@@ -15,10 +17,13 @@ const useLogout = () => {
       const {refreshToken} = await getTokenValue();
       try {
         await logout({variables: {refreshToken}});
+
         await deleteTokenValue();
+        setMe && setMe(undefined);
         onSuccess && onSuccess();
       } catch (err) {
         await deleteTokenValue();
+        setMe && setMe(undefined);
         onError && onError();
       }
     },

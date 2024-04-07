@@ -13,16 +13,18 @@ interface MoneyPropsType {
   prefix?: string;
   currencyStyle?: StyleProp<TextStyle>;
   amountStyle?: StyleProp<TextStyle>;
+  rootStyle?: StyleProp<TextStyle>;
 }
 
 export const Money: React.FC<MoneyPropsType> = ({
   amount,
   prefix,
+  rootStyle,
   currencyStyle,
   amountStyle
 }) => {
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, rootStyle]}>
       <Text style={[styles.currency, currencyStyle]}>
         {prefix
           ? `${prefix} ${amount?.currency?.symbol}`

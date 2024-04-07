@@ -6,6 +6,7 @@ import {Title} from 'react-native-paper';
 import useResetPassword from './hooks/useResetPassword';
 import {TextField} from '~/components/common';
 import {PasswordStrengthMeter} from './PasswordStrengthMeter';
+import {useMeContext} from '~/me';
 
 interface ResetPasswordPropsType {
   route: any;
@@ -14,6 +15,7 @@ interface ResetPasswordPropsType {
 const ResetPassword: React.FC<ResetPasswordPropsType> = ({
   route
 }: ResetPasswordPropsType) => {
+  const {me} = useMeContext();
   const {
     formValues,
     handlePasswordChange,
@@ -65,13 +67,15 @@ const ResetPassword: React.FC<ResetPasswordPropsType> = ({
             Update Password
           </Button>
         </View>
-        <View style={styles.backToLoginContainer}>
-          <Button
-            onPress={handleBackButton}
-            leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
-            Back to Login
-          </Button>
-        </View>
+        {!me?.id ? (
+          <View style={styles.backToLoginContainer}>
+            <Button
+              onPress={handleBackButton}
+              leftIcon={<Icon name="arrow-left" size={16} color="#3930d8" />}>
+              Back to Login
+            </Button>
+          </View>
+        ) : null}
       </View>
     </View>
   );

@@ -7,7 +7,7 @@ const LoadingScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Icon name="local-laundry-service" size={64} color="#000000" />
+        <Icon name="local-laundry-service" size={64} color="#3930d8" />
         <Text style={styles.title}>Infinity Laundry</Text>
       </View>
     </View>
