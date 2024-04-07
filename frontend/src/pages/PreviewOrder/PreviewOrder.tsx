@@ -113,13 +113,7 @@ const DetailRow: React.FC<{
 }> = ({label, value, children}) => (
   <View style={styles.detailRow}>
     <Text style={styles.detailLabel}>{label}:</Text>
-    <View style={styles.detailValueContainer}>
-      {value ? (
-        <Text style={styles.detailValue}>{value}</Text>
-      ) : (
-        <Text style={styles.detailValue}>{children}</Text>
-      )}
-    </View>
+    {value ? <Text style={styles.detailValue}>{value}</Text> : children}
   </View>
 );
 
@@ -128,7 +122,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
-    paddingTop: 40
+    paddingTop: 40,
+    width: '100%'
   },
   content: {
     alignItems: 'center',
@@ -141,10 +136,10 @@ const styles = StyleSheet.create({
   balance: {
     fontSize: 30,
     fontWeight: '700',
-    color: '#333'
+    color: 'black'
   },
   detailsContainer: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
     marginBottom: 20
@@ -163,10 +158,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
     maxWidth: 280
-  },
-  detailValueContainer: {
-    flex: 1,
-    alignItems: 'flex-start'
   },
   detailRow: {
     display: 'flex',
@@ -194,8 +185,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     textAlign: 'center',
-    paddingVertical: 10,
-    fontSize: 18
+    paddingTop: 8,
+    paddingBottom: 8,
+    fontSize: 20
   },
   loadingContainer: {
     flex: 1,
