@@ -4,6 +4,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import {NativeModules} from 'react-native';
 import Toast from 'react-native-toast-message';
 import {TextField, Button} from '~/components/common';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const {QRCodeScannerModule} = NativeModules;
 
@@ -30,8 +31,14 @@ const MachineTab: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Scan the QR-code of the machine to begin</Text>
-      <Button variant="contained" fullWidth onPress={handleQRScan}>
-        USE QR SCANNER
+      <Button
+        leftIcon={
+          <Icon name="qr-code-scanner" style={styles.scannerIcon} size={20} />
+        }
+        variant="contained"
+        fullWidth
+        onPress={handleQRScan}>
+        QR SCANNER
       </Button>
 
       <View style={styles.enterMachineCodeText}>
@@ -82,6 +89,10 @@ const styles = StyleSheet.create({
   enterMachineCodeText: {
     marginTop: 40,
     width: '100%'
+  },
+  scannerIcon: {
+    color: '#fff',
+    marginRight: 8
   }
 });
 
